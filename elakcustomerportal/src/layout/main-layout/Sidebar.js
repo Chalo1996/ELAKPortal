@@ -4,17 +4,17 @@ import {
   SunOutlined,
   MoonOutlined,
   HomeOutlined,
-  GlobalOutlined,
+  // GlobalOutlined,
   EllipsisOutlined,
   DownOutlined,
 } from "@ant-design/icons";
-import {
-  AccountsIcon,
-  TransactIcon,
-  BorrowIcon,
-  SaveIcon,
-  UmbrellaIcon,
-} from "../icons/icons";
+// import {
+//   AccountsIcon,
+//   TransactIcon,
+//   BorrowIcon,
+//   SaveIcon,
+//   UmbrellaIcon,
+// } from "../icons/icons";
 import { useTheme } from "../../store/context/theme-context";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -100,31 +100,27 @@ const Sidebar = ({ onSelect, collapsed, toggleCollapsed }) => {
       icon: <EllipsisOutlined className="rotate-90" />,
       label: <Link to="/more">More</Link>,
     },
-    {
-      key: "accounts",
-      icon: <AccountsIcon />,
-      label: <Link to="/accounts">Accounts</Link>,
-    },
-    {
-      key: "transact",
-      icon: <TransactIcon />,
-      label: <Link to="/transact">Transact</Link>,
-    },
-    {
-      key: "borrow",
-      icon: <BorrowIcon />,
-      label: <Link to="/borrow">Borrow</Link>,
-    },
-    {
-      key: "save",
-      icon: <SaveIcon />,
-      label: <Link to="/save">Save</Link>,
-    },
-    {
-      key: "insure",
-      icon: <UmbrellaIcon />,
-      label: <Link to="/insure">Insure</Link>,
-    },
+    // {
+    //   key: "accounts",
+    //   icon: <AccountsIcon />,
+    //   label: <Link to="/accounts">Accounts</Link>,
+    // },
+    // {
+    //   key: "transact",
+    //   icon: <TransactIcon />,
+    //   label: <Link to="/transact">Transact</Link>,
+    // },
+    
+    // {
+    //   key: "save",
+    //   icon: <SaveIcon />,
+    //   label: <Link to="/save">Save</Link>,
+    // },
+    // {
+    //   key: "insure",
+    //   icon: <UmbrellaIcon />,
+    //   label: <Link to="/insure">Insure</Link>,
+    // },
     {
       key: "theme",
       icon: theme === "dark" ? <MoonOutlined /> : <SunOutlined />,
@@ -139,11 +135,11 @@ const Sidebar = ({ onSelect, collapsed, toggleCollapsed }) => {
         </div>
       ),
     },
-    {
-      key: "english",
-      icon: <GlobalOutlined />,
-      label: <Link to="/english">English</Link>,
-    },
+    // {
+    //   key: "english",
+    //   icon: <GlobalOutlined />,
+    //   label: <Link to="/english">English</Link>,
+    // },
     {
       key: "signout",
       icon: <LogoutOutlined />,
