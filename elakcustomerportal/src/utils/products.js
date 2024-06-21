@@ -1,6 +1,6 @@
 import gleImg from "../assets/funeral-expense.jpg";
 import glaImg from "../assets/glaImg.png";
-import edu from "../assets/edu.png";
+import edu from "../assets/edu.jpg";
 import goal from "../assets/goal.png";
 import introImage from "../assets/introImage.jpg";
 import happyfamily from "../assets/happyfamily.png";

@@ -1,5 +1,5 @@
 import { Modal, Button, Row } from "antd";
-import edu from "../../assets/edu.png";
+import edu from "../../assets/edu.jpg";
 import { NavLink } from "react-router-dom";
 
 const Educamodal = ({ isModalOpen, onCancel, onOkay, product }) => {
