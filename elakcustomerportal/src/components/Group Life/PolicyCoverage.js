@@ -244,7 +244,7 @@ const PolicyCoverage = ({ form, formData, setFormData }) => {
       <Row gutter={[16, 16]}>
         <Col xs={24} sm={24} md={12} lg={12} xl={12}>
           <Form.Item
-            label="When would you like the cover to commencemence?"
+            label="When would you like the cover to commence?"
             tooltip="This cover is for one year"
             name="policyStartDate"
             rules={[
