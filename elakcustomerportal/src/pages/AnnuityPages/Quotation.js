@@ -3,7 +3,7 @@ import { Card, Row, Col, Button, message, Form, Checkbox } from "antd";
 import { LeftOutlined } from "@ant-design/icons";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useTheme } from "../../store/context/theme-context";
-import darkLogo from "../../assets/dark-logo.png";
+import darkLogo from "../../assets/images/dark-logo.png";
 import generatePDF, { Resolution, Margin } from "react-to-pdf";
 import AnnuityExclusionsModal from "../../components/Annuity/modals/Exclusions";
 import ErrorPage from "../../shared/ErrorPage";
