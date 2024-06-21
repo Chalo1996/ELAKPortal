@@ -1,4 +1,4 @@
-import gleImg from "../assets/funeral-expense.jpg";
+import gleImg from "../assets/images/funeral-expense.jpg";
 import glaImg from "../assets/glaImg.png";
 import edu from "../assets/edu.jpg";
 import goal from "../assets/goal.png";

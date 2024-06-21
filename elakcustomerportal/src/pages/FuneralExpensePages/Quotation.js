@@ -4,7 +4,7 @@ import { LeftOutlined } from "@ant-design/icons";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { resetData } from "../../store/redux/features/gleSlice";
-import darkLogo from "../../assets/dark-logo.png";
+import darkLogo from "../../assets/images/dark-logo.png";
 import { useTheme } from "../../store/context/theme-context";
 import FuneralExclusionsModal from "../../components/Funeral Expense/modals/Exclusions";
 import ErrorPage from "../../shared/ErrorPage";

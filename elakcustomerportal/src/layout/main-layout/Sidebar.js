@@ -18,8 +18,8 @@ import {
 import { useTheme } from "../../store/context/theme-context";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import imgLogo from "../../assets/Equity_Group_Logo.png";
-import darkLogo from "../../assets/dark-logo.png";
+import imgLogo from "../../assets/images/Equity_Group_Logo.png";
+import darkLogo from "../../assets/images/dark-logo.png";
 import { Link } from "react-router-dom";
 import { logoutUser } from "../../store/redux/features/authSlice";
 
