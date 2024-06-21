@@ -26,6 +26,8 @@ const { Step } = Steps;
 const { Title, Text,Link } = Typography;
 const pdfRef = useRef();
 
+
+const [isPolicyModalVisible, setIsPolicyModalVisible] = useState(false);
 const [isTermsModalVisible, setIsTermsModalVisible] = useState(false);
 const [isConditionsModalVisible, setIsConditionsModalVisible] = useState(false);
 const [isFirstDivVisible, setFirstDivVisible] = useState(true);
@@ -88,6 +90,21 @@ const phoneAreas = [
   { code: "+255", flag: tzsFlag, country: "Tanzania" },
   { code: "+256", flag: ugxFlag, country: "Uganda" },
 ];
+
+const showPolicyModal = () => {
+  setIsPolicyModalVisible(true);
+};
+const handlePolicyOk = () => {
+  setIsPolicyModalVisible(false);
+};
+const handlePolicyCancel = () => {
+  setIsPolicyModalVisible(false);
+};
+
+
+
+
+
 
 const handleCustomerClick = () =>{
   navigate('/home'); 
@@ -561,11 +578,10 @@ onChange={handleInputChange}/>
 <Row gutter={16}>
 <Col span={12}>
     
-<>
+    <>
       <Form.Item
         style={{ marginTop: '30px', marginLeft: '0px' }}
-        valuePropName="checked"
-      >
+        valuePropName="checked">
         <Checkbox style={{ color: 'black' }}>
           <span style={{ color: 'black' }}>I accept </span>
           <Link onClick={showTermsModal} style={{ color: '#8B4513' }}>
@@ -577,22 +593,18 @@ onChange={handleInputChange}/>
           </Link>
         </Checkbox>
       </Form.Item>
-
       <Modal
         title="Terms"
         visible={isTermsModalVisible}
         onOk={handleTermsOk}
-        onCancel={handleTermsCancel}
-      >
+        onCancel={handleTermsCancel}>
         <p>Your terms content goes here...</p>
       </Modal>
-
       <Modal
         title="Conditions"
         visible={isConditionsModalVisible}
         onOk={handleConditionsOk}
-        onCancel={handleConditionsCancel}
-      >
+        onCancel={handleConditionsCancel}>
         <p>Your conditions content goes here...</p>
       </Modal>
     </>
@@ -718,7 +730,7 @@ style={{ width: '100%' }}>
 
 <Col span={12}>
 <Item
-label="Is the cover for a single person or a joint entity?"
+label="Is this cover for you (single) or you and your partner (joint)?"
 name="singleJoint"
 rules={getRequiredRule()}>
 <Select
@@ -1232,13 +1244,50 @@ style={{ width: '100%' }}>
         <Title style={{ textAlign: 'start', color: 'black' }} level={4}>
         Tel: 0765000000
         </Title>
-    </div>
-        <Button
+        </div>
+
+      <div>
+      <Checkbox 
+         style= {{marginTop: '40px',marginLeft : '150px'}}>
+        <span style={{ color: 'black' }}>I accept </span>
+        <span style={{ color: 'brown', cursor: 'pointer' }}
+              onClick={showPolicyModal}> policy exclusions
+        </span>
+      </Checkbox>
+      <Modal
+        title="Policy Exclusions"
+        visible={isPolicyModalVisible}
+        onOk={handlePolicyOk}
+        onCancel={handlePolicyCancel}>
+        <p>
+           When considering term life insurance, it's important to be aware of
+            potential policy exclusions that may affect coverage. Common exclusions
+            often include pre-existing conditions, where deaths resulting from undisclosed
+            medical conditions are not covered. Many policies have a suicide exclusion clause,
+            typically within the first two years of the policy, meaning if the policyholder
+            commits suicide during this period, the insurer may not pay out the death benefit.
+
+            Engaging in hazardous activities, such as extreme sports like skydiving or scuba diving,
+            may also lead to exclusions. Deaths resulting from these activities might not be covered
+            if they were not disclosed during the application process. Similarly, deaths occurring
+            during illegal activities, including drug use or committing a crime, are often excluded from coverage.
+
+            Acts of war and terrorism can also be excluded from term life insurance policies.
+            This means that if the policyholder dies due to war or terrorism, the insurance company may not pay
+            out the benefit. Additionally, deaths resulting from alcohol or drug abuse are commonly excluded,
+
+            and insurers may deny claims if the death is directly linked to substance misuse.
+            Understanding these exclusions helps policyholders ensure they are adequately covered a
+            nd avoid situations that might invalidate their policy.
+        </p>
+      </Modal>
+      <Button
         type="primary"
-        style={{ marginLeft: 850 , marginTop: '20px'}}
+        style={{ marginLeft: 850}}
         onClick={generatePDF}>
         Download
        </Button>
+      </div>    
   </>
   )}
 </>
@@ -1249,7 +1298,7 @@ style={{ width: '100%' }}>
     <Button
     style={{ marginRight: 8 }}
     onClick={handlePrev}>
-    Go Back
+    Previous
     </Button>
     )}
     {currentStep < 3 && (
@@ -1265,43 +1314,8 @@ style={{ width: '100%' }}>
       type="primary"
       onClick={toggleDivVisibility} 
       style={{ marginRight: 8,marginLeft: 10 , marginTop: '20px'}}>
-        Quote
+        Generate Quotation
       </Button> 
-
-      <div>
-      <Checkbox
-      onChange={handlePolicyCheckboxChange}>
-        Policy Exclusions</Checkbox>
-      {isModalVisible && (
-      <div style={{ width: '100%', height: '50%',marginTop: '20px', overflowY: 'auto', position: 'relative', border: '1px solid #ccc', padding: '16px', boxSizing: 'border-box' }}>
-      <h3>Policy Exclusions</h3>
-      <p>
-      When considering term life insurance, it's important to be aware of
-      potential policy exclusions that may affect coverage. Common exclusions
-      often include pre-existing conditions, where deaths resulting from undisclosed
-      medical conditions are not covered. Many policies have a suicide exclusion clause,
-      typically within the first two years of the policy, meaning if the policyholder
-      commits suicide during this period, the insurer may not pay out the death benefit.
-
-      Engaging in hazardous activities, such as extreme sports like skydiving or scuba diving,
-      may also lead to exclusions. Deaths resulting from these activities might not be covered
-      if they were not disclosed during the application process. Similarly, deaths occurring
-      during illegal activities, including drug use or committing a crime, are often excluded from coverage.
-
-      Acts of war and terrorism can also be excluded from term life insurance policies.
-      This means that if the policyholder dies due to war or terrorism, the insurance company may not pay
-      out the benefit. Additionally, deaths resulting from alcohol or drug abuse are commonly excluded,
-
-      and insurers may deny claims if the death is directly linked to substance misuse.
-      Understanding these exclusions helps policyholders ensure they are adequately covered a
-      nd avoid situations that might invalidate their policy.
-      </p>
-      <Button key="agree" type="primary" onClick={handleOk}>
-      Agree
-      </Button>
-      </div>
-      )}
-      </div>
       </>
     )}
    </Form.Item>
