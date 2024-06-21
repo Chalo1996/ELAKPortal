@@ -3,8 +3,9 @@ import { Modal, Button, Typography } from "antd";
 
 const { Paragraph } = Typography;
 
-const TermsModal = ({ isVisible, onClose }) => {
+const TermsModal = ({ isVisible, onClose, formData, setFormData }) => {
   const handleTermsModalAccept = () => {
+    setFormData({ ...formData, terms: true });
     onClose();
   };
 

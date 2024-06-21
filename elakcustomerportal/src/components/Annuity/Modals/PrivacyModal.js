@@ -4,10 +4,6 @@ import { Modal, Button, Typography } from "antd";
 const { Paragraph } = Typography;
 
 const PrivacyPolicyModal = ({ isVisible, onClose }) => {
-  const handlePrivacyModalAccept = () => {
-    onClose();
-  };
-
   return (
     <Modal
       title={
@@ -19,14 +15,6 @@ const PrivacyPolicyModal = ({ isVisible, onClose }) => {
       footer={[
         <Button key="close" onClick={onClose}>
           Close
-        </Button>,
-        <Button
-          key="accept"
-          type="primary"
-          className="shadow-none"
-          onClick={handlePrivacyModalAccept}
-        >
-          Accept
         </Button>,
       ]}
       onCancel={onClose}

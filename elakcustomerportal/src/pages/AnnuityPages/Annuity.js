@@ -184,14 +184,20 @@ const AnnuityPage = () => {
         context: JSON.stringify(params),
       },
     };
-    const response = await axios.post(url, dataToPost, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
 
-    console.log("annuity response: ", response);
-    return response.data.outData;
+    try {
+      const response = await axios.post(url, dataToPost, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      console.log("annuity response: ", response);
+      return response.data.outData;
+    } catch (error) {
+      console.error("Error fetching annuity data:", error);
+      throw error; // Re-throw the error to be handled by the calling function
+    }
   };
 
   const handleSubmit = async () => {
@@ -200,15 +206,16 @@ const AnnuityPage = () => {
     try {
       await Promise.all(forms.map((form) => form.validateFields()));
       tableData = await fetchAnnuityData();
-    } catch (error) {
-      setIsError(true);
-      console.log("Validation Failed:", error);
-    } finally {
-      setIsLoading(false);
+
       navigate("/home/annuity/quotation-details", {
         state: { formData, tableData },
       });
       localStorage.removeItem("yourAnnuityData");
+    } catch (error) {
+      setIsError(true);
+      console.log("Error Occurred:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 

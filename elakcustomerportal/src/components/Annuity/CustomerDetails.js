@@ -271,6 +271,7 @@ const CustomerDetailsForm = ({ form, formData, setFormData }) => {
                   style={{ color: "#A32A29", cursor: "pointer" }}
                   onClick={(e) => {
                     e.stopPropagation();
+                    e.preventDefault();
                     setTermsVisible(true);
                   }}
                 >
@@ -282,6 +283,7 @@ const CustomerDetailsForm = ({ form, formData, setFormData }) => {
                   style={{ color: "#A32A29", cursor: "pointer" }}
                   onClick={(e) => {
                     e.stopPropagation();
+                    e.preventDefault();
                     setPrivacyVisible(true);
                   }}
                 >
@@ -296,6 +298,8 @@ const CustomerDetailsForm = ({ form, formData, setFormData }) => {
       <TermsModal
         isVisible={termsVisible}
         onClose={() => setTermsVisible(false)}
+        formData={formData}
+        setFormData={setFormData}
       />
 
       <PrivacyPolicyModal
