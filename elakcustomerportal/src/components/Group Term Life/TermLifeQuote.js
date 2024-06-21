@@ -1,10 +1,13 @@
-import React, { useState, createContext, useContext } from 'react';
+import React, { useState, createContext, useContext,useRef} from 'react';
 import { Row, Col, Table,Space,Form, Input,Divider,Tooltip,Button, DatePicker, Select,Steps, Modal, Radio, Checkbox,Typography } from 'antd';
 import {ArrowLeftOutlined} from '@ant-design/icons';
 import moment from 'moment';
 import { useNavigate } from 'react-router-dom';
 import { NavLink } from "react-router-dom";
 import { InfoCircleOutlined,QuestionCircleOutlined } from '@ant-design/icons';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
+
 
 import sspFlag from '../../assets/flags/ssp.png';
 import cdfFlag from '../../assets/flags/cdf.png';
@@ -21,6 +24,7 @@ const TermLifeQuote = () => {
 const { Option } = Select;
 const { Step } = Steps;
 const { Title, Text,Link } = Typography;
+const pdfRef = useRef();
 
 const [isTermsModalVisible, setIsTermsModalVisible] = useState(false);
 const [isConditionsModalVisible, setIsConditionsModalVisible] = useState(false);
@@ -297,6 +301,36 @@ const selectedOPtionalBenefits = [
 { key: 'perPreRet', attribute: 'Percentage Of Premium Returned', value: formData.percentageOfPremToBReturned},
 ];
 
+
+const generatePDF = () => {
+  const input = pdfRef.current;
+  html2canvas(input).then((canvas) => {
+    const imgData = canvas.toDataURL('image/png');
+    const pdf = new jsPDF('p', 'mm', 'a4');
+    const imgProps = pdf.getImageProperties(imgData);
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+    
+    let heightLeft = pdfHeight;
+    let position = 0;
+
+    pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, pdfHeight);
+    heightLeft -= pdf.internal.pageSize.getHeight();
+
+    while (heightLeft >= 0) {
+      position = heightLeft - pdfHeight;
+      pdf.addPage();
+      pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, pdfHeight);
+      heightLeft -= pdf.internal.pageSize.getHeight();
+    }
+
+    pdf.save('quotation.pdf');
+  }).catch((error) => {
+    console.error('Error generating PDF:', error);
+  });
+};
+
+
 const contextObject = {
 dateOfBirth: formData.dateOfBirth,
 principalAmount: formData.principalAmount, //.replace(/,/g, ''),
@@ -466,9 +500,8 @@ return current && (current > today || current > eighteenYearsAgo);
 </Form.Item>
 
 
-
         <Form.Item
-            label="Mobile No"
+            label="Mobile Number"
             name="tel"
             rules={[
               { required: true, message: 'Please enter your Mobile number',},{ pattern: "^[0-9]{9}$", message: "The Phone number should be 9 digits!",},]}>
@@ -1071,11 +1104,12 @@ style={{ width: '100%' }}>
   : 
   
   ( 
-    <div 
-        value={{ quoteData, updateQuoteData }} 
-        style={{ maxWidth: '800px',marginTop: '30px', padding: '20px',backgroundColor: 'white' ,border: '2px solid black', margin: 'auto'}}>
-        
-        <Row justify="start">
+  <>
+    <div
+      ref={pdfRef}
+      value={{ quoteData, updateQuoteData }} 
+      style={{ maxWidth: '800px',marginTop: '30px', padding: '20px',backgroundColor: 'white' ,border: '2px solid black', margin: 'auto'}}>
+      <Row justify="start">
         <Col span={12}>
         <Title
         style={{ textAlign: 'start', marginTop: '20px',}} level={4}>
@@ -1106,7 +1140,6 @@ style={{ width: '100%' }}>
         </Title>
         </Col>
         </Row>
-        
         <Title
         style={{ textAlign: 'start', marginTop: '20px', fontSize: '17px'}}
         level={4}>
@@ -1122,8 +1155,7 @@ style={{ width: '100%' }}>
         border: '2px solid black',
         padding: '20px',
         marginBottom: '20px',
-        }}/>
-        
+        }}/> 
         <Title
         style={{ textAlign: 'start'}} level={4}>
         <span style={{ fontWeight: 'bold', color: 'black' }}>Policy Details</span>
@@ -1139,7 +1171,6 @@ style={{ width: '100%' }}>
         padding: '20px',
         marginBottom: '20px',
         }}/>
-        
         <Title
         style={{ textAlign: 'start'}} level={4}>
         <span style={{ fontWeight: 'bold', color: 'black'}}>
@@ -1158,23 +1189,22 @@ style={{ width: '100%' }}>
         marginBottom: '20px',
         }}/>
         
-
-      <Title
-      style={{ textAlign: 'start'}} level={4}>
-      <span style={{ fontWeight: 'bold',  width: '100%' ,color: 'black' }}>Premium Details</span>
-      </Title>
-      <div style={{ border: '1px solid #ccc', padding: '16px', borderRadius: '8px', weight: 800}}>
-      <Row gutter={[16, 16]} style={{ flexDirection: 'column' }}>
-        {Object.keys(quotationData).map((key) => (
-          <Col span={24} key={key} style={{ marginBottom: '16px' }}>
-            <Text strong style={{ display: 'inline-block', width: '450px' }}>{key}:</Text>
-            <Text>
-              {numberFormatter.format(quotationData[key])}
-            </Text>
-          </Col>
-        ))}
-      </Row>
-      </div>
+        <Title
+        style={{ textAlign: 'start'}} level={4}>
+        <span style={{ fontWeight: 'bold',  width: '100%' ,color: 'black',marginTop:'30px' }}>Premium Details</span>
+        </Title>
+        <div style={{ border: '1px solid #ccc', padding: '16px', borderRadius: '8px', weight: 800}}>
+        <Row gutter={[16, 16]} style={{ flexDirection: 'column' }}>
+          {Object.keys(quotationData).map((key) => (
+            <Col span={24} key={key} style={{ marginBottom: '16px' }}>
+              <Text strong style={{ display: 'inline-block', width: '450px' }}>{key}:</Text>
+              <Text>
+                {numberFormatter.format(quotationData[key])}
+              </Text>
+            </Col>
+          ))}
+        </Row>
+        </div>
         
         <Title
         style={{ textAlign: 'start'}} level={4}>
@@ -1202,9 +1232,15 @@ style={{ width: '100%' }}>
         <Title style={{ textAlign: 'start', color: 'black' }} level={4}>
         Tel: 0765000000
         </Title>
-
     </div>
-    )}
+        <Button
+        type="primary"
+        style={{ marginLeft: 850 , marginTop: '20px'}}
+        onClick={generatePDF}>
+        Download
+       </Button>
+  </>
+  )}
 </>
 )}
 {(!isDivVisible &&
@@ -1234,9 +1270,10 @@ style={{ width: '100%' }}>
 
       <div>
       <Checkbox
-      onChange={handlePolicyCheckboxChange}>Policy Exclusions</Checkbox>
+      onChange={handlePolicyCheckboxChange}>
+        Policy Exclusions</Checkbox>
       {isModalVisible && (
-      <div style={{ width: '100%', height: '50%',marginTop: '10px', overflowY: 'auto', position: 'relative', border: '1px solid #ccc', padding: '16px', boxSizing: 'border-box' }}>
+      <div style={{ width: '100%', height: '50%',marginTop: '20px', overflowY: 'auto', position: 'relative', border: '1px solid #ccc', padding: '16px', boxSizing: 'border-box' }}>
       <h3>Policy Exclusions</h3>
       <p>
       When considering term life insurance, it's important to be aware of
