@@ -23,7 +23,6 @@ const Education = () => {
   const [current, setCurrent] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isTermsModalVisible, setIsTermsModalVisible] = useState(false);
-  const [currentStep, setCurrentStep] = useState(0);
   const [isPrivacyModalVisible, setIsPrivacyModalVisible] = useState(false);
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
   const [form] = Form.useForm();
@@ -358,12 +357,13 @@ const dataToPost = {
         <Select
           style={{ width: 100 }}
           defaultValue="+254"
-          onChange={(value) =>
+          onChange={(value) => {
             setFormData((prevData) => ({
               ...prevData,
               phoneArea: value,
-            }))
-          }
+            }));
+            handleChange(value);
+          }}
         >
           {phoneAreas.map((item) => (
             <Option value={item.code} key={item.code}>
