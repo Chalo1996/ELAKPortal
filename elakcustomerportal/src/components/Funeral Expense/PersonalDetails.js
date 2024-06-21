@@ -263,6 +263,7 @@ const PersonalDetailsForm = ({ form, formData, setFormData }) => {
                   style={{ color: "#A32A29", cursor: "pointer" }}
                   onClick={(e) => {
                     e.stopPropagation();
+                    e.preventDefault();
                     setTermsVisible(true);
                   }}
                 >
@@ -274,6 +275,7 @@ const PersonalDetailsForm = ({ form, formData, setFormData }) => {
                   style={{ color: "#A32A29", cursor: "pointer" }}
                   onClick={(e) => {
                     e.stopPropagation();
+                    e.preventDefault();
                     setPrivacyVisible(true);
                   }}
                 >
@@ -288,6 +290,8 @@ const PersonalDetailsForm = ({ form, formData, setFormData }) => {
       <TermsModal
         isVisible={termsVisible}
         onClose={() => setTermsVisible(false)}
+        formData={formData}
+        setFormData={setFormData}
       />
 
       <PrivacyPolicyModal
