@@ -40,6 +40,7 @@ import UploadDetails from "./components/Group Critical Illness/UploadDetails";
 import AnnuityQuotation from "./pages/AnnuityPages/Quotation";
 import SubmittedCallBack from "./components/Group Life/SubmittedCallBackForm";
 
+
 function App() {
   const dispatch = useDispatch();
   const lightTheme = useSelector((state) => state.auth.theme) === "light";
