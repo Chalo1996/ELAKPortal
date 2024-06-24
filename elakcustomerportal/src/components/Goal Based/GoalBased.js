@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
 import { fetchData } from "../../store/redux/features/goalSlice";
 import moment from "moment";
+import dayjs from "dayjs";
 import 'tailwindcss/tailwind.css';
 
 import sspFlag from '../../assets/flags/ssp.png';
@@ -24,6 +25,9 @@ const Goalbased = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isTermsModalVisible, setIsTermsModalVisible] = useState(false);
   const [isPrivacyModalVisible, setIsPrivacyModalVisible] = useState(false);
+  const [startDate, setStartDate] = useState();
+  const [endDate, setEndDate] = useState();
+  const [TermInYears, setTermInYears] = useState();
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
   const [form] = Form.useForm();
   const [formData, setFormData] = useState({
@@ -34,7 +38,7 @@ const Goalbased = () => {
     email: '',
     DOB: null,
     targetType: '',
-    TermInYears: 0,
+    TermInYears: null,
     goalType: '',
     optionalBenefit:'',
     frequency: '',
@@ -124,36 +128,53 @@ const dataToPost = {
     }
   }, [isFormSubmitted, isLoading, navigate, formData, cData]);
 
+  const formatDate = (date) => {
+    return dayjs(date).format("YYYY-MM-DD");
+  };
 
-
-  useEffect(() => {
-    if (formData.startDate && formData.TermInYears) {
-      const calculatedEndDate = calculateEndDate(formData.startDate, formData.TermInYears);
-      setFormData((prevData) => ({ ...prevData, endDate: calculatedEndDate }));
-      form.setFieldsValue({ endDate: calculatedEndDate });
-    }
-  }, [formData.startDate, formData.TermInYears,form]);
   const handleStartDateChange = (date) => {
+    if (!date) {
+      form.resetFields(["endDate"]);
+      setEndDate(null);
+      setStartDate(null);
+      return;
+    }
+    console.log("Setting startDate:", date); // Debugging output
+    setStartDate(date);
     setFormData((prevData) => ({
       ...prevData,
-      startDate: date ? moment(date).startOf('day') : null,
+      startDate: date,
     }));
   };
+
   const handleTermInYearsChange = (value) => {
-    setFormData((prevData) => ({ 
-      ...prevData, TermInYears: value }));
+    console.log("Setting TermInYears:", value); // Debugging output
+    setTermInYears(value);
+    setFormData((prevData) => ({
+      ...prevData,
+      TermInYears: value,
+    }));
   };
-  const calculateEndDate = (startDate, years) => {
-    const startMoment = moment.utc(startDate); // Parse as UTC date
-    const localStartMoment = startMoment.local(); // Convert to local date
-  
-    console.log('startDate:', localStartMoment.format('YYYY-MM-DD'));  // Debug log
-  
-    if (localStartMoment.isValid() && years) {
-      return localStartMoment.add(years, 'years');
+
+  const calculateEndDate = (start, term) => {
+    if (!start || !term) return null;
+    return start.clone().add(term, "year").subtract(1, "day");
+  };
+
+  useEffect(() => {
+    if (startDate && TermInYears !== null) {
+      const newEndDate = calculateEndDate(startDate, TermInYears);
+      console.log("Setting endDate:", newEndDate); // Debugging output
+      setEndDate(newEndDate);
+      setFormData((prevData) => ({
+        ...prevData,
+        endDate: newEndDate,
+      }));
+      form.setFieldsValue({ endDate: newEndDate });
     }
-    return null;
-  };
+  }, [startDate, TermInYears]);
+ 
+ 
   const onChangeCurrency = (value) => {
     setFormData((prevData) => ({
       ...prevData,
@@ -641,16 +662,14 @@ const dataToPost = {
           <Form.Item
             label="When would you wish to start?"
             name="startDate"
-            rules={[{ required: true, message: 'Please select the start date' }]}
+            rules={[{ required: true, message: "Please select the start date" }]}
           >
- <DatePicker
-  style={{ width: '100%' }}
-  value={formData.startDate ? moment(formData.startDate) : null}
-  disabledDate={(current) => current && current < moment().startOf('day')}
-  onChange={handleStartDateChange}
-/>
-
-
+            <DatePicker
+              style={{ width: "100%" }}
+              value={startDate ? dayjs(startDate) : null}
+              disabledDate={(current) => current && current < dayjs().startOf("day")}
+              onChange={handleStartDateChange}
+            />
           </Form.Item>
         </Col>
         <Col span={12}>
@@ -694,12 +713,12 @@ const dataToPost = {
             name="endDate"
           >
             <DatePicker
-              style={{ width: '100%' }}
-              value={formData.endDate ? moment(formData.endDate) : null}
+              style={{ width: "100%" }}
+              value={endDate ? dayjs(endDate) : null}
               disabled
             />
           </Form.Item>
-        </Col>   
+        </Col>  
           {formData.goalType === 'ShortTerm' && (
           <Col span={12}>
             <Form.Item 

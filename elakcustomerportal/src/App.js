@@ -39,6 +39,8 @@ import GroupCustomer from "./components/Group Critical Illness/GroupCustomer";
 import UploadDetails from "./components/Group Critical Illness/UploadDetails";
 import AnnuityQuotation from "./pages/AnnuityPages/Quotation";
 import SubmittedCallBack from "./components/Group Life/SubmittedCallBackForm";
+import Register from "./components/Education/Register";
+
 
 function App() {
   const dispatch = useDispatch();
@@ -154,6 +156,10 @@ function App() {
                     <Route
                       path="Education/Educ-Quotation"
                       element={<EducQuotation />}
+                    />
+                     <Route
+                      path="Education/Register"
+                      element={<Register />}
                     />
                     <Route
                       path="Goal-based/goal-quotation"
