@@ -41,6 +41,8 @@ import AnnuityQuotation from "./pages/AnnuityPages/Quotation";
 import SubmittedCallBack from "./components/Group Life/SubmittedCallBackForm";
 import Authentication from "./authentication/pages/Auth";
 import AuthLayout from "./layout/auth-layout/AuthLayout";
+import VehicleCategoryPage from "./pages/MotorVehicleInsurance/VehicleCategory"
+import HandleMotorSelection from "./pages/MotorVehicleInsurance/HandleMotorSelection"
 
 function App() {
   const dispatch = useDispatch();
@@ -170,6 +172,14 @@ function App() {
                     <Route
                       path="group-life-assurance/call-back-submission"
                       element={<SubmittedCallBack />}
+                    />
+                    <Route 
+                      path="motor-vehicle/select-motor-use" 
+                      element={<VehicleCategoryPage />}  
+                    />
+                    <Route 
+                      path="/motor-vehicle" 
+                      element={<HandleMotorSelection />}
                     />
                   </Routes>
                 </PortalLayout>
