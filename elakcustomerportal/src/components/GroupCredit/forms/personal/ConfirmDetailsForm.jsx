@@ -64,7 +64,11 @@ const ConfirmDetailsForm = ({ formData, form }) => {
           <Col xs={24} sm={24} md={12}>
             <div className='flex flex-col items-start justify-start mb-4'>
               <p className='text-[#929497]'>Premium Frequency</p>
-              <p>{formData.frequency}</p>
+              <p>
+                {formData.frequency === "Single"
+                  ? "One-Off"
+                  : formData.frequency}
+              </p>
             </div>
           </Col>
           <Col xs={24} sm={24} md={12}>

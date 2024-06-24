@@ -11,6 +11,7 @@ import Goalbasedmodal from "../Goal Based/Goalbasedmodal";
 import GroupTermLifeModal from "../Group Term Life/GroupTermLifeModal";
 import "./Product.css";
 import AnnuityModal from "../Annuity/modals/AnnuityModal";
+import MotorVehicleModal from "../MotorVehicleInsurance/modals/MotorVehicleModal";
 
 const { Meta } = Card;
 
@@ -95,6 +96,15 @@ const Product = ({ product, index }) => {
       case 7:
         return (
           <AnnuityModal
+            isModalOpen={isModalOpen}
+            onOkay={handleOk}
+            onCancel={handleCancel}
+            product={product}
+          />
+        );
+      case 8:
+        return (
+          <MotorVehicleModal
             isModalOpen={isModalOpen}
             onOkay={handleOk}
             onCancel={handleCancel}

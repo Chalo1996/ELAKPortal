@@ -39,6 +39,9 @@ import GroupCustomer from "./components/Group Critical Illness/GroupCustomer";
 import UploadDetails from "./components/Group Critical Illness/UploadDetails";
 import AnnuityQuotation from "./pages/AnnuityPages/Quotation";
 import SubmittedCallBack from "./components/Group Life/SubmittedCallBackForm";
+import Authentication from "./authentication/pages/Auth";
+import AuthLayout from "./layout/auth-layout/AuthLayout";
+import Register from "./components/Education/Register";
 
 
 function App() {
@@ -156,6 +159,10 @@ function App() {
                       path="Education/Educ-Quotation"
                       element={<EducQuotation />}
                     />
+                     <Route
+                      path="Education/Register"
+                      element={<Register />}
+                    />
                     <Route
                       path="Goal-based/goal-quotation"
                       element={<GoalQuotation />}
@@ -166,8 +173,8 @@ function App() {
                       element={<AnnuityQuotation />}
                     />
                     <Route path="*" element={<NotFound />} />
-                    <Route 
-                      path="group-life-assurance/call-back-submission" 
+                    <Route
+                      path="group-life-assurance/call-back-submission"
                       element={<SubmittedCallBack />}
                     />
                   </Routes>
@@ -176,6 +183,7 @@ function App() {
             />
 
             {/* Routes outside of /home */}
+            <Route path="/authentication/*" element={<AuthRoutes />} />
             <Route path="/terms" element={<Terms />} />
             <Route path="/privacy" element={<Privacy />} />
             <Route path="*" element={<NotFound />} />
@@ -195,6 +203,16 @@ const GroupCreditRoutes = () => {
       <Route path="/personal/quotation" element={<GCQuotationPagePersonal />} />
       <Route path="/group/quotation" element={<GCQuotationPageGroup />} />
     </Routes>
+  );
+};
+
+const AuthRoutes = () => {
+  return (
+    <AuthLayout>
+      <Routes>
+        <Route path="/" element={<Authentication />} />
+      </Routes>
+    </AuthLayout>
   );
 };
 export default App;

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Form, Input, Select, Row, Col, Button } from 'antd';
+import { Form, Input, Select, Row, Col, Button, message, Modal } from 'antd';
 import { LeftOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import sspFlag from "../../assets/flags/ssp.png";
@@ -8,6 +8,9 @@ import rwfFlag from "../../assets/flags/rwf.png";
 import kesFlag from "../../assets/flags/kes.png";
 import tzsFlag from "../../assets/flags/tzs.png";
 import ugxFlag from "../../assets/flags/ugx.png";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchData } from "../../store/redux/features/callBackSlice";
+
 
 const { Option } = Select;
 
@@ -15,8 +18,15 @@ const Submit = () => {
   const [form] = Form.useForm();
   const [clientEmailAddress, setClientEmailAddress] = useState('');
   const [phoneArea, setPhoneArea] = useState("+254");
+  const [loading, setLoading]= useState(false);
+  const [callBackData, setCallBackData] = useState({});
+
+  const authStatus = useSelector((state) => state.auth.status);
+  const isLoading = useSelector((state) => state.callBack.isLoading);
+  const [modalVisible, setModalVisible] = useState(false); // State for modal visibility
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const preventTextInput = (event) => {
     if (!/[0-9]/.test(event.key)) {
@@ -24,10 +34,89 @@ const Submit = () => {
     }
   };
 
-  const handleSubmit = (values) => {
-    console.log("Form submitted:", values);
-    navigate("/critical-illness/submit"); // Example navigation after form submission
+  const handleModalClose = () => {
+    setModalVisible(false); // Close modal
   };
+
+  const generateEmailContent = (customer) => {
+    const { firstName, lastName, email, mobileNumber } = customer;
+  
+    return `
+      <div style="font-family: Arial, sans-serif; line-height: 1.6;">
+        <p>Dear Team,</p>
+        <p>Please find below the information of a customer who requested for a callback:</p>
+        <table style="border-collapse: collapse; width: 100%;">
+          <tr>
+            <td style="padding: 8px; border: 1px solid #ddd; font-weight: bold;">First Name:</td>
+            <td style="padding: 8px; border: 1px solid #ddd;">${firstName}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px; border: 1px solid #ddd; font-weight: bold;">Last Name:</td>
+            <td style="padding: 8px; border: 1px solid #ddd;">${lastName}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px; border: 1px solid #ddd; font-weight: bold;">Email:</td>
+            <td style="padding: 8px; border: 1px solid #ddd;">${email}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px; border: 1px solid #ddd; font-weight: bold;">Mobile Number:</td>
+            <td style="padding: 8px; border: 1px solid #ddd;">${phoneArea}${mobileNumber}</td>
+          </tr>
+        </table>
+        <p style="margin-top: 20px;">Best regards,<br>Equity Bank Limited</p>
+      </div>
+    `;
+  };
+
+  const customerInfo = {
+    firstName: callBackData.firstName,
+    lastName: callBackData.lastName,
+    email: callBackData.email,
+    mobileNumber: callBackData.mobileNumber
+  };
+  
+  const emailContent = generateEmailContent(customerInfo);
+  
+
+  const handleSubmit = async () => {
+    console.log('Data: ', data); // Verify data being processed
+  
+    if (authStatus === "succeeded") {
+      try {
+        // Validate form fields
+        await form.validateFields();
+  
+        // Get current form values
+        const values = form.getFieldsValue();
+  
+        // Update callBackData state with the new values
+        setCallBackData({
+          ...callBackData,
+          ...values,
+          phoneArea: phoneArea // Assuming phoneArea is defined elsewhere
+        });
+  
+        console.log("CALLBACK DATA", callBackData); // Verify callBackData after update
+  
+        setLoading(true); // Set loading state to true
+  
+        // Dispatch fetchData action and wait for it to complete
+        await dispatch(fetchData(data)).unwrap();
+  
+        setLoading(false); // Set loading state to false after dispatch
+  
+        message.success('Email Sent!'); // Show success message
+        setModalVisible(true);
+  
+      } catch (error) {
+        setLoading(false); // Set loading state to false on error
+        message.error('Failed to send email.'); // Show error message
+      }
+    } else {
+      message.error('Authentication failed.'); // Show authentication failure message
+    }
+  };
+  
 
   const handleNavigate = () => {
     navigate(-1);
@@ -58,6 +147,13 @@ const Submit = () => {
       ))}
     </Select>
   );
+
+
+  const data = {
+    email: callBackData.email,
+    text: emailContent,
+    subject: "CALLBACK REQUEST"
+  };
 
   return (
     <div className="mb-4">
@@ -160,10 +256,23 @@ const Submit = () => {
             Edit any field before clicking submit if necessary.
           </div>
           <Form.Item style={{ marginTop: "16px" }}>
-            <Button type="primary" htmlType="submit">
+            <Button type="primary" htmlType="submit" onClick={handleSubmit}>
               Submit
             </Button>
           </Form.Item>
+
+          <Modal
+        title="We'll get back to you soon"
+        visible={modalVisible}
+        onCancel={handleModalClose}
+        footer={null} // No footer for this example
+      >
+        <p>Thank you for reaching out to us.We will call you back within 48hrs</p>
+        <Button type="primary" htmlType="continue" onClick={handleNavigate}>
+          Continue
+          </Button>
+      </Modal>
+
         </Form>
       </div>
     </div>
