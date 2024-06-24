@@ -1,15 +1,10 @@
 import { useState } from "react";
 import { Modal, Button } from "antd";
-import { Document, Page, pdfjs } from "react-pdf";
+import { Document, Page } from "react-pdf";
 import "react-pdf/dist/esm/Page/AnnotationLayer.css";
 import "react-pdf/dist/esm/Page/TextLayer.css";
 
 import privacyPDF from "../../../assets/policy-pdfs/PrivacyPolicy.pdf";
-
-pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-  "pdfjs-dist/build/pdf.worker.min.mjs",
-  import.meta.url
-).toString();
 
 const PrivacyPolicyModal = ({ isVisible, onClose }) => {
   const [numPages, setNumPages] = useState(null);
@@ -41,7 +36,7 @@ const PrivacyPolicyModal = ({ isVisible, onClose }) => {
       width="60vw"
     >
       <div className="flex flex-col items-center justify-center w-full">
-        <div className="w-full h-[90vh] overflow-y-auto lg:overflow-x-hidden">
+        <div className="w-full h-full max-h-[90vh]  overflow-y-auto lg:overflow-x-hidden">
           <div className="w-full flex justify-center">
             <Document file={privacyPDF} onLoadSuccess={onDocumentLoadSuccess}>
               {Array.from(new Array(numPages), (el, index) => (
