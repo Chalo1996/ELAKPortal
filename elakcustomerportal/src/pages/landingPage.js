@@ -12,7 +12,7 @@ import {
 import "antd/dist/reset.css";
 import { useNavigate, Route } from "react-router-dom";
 import Home from "./Home";
-import logo from "../assets/dark-logo.png";
+import logo from "../assets/images/dark-logo.png";
 
 <Route path="/home" element={<Home />} />;
 

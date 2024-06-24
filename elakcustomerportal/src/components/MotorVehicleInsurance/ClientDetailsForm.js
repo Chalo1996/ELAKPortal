@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Row, Form, Input, Col, Checkbox, DatePicker, Select, Typography } from 'antd';
 import 'tailwindcss/tailwind.css';
 
 import { preventNumericInput, preventTextInput, disabledDate, PhoneAreas } from "./Utilities.js";
 import dayjs from 'dayjs';
-import TermsModal from './Modals/TermsModal.js';
-import PrivacyPolicyModal from './Modals/PrivacyPolicyModal.js';
+import PrivacyPolicyModal from '../Group Life/Modals/PrivacyPolicyModal.js';
+import TermsModal from '../Group Life/Modals/TermsModal.js';
 
 const { Option } = Select;
 const { Title } = Typography;
@@ -26,10 +26,6 @@ const ChoosePhoneArea = ({ value, onChange }) => (
 const ContactDetails = ({ form, formData, setFormData }) => {
   const [termsVisible, setTermsVisible] = useState(false);
   const [privacyVisible, setPrivacyVisible] = useState(false);
-
-  useEffect(() => {
-    form.setFieldsValue(formData);
-  }, [form, formData]);
 
   const handleInputChange = useCallback((value, field) => {
     setFormData((prevData) => ({ ...prevData, [field]: value }));

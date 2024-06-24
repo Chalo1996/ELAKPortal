@@ -287,17 +287,21 @@ const PersonalDetailsForm = ({ form, formData, setFormData }) => {
         </Row>
       </Form>
 
-      <TermsModal
-        isVisible={termsVisible}
-        onClose={() => setTermsVisible(false)}
-        formData={formData}
-        setFormData={setFormData}
-      />
+      {termsVisible && (
+        <TermsModal
+          isVisible={termsVisible}
+          onClose={() => setTermsVisible(false)}
+          formData={formData}
+          setFormData={setFormData}
+        />
+      )}
 
-      <PrivacyPolicyModal
-        isVisible={privacyVisible}
-        onClose={() => setPrivacyVisible(false)}
-      />
+      {privacyVisible && (
+        <PrivacyPolicyModal
+          isVisible={privacyVisible}
+          onClose={() => setPrivacyVisible(false)}
+        />
+      )}
     </>
   );
 };

@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 import { Modal, Button, Row } from "antd";
-import Img from "../../../assets/modal-image.png";
+import Img from "../../../assets/images/modal-image.png";
 
 const FuneralExpenseModal = ({ isModalOpen, onCancel, onOkay, product }) => {
   const customTitle = (
