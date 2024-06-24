@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { LeftOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
-import { Steps, Button, Form } from "antd";
+import { Steps, Button, Form, message } from "antd";
 import dayjs from "dayjs";
 import PersonalDetailsForm from "../../components/Funeral Expense/PersonalDetails";
 import CallBackModal from "../../components/Funeral Expense/modals/CallBackModal";
@@ -12,6 +12,7 @@ import SumAssuredPercentageForm from "../../components/Funeral Expense/SumAssure
 import ConfirmDetailsForm from "../../components/Funeral Expense/ConfirmDetails";
 import { fetchData } from "../../store/redux/features/gleSlice";
 import CallBackForm from "../../components/Funeral Expense/CallBack";
+import ErrorPage from "../../shared/ErrorPage";
 
 const { Step } = Steps;
 
@@ -54,11 +55,13 @@ const IndividualCustomer = () => {
 
   const authStatus = useSelector((state) => state.auth.status);
   const isLoading = useSelector((state) => state.funeralExpense.isLoading);
+  const isError = useSelector((state) => state.funeralExpense.isError);
   const tableData = useSelector((state) => state.funeralExpense.gleData);
 
   const [current, setCurrent] = useState(0);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [showCallback, setShowCallback] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [form1] = Form.useForm();
   const [form2] = Form.useForm();
@@ -77,9 +80,9 @@ const IndividualCustomer = () => {
     };
   });
 
-  useEffect(() => {
-    localStorage.setItem("yourGLEData", JSON.stringify(formData));
-  }, [formData]);
+  // useEffect(() => {
+  //   localStorage.setItem("yourGLEData", JSON.stringify(formData));
+  // }, [formData]);
 
   const dataToPost = {
     inputData: {
@@ -185,24 +188,30 @@ const IndividualCustomer = () => {
   };
 
   const handleSubmit = async () => {
-    try {
-      await Promise.all(forms.map((form) => form.validateFields()));
-      if (authStatus === "succeeded") {
+    if (authStatus === "succeeded") {
+      setIsSubmitting(true);
+      try {
+        await Promise.all(forms.map((form) => form.validateFields()));
         dispatch(fetchData(dataToPost));
+      } catch (error) {
+        console.log("Validation Failed:", error);
+      } finally {
+        setIsSubmitting(false);
       }
-    } catch (error) {
-      console.log("Validation Failed:", error);
+    } else {
+      message.error("An Error Occurred. Please try again later.");
     }
   };
 
   useEffect(() => {
-    if (!isLoading) {
+    if (!isLoading && !isSubmitting && !isError) {
       navigate("/home/funeral-expense/quotation-details", {
         state: { formData, tableData },
       });
+      console.log("Navigating...");
       localStorage.removeItem("yourGLEData");
     }
-  }, [isLoading, navigate, formData, tableData]);
+  }, [isLoading, navigate, formData, tableData, isSubmitting, isError]);
 
   const steps = [
     {
@@ -250,6 +259,17 @@ const IndividualCustomer = () => {
       content: <ConfirmDetailsForm formData={formData} />,
     },
   ];
+
+  if (isError) {
+    return (
+      <ErrorPage
+        status="error"
+        title="Quote Generation Failed!"
+        subtitle="Sorry, there was an issue generating a quotation. Please try again later."
+        onRetry={() => window.location.reload()}
+      />
+    );
+  }
 
   return (
     <div className="pt-5 pl-4">
@@ -324,8 +344,9 @@ const IndividualCustomer = () => {
                   type="primary"
                   onClick={handleSubmit}
                   className="h-full px-4 py-2 shadow-none text-center"
+                  disabled={isSubmitting}
                 >
-                  Generate Quotation
+                  {isSubmitting ? "Submitting..." : "Generate Quotation"}
                 </Button>
               )}
             </div>

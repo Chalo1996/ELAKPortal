@@ -10,6 +10,12 @@ const ReviewAndConfirm = ({ formDataToSubmit, formData }) => {
     })
   );
 
+  const NumberFormat = {
+    formatter: (value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+    parser: (value) => value.replace(/(,*)/g, ""),
+  };
+  
+
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     const year = date.getFullYear();
@@ -44,7 +50,7 @@ const ReviewAndConfirm = ({ formDataToSubmit, formData }) => {
             </div>
             <div className="flex flex-col items-start justify-start mb-4">
               <p className="text-[#929497]">Mobile Number</p>
-              <p>{formDataToSubmit.phoneArea} {formDataToSubmit.mobileNumber}</p>
+              <p>{formDataToSubmit.phoneArea} { formDataToSubmit.mobileNumber}</p>
             </div>
           </Col>
         </Row>
@@ -67,7 +73,7 @@ const ReviewAndConfirm = ({ formDataToSubmit, formData }) => {
             </div>
             <div className="flex flex-col items-start justify-start mb-4">
               <p className="text-[#929497]">Number of Employees</p>
-              <p>{formDataToSubmit.numberOfEmployees} employees</p>
+              <p>{ NumberFormat.formatter(formDataToSubmit.numberOfEmployees)} employees</p>
             </div>
           </Col>
           <Col xs={24} sm={24} md={12}>
@@ -94,19 +100,19 @@ const ReviewAndConfirm = ({ formDataToSubmit, formData }) => {
           <Col xs={24} sm={24} md={12}>
             <div className="flex flex-col items-start justify-start mb-4">
               <p className="text-[#929497]">Number of Principal Members</p>
-              <p>{formDataToSubmit.numberOfEmployees !== null ? formDataToSubmit.numberOfEmployees + ' members' : 'No members'}</p>
+              <p>{formDataToSubmit.numberOfEmployees !== null ? NumberFormat.formatter(formDataToSubmit.numberOfEmployees) + ' members' : 'No members'}</p>
             </div>
             <div className="flex flex-col items-start justify-start mb-4">
               <p className="text-[#929497]">Number of Spouse</p>
-              <p>{formDataToSubmit.totalNumberOfSpouses !== null ? formDataToSubmit.totalNumberOfSpouses + ' spouses' : 'No spouses'}</p>
+              <p>{formDataToSubmit.totalNumberOfSpouses !== null ? NumberFormat.formatter(formDataToSubmit.totalNumberOfSpouses) + ' spouses' : 'No spouses'}</p>
             </div>
             <div className="flex flex-col items-start justify-start mb-4">
               <p className="text-[#929497]">Number of Children</p>
-              <p>{formDataToSubmit.totalNumberOfChilidren !== null ? formDataToSubmit.totalNumberOfChilidren + ' children' : 'No children'}</p>
+              <p>{formDataToSubmit.totalNumberOfChilidren !== null ? NumberFormat.formatter(formDataToSubmit.totalNumberOfChilidren) + ' children' : 'No children'}</p>
             </div>
             <div className="flex flex-col items-start justify-start mb-4">
               <p className="text-[#929497]">Number of Parents Parents-in-Law</p>
-              <p>{formDataToSubmit.totalNumberOfParentsAndParentsInLaw !== null ? formDataToSubmit.totalNumberOfParentsAndParentsInLaw + ' parents & Parents-in-Law' : 'No parents & Parents-in-Law'}</p>
+              <p>{formDataToSubmit.totalNumberOfParentsAndParentsInLaw !== null ? NumberFormat.formatter(formDataToSubmit.totalNumberOfParentsAndParentsInLaw) + ' parents & Parents-in-Law' : 'No parents & Parents-in-Law'}</p>
             </div>
           </Col>
           <Col xs={24} sm={24} md={12}>
@@ -142,7 +148,7 @@ const ReviewAndConfirm = ({ formDataToSubmit, formData }) => {
           <Col xs={24} sm={24} md={12}>
             <div className="flex flex-col items-start justify-start mb-4">
               <p className="text-[#929497]">The assured sum will be:</p>
-              <p>Annual Salary X {formDataToSubmit.multipleOfAnnualSalary || formDataToSubmit.flatAmount}</p>
+              <p>Annual Salary x {formDataToSubmit.multipleOfAnnualSalary || formDataToSubmit.flatAmount}</p>
             </div>
           </Col>
         </Row>

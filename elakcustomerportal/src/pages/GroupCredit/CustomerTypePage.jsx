@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Typography } from "antd";
 import {
   LeftOutlined,
   UserOutlined,
@@ -10,6 +11,8 @@ import { Divider } from "antd";
 import { useTheme } from "../../store/context/theme-context";
 import CustomerTypeModal from "../../components/GroupCredit/Modals/CustomerTypeModal";
 
+const { Title } = Typography;
+
 const CustomerTypePage = () => {
   const { theme } = useTheme();
   const [selectedSection, setSelectedSection] = useState(null);
@@ -18,6 +21,8 @@ const CustomerTypePage = () => {
   const handleNavigate = () => {
     navigate(-1);
   };
+
+  let title = "Group Credit Cover";
 
   const handleClick = (section) => () => {
     setSelectedSection(section);
@@ -40,13 +45,11 @@ const CustomerTypePage = () => {
           </button>
         </span>
         <span className='font-open-sans text-[16px] font-semibold leading-[24px] text-left'>
-          Group Credit Cover
+          {title}
         </span>
 
         <div className='w-[710px] h-[76px] top-[408px] left-[425px] py-3 px-0 flex flex-col gap-4'>
-          <p className='font-open-sans text-[20px] font-semibold leading-[28px] text-left'>
-            Please select the type of customer
-          </p>
+          <Title level={5}>Please select the type of customer</Title>
           <p className='text-sm font-normal font-open-sans text-left text-[#929497]'>
             Select the type of customer to proceed
           </p>

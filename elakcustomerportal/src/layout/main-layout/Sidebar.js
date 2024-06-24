@@ -95,11 +95,11 @@ const Sidebar = ({ onSelect, collapsed, toggleCollapsed }) => {
       label: <Divider />,
       className: "non-interactive",
     },
-    {
-      key: "more",
-      icon: <EllipsisOutlined className="rotate-90" />,
-      label: <Link to="/more">More</Link>,
-    },
+    // {
+    //   key: "more",
+    //   icon: <EllipsisOutlined className="rotate-90" />,
+    //   label: <Link to="/more">More</Link>,
+    // },
     // {
     //   key: "accounts",
     //   icon: <AccountsIcon />,
@@ -110,7 +110,11 @@ const Sidebar = ({ onSelect, collapsed, toggleCollapsed }) => {
     //   icon: <TransactIcon />,
     //   label: <Link to="/transact">Transact</Link>,
     // },
-    
+    // {
+    //   key: "borrow",
+    //   icon: <BorrowIcon />,
+    //   label: <Link to="/borrow">Borrow</Link>,
+    // },
     // {
     //   key: "save",
     //   icon: <SaveIcon />,

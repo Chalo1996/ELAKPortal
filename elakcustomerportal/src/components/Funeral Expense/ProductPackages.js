@@ -62,6 +62,7 @@ const ProductPackagesForm = ({ form, formData, setFormData }) => {
   if (error) {
     return (
       <ErrorPage
+        status="error"
         title="Failed to Fetch Product Packages"
         subtitle="Sorry, there was an issue fetching the product packages. Please try again later."
         onRetry={() => window.location.reload()}

@@ -27,6 +27,10 @@ const ConfirmDetailsForm = ({ formData, form }) => {
           </Col>
           <Col xs={24} sm={24} md={12}>
             <div className='flex flex-col items-start justify-start mb-4'>
+              <p className='text-[#929497]'>Date of birth</p>
+              <p>{formData.dob}</p>
+            </div>
+            <div className='flex flex-col items-start justify-start mb-4'>
               <p className='text-[#929497]'>Country</p>
               <p>{formData.country}</p>
             </div>

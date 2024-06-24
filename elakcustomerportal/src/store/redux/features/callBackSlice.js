@@ -4,70 +4,70 @@ import axios from "axios";
 const url = "https://sisos-eu.azurewebsites.net/api/cmd";
 
 const initialState = {
-  gleData: [],
-  isLoading: true,
-  isError: false,
+  data: {},
+  isLoading: false,
+  error: null,
 };
 
 export const fetchData = createAsyncThunk(
-  "funeralExpense/fetchData",
+  "callBack/fetchData",
   async (data, thunkAPI) => {
-    const state = thunkAPI.getState();
-    const token = state.auth.token;
+    const { getState, rejectWithValue } = thunkAPI;
+    const { token } = getState().auth;
 
     if (!token) {
-      return thunkAPI.rejectWithValue("No token found");
+      return rejectWithValue("No token found");
     }
 
     try {
-      const dataToPost = {
+      const requestData = {
         cmd: "ExeChain",
         data: {
-          chain: "M3TrainingGLECalculator",
+          chain: "M3TrainingCallBackEmail",
           context: JSON.stringify(data),
         },
       };
-      const response = await axios.post(url, dataToPost, {
+      const response = await axios.post(url, requestData, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-
-      console.log("funeralExpense response: ", response);
+      console.log("callBack response: ", response.data);
       return response.data.outData;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      console.error("fetchData error:", error);
+      return rejectWithValue(error.message || error.response?.data || "Error occurred");
     }
   }
 );
 
-const funeralExpenseSlice = createSlice({
-  name: "funeralExpense",
+const callBackSlice = createSlice({
+  name: "callBack",
   initialState: initialState,
   reducers: {
     resetData: (state) => {
-      state.isLoading = true;
-      state.gleData = [];
-      state.isError = false;
+      state.isLoading = false;
+      state.error = null;
+      state.data = {};
     },
   },
   extraReducers: (builder) => {
     builder
       .addCase(fetchData.pending, (state) => {
         state.isLoading = true;
-        state.isError = false;
+        state.error = null;
       })
       .addCase(fetchData.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.isError = false;
-        state.gleData = action.payload;
+        state.data = action.payload;
+        state.error = null;
       })
       .addCase(fetchData.rejected, (state, action) => {
         state.isLoading = false;
-        state.isError = true;
+        state.error = action.payload || "Error occurred";
       });
   },
 });
 
-export const { resetData } = funeralExpenseSlice.actions;
-export const { reducer: funeralExpenseReducer } = funeralExpenseSlice;
+export const { resetData } = callBackSlice.actions;
+export const callBackReducer = callBackSlice.reducer;

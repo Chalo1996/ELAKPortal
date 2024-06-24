@@ -222,7 +222,7 @@ const dataToPost = {
   };
     
   return (
-    <div>
+    <div className="pt-5 pl-4">
       <div className="flex items-center">
         <button className="mb-5 focus:outline-none hover:text-[#A32A29]">
           <LeftOutlined className="w-8 h-8" onClick={handleNavigate} />
@@ -244,9 +244,9 @@ const dataToPost = {
         {current === 0 && (
           
   <>
-  <div>
+  <div className="pt-4 pl-3">
    <Row gutter={16}>
-            <h3>Please enter your personal details to continue</h3>
+            <h3> Please enter your personal details to continue</h3>
     </Row>
    </div>
     <br></br>

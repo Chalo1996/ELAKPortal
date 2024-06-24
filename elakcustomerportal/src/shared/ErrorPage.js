@@ -1,9 +1,9 @@
 import { Result, Button } from "antd";
 
-const ErrorPage = ({ title, subtitle, onRetry }) => {
+const ErrorPage = ({ status, title, subtitle, onRetry }) => {
   return (
     <Result
-      status="error"
+      status={status}
       title={title}
       subTitle={subtitle}
       extra={

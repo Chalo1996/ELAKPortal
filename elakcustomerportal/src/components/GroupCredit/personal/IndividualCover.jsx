@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Steps, Button, Form } from "antd";
+import { Steps, Button, Form, Typography } from "antd";
 import { connect } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { LeftOutlined } from "@ant-design/icons";
@@ -12,6 +12,7 @@ import ProductDetailsForm from "../forms/personal/ProductDetailsForm";
 import ConfirmDetailsForm from "../forms/personal/ConfirmDetailsForm";
 
 const { Step } = Steps;
+const { Title, Text } = Typography;
 
 const IndividualCover = ({ userDetails, quotationData, dispatch }) => {
   const [currentStep, setCurrentStep] = useState(0);
@@ -91,7 +92,7 @@ const IndividualCover = ({ userDetails, quotationData, dispatch }) => {
   const steps = [
     {
       title: "Client Details",
-      message: "Please enter your client details.",
+      message: <Title level={5}>Please enter your client details.</Title>,
       content: (
         <ClientDetailsForm
           formData={userDetails}
@@ -102,7 +103,7 @@ const IndividualCover = ({ userDetails, quotationData, dispatch }) => {
     },
     {
       title: "Product Details",
-      message: "Please enter or select product details.",
+      message: <Title level={5}>Please enter or select product details.</Title>,
       content: (
         <ProductDetailsForm
           formData={userDetails}
@@ -113,7 +114,11 @@ const IndividualCover = ({ userDetails, quotationData, dispatch }) => {
     },
     {
       title: "Review",
-      message: "To continue, please confirm your insurance purchase details.",
+      message: (
+        <Title level={5}>
+          To continue, please confirm your insurance purchase details.
+        </Title>
+      ),
       content: <ConfirmDetailsForm formData={userDetails} form={form} />,
     },
   ];
@@ -121,13 +126,14 @@ const IndividualCover = ({ userDetails, quotationData, dispatch }) => {
   return (
     <div className='pt-5 pl-4'>
       <div className='mb-4'>
-        <span>
-          <button className='mb-2 focus:outline-none hover:text-[#A32A29]'>
-            <LeftOutlined className='w-8 h-8' onClick={handleNavigate} />
-          </button>
-        </span>
+        <button
+          className='mb-2 focus:outline-none hover:text-[#A32A29]'
+          onClick={handleNavigate}
+        >
+          <LeftOutlined className='w-8 h-8' />
+        </button>
         <span className='font-open-sans text-[16px] font-semibold leading-[24px] text-left'>
-          Get Group Credit Cover
+          Get Credit Cover (Personal)
         </span>
       </div>
 
@@ -158,7 +164,7 @@ const IndividualCover = ({ userDetails, quotationData, dispatch }) => {
           </Button>
         )}
         {currentStep === steps.length - 1 && userDetails.loading ? (
-          <Button type='primary' loading iconPosition='end'>
+          <Button type='primary' loading>
             Loading
           </Button>
         ) : (

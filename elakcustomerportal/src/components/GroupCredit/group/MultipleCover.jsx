@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Steps, Button, Form } from "antd";
+import { Steps, Button, Form, Typography } from "antd";
 import { connect } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { LeftOutlined, SearchOutlined } from "@ant-design/icons";
+import { LeftOutlined } from "@ant-design/icons";
 import {
   updateUserDetails,
   generateQuotation,
@@ -12,6 +12,7 @@ import ProductDetailsForm from "../forms/group/ProductDetailsForm";
 import ConfirmDetailsForm from "../forms/group/ConfirmDetailsForm";
 
 const { Step } = Steps;
+const { Title } = Typography;
 
 const MultipleCover = ({ userDetails, quotationData, dispatch }) => {
   const [currentStep, setCurrentStep] = useState(0);
@@ -91,7 +92,7 @@ const MultipleCover = ({ userDetails, quotationData, dispatch }) => {
   const steps = [
     {
       title: "Client Details",
-      message: "Please enter your client details.",
+      message: <Title level={5}>Please enter your client details.</Title>,
       content: (
         <ClientDetailsForm
           formData={userDetails}
@@ -102,7 +103,9 @@ const MultipleCover = ({ userDetails, quotationData, dispatch }) => {
     },
     {
       title: "Product Details",
-      message: "Please enter or select product details.",
+      message: (
+        <Title level={5}>Please enter or select product details.</Title>
+      ),
       content: (
         <ProductDetailsForm
           formData={userDetails}
@@ -113,7 +116,11 @@ const MultipleCover = ({ userDetails, quotationData, dispatch }) => {
     },
     {
       title: "Review",
-      message: "To continue, please confirm your insurance purchase details.",
+      message: (
+        <Title level={5}>
+          To continue, please confirm your insurance purchase details.
+        </Title>
+      ),
       content: <ConfirmDetailsForm formData={userDetails} form={form} />,
     },
   ];
@@ -127,7 +134,7 @@ const MultipleCover = ({ userDetails, quotationData, dispatch }) => {
           </button>
         </span>
         <span className='font-open-sans text-[16px] font-semibold leading-[24px] text-left'>
-          Get Group Credit Cover
+          Get Credit Cover(Group)
         </span>
       </div>
 

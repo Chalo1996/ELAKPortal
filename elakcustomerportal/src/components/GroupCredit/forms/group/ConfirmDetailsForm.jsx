@@ -1,4 +1,6 @@
-import { Row, Col, Card } from "antd";
+import { Row, Col, Card, Typography } from "antd";
+
+const { Title } = Typography;
 
 const ConfirmDetailsForm = ({ formData, form }) => {
   return (
@@ -26,6 +28,10 @@ const ConfirmDetailsForm = ({ formData, form }) => {
             </div>
           </Col>
           <Col xs={24} sm={24} md={12}>
+            <div className='flex flex-col items-start justify-start mb-4'>
+              <p className='text-[#929497]'>Date of birth</p>
+              <p>{formData.dob}</p>
+            </div>
             <div className='flex flex-col items-start justify-start mb-4'>
               <p className='text-[#929497]'>Country</p>
               <p>{formData.country}</p>
@@ -75,6 +81,19 @@ const ConfirmDetailsForm = ({ formData, form }) => {
               <p>{formData.numOfPartners}</p>
             </div>
           </Col>
+          {formData.partnerDates.map((partnerDate, index) => (
+            <Col xs={24} sm={24} md={12}>
+              <div
+                className='flex flex-col items-start justify-start mb-4'
+                key={index}
+              >
+                <p className='text-[#929497]'>
+                  Partner {index + 1} Date of Birth
+                </p>
+                <p>{partnerDate}</p>
+              </div>
+            </Col>
+          ))}
         </Row>
       </Card>
     </Card>

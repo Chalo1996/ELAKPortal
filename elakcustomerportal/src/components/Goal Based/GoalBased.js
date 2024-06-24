@@ -37,6 +37,7 @@ const Goalbased = () => {
     targetType: '',
     TermInYears: 0,
     goalType: '',
+    optionalBenefit:'',
     frequency: '',
     premium: 0,
     currency: 'KES',
@@ -69,6 +70,7 @@ const dataToPost = {
   "TermInYears": formData.TermInYears,
   "frequency": formData.frequency,
   "goalType": formData.goalType,
+  "optionalBenefit":formData.optionalBenefit,
   "premium": formData.premium,
   "currency": formData.currency,
   "startDate": formData.startDate,
@@ -102,6 +104,7 @@ const dataToPost = {
         TermInYears: formData.TermInYears,
         frequency: formData.frequency,
         goalType: formData.goalType,
+        optionalBenefit:formData.optionalBenefit,
         premium: formData.premium,
         currency: formData.currency,
         startDate: formData.startDate,
@@ -238,7 +241,7 @@ const dataToPost = {
   };
 
   return (
-    <div>
+    <div className="pt-5 pl-4">
     <div className="flex items-center">
       <button className="mb-5 focus:outline-none hover:text-[#A32A29]">
         <LeftOutlined className="w-8 h-8" onClick={handleNavigate} />
@@ -259,7 +262,7 @@ const dataToPost = {
         {current === 0 && (
           
           <>
-          <div>
+          <div className="pt-4 pl-3"> 
            <Row gutter={16}>
                     <h3>Please enter your personal details to continue</h3>
             </Row>
@@ -631,35 +634,36 @@ const dataToPost = {
           </Form.Item>
         </Col>
         <Col span={12}>
-        <Form.Item
-          label="How many years would you wish to save?"
-          name="TermInYears"
-          style={{ width: "100%" }}
-          rules={[
-            {
-              type: 'number',
-              message: 'Please select the term in years.',
-            },
-            {
-              required: true,
-              message: 'Please input the term in years.',
-            },
-          ]}
-        >
-          <Select
-            id="TermInYears"
-            value={formData.TermInYears}
-            onChange={handleTermInYearsChange}
-            style={{ width: "100%" }}
-          >
-            {Array.from({ length: 13 }, (_, i) => (
-              <Select.Option key={i + 3} value={i + 3}>
-                {i + 3}
-              </Select.Option>
-            ))}
-          </Select>
-        </Form.Item>
-      </Col>
+  <Form.Item
+    label="How many years would you wish to save?"
+    name="TermInYears"
+    style={{ width: "100%" }}
+    rules={[
+      {
+        type: 'number',
+        message: 'Please select the term in years.',
+      },
+      {
+        required: true,
+        message: 'Please input the term in years.',
+      },
+    ]}
+  >
+    <Select
+      id="TermInYears"
+      value={formData.TermInYears}
+      onChange={handleTermInYearsChange}
+      style={{ width: "100%" }}
+    >
+      {Array.from({ length: 10 }, (_, i) => (
+        <Select.Option key={i + 1} value={i + 1}>
+          {i + 1}
+        </Select.Option>
+      ))}
+    </Select>
+  </Form.Item>
+</Col>
+
          </Row>
               <br></br>
          <Row gutter={16}>
