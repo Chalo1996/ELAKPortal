@@ -74,15 +74,15 @@ const PrivateUse = () => {
 
   return (
     <div className="pt-5 pl-4">
-          <div className="flex items-center">
+        <div className="flex items-center">
         <button className="mb-5 focus:outline-none hover:text-[#A32A29]">
           <LeftOutlined className="w-8 h-4" style={{ marginTop: '10px' }}onClick={handleNavigate} />
         </button>
         <Title level={5} style={{ marginBottom: '10px' }} className="font-open-sans text-[16px] font-semibold leading-[24px] text-left">
           Motor Vehicle Insurance (Private Use)
         </Title>
-        <ClientDetailsForm formData={formData} setFormData={setFormData} />
       </div>
+      <ClientDetailsForm formData={formData} setFormData={setFormData} />
     </div>
   );
 };
