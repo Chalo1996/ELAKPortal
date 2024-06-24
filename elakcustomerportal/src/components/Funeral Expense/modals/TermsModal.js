@@ -49,7 +49,7 @@ const TermsModal = ({ isVisible, onClose, formData, setFormData }) => {
       width="60vw"
     >
       <div className="flex flex-col items-center justify-center w-full">
-        <div className="w-full h-[90vh] overflow-y-auto lg:overflow-x-hidden">
+        <div className="w-full h-full max-h-[90vh] overflow-y-auto lg:overflow-x-hidden">
           <div className="w-full flex justify-center">
             <Document file={termsPDF} onLoadSuccess={onDocumentLoadSuccess}>
               {Array.from(new Array(numPages), (el, index) => (
