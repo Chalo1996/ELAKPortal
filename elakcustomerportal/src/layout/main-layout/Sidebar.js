@@ -4,17 +4,17 @@ import {
   SunOutlined,
   MoonOutlined,
   HomeOutlined,
-  GlobalOutlined,
+  // GlobalOutlined,
   EllipsisOutlined,
   DownOutlined,
 } from "@ant-design/icons";
-import {
-  AccountsIcon,
-  TransactIcon,
-  BorrowIcon,
-  SaveIcon,
-  UmbrellaIcon,
-} from "../icons/icons";
+// import {
+//   AccountsIcon,
+//   TransactIcon,
+//   BorrowIcon,
+//   SaveIcon,
+//   UmbrellaIcon,
+// } from "../icons/icons";
 import { useTheme } from "../../store/context/theme-context";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
