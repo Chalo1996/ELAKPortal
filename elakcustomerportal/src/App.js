@@ -41,6 +41,8 @@ import AnnuityQuotation from "./pages/AnnuityPages/Quotation";
 import SubmittedCallBack from "./components/Group Life/SubmittedCallBackForm";
 import Authentication from "./authentication/pages/Auth";
 import AuthLayout from "./layout/auth-layout/AuthLayout";
+import Register from "./components/Education/Register";
+
 
 function App() {
   const dispatch = useDispatch();
@@ -156,6 +158,10 @@ function App() {
                     <Route
                       path="Education/Educ-Quotation"
                       element={<EducQuotation />}
+                    />
+                     <Route
+                      path="Education/Register"
+                      element={<Register />}
                     />
                     <Route
                       path="Goal-based/goal-quotation"
