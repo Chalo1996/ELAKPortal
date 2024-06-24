@@ -116,7 +116,7 @@ const Product = ({ product, index }) => {
           className="h-40 object-cover"
         />
       }
-      className={`m-4 card-hover`} // Apply the hover class
+      className={`m-4 card-hover`}
     >
       <Meta
         title={<span>{product.title}</span>}

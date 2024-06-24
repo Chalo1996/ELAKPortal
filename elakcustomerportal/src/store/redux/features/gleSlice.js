@@ -6,6 +6,7 @@ const url = "https://sisos-eu.azurewebsites.net/api/cmd";
 const initialState = {
   gleData: [],
   isLoading: true,
+  isError: false,
 };
 
 export const fetchData = createAsyncThunk(
@@ -31,6 +32,7 @@ export const fetchData = createAsyncThunk(
           Authorization: `Bearer ${token}`,
         },
       });
+
       console.log("funeralExpense response: ", response);
       return response.data.outData;
     } catch (error) {
@@ -46,19 +48,23 @@ const funeralExpenseSlice = createSlice({
     resetData: (state) => {
       state.isLoading = true;
       state.gleData = [];
+      state.isError = false;
     },
   },
   extraReducers: (builder) => {
     builder
       .addCase(fetchData.pending, (state) => {
         state.isLoading = true;
+        state.isError = false;
       })
       .addCase(fetchData.fulfilled, (state, action) => {
         state.isLoading = false;
+        state.isError = false;
         state.gleData = action.payload;
       })
       .addCase(fetchData.rejected, (state, action) => {
         state.isLoading = false;
+        state.isError = true;
       });
   },
 });

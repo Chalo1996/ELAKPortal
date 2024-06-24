@@ -1,5 +1,5 @@
-import React from "react";
-import { Col, Row, Table, Typography } from "antd";
+import React, { useState } from "react";
+import { Col, Row, Table, Typography, Button, Checkbox, Card } from "antd";
 import { LeftOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -8,12 +8,24 @@ import { resetStore } from "../../../../store/redux/actions/groupCreditActions";
 const { Text, Title } = Typography;
 
 const Quotation = ({ formData, quotationData }) => {
+  const [isPolicyModalVisible, setIsPolicyModalVisible] = useState(false);
+  const [isPolicyAccepted, setIsPolicyAccepted] = useState(false);
+  const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const handleNavigate = () => {
     dispatch(resetStore());
     navigate("/home/group-credit/");
+  };
+
+  const handleCheckboxChange = (e) => {
+    setIsPolicyModalVisible(true);
+    setIsCheckboxChecked(e.target.checked);
+  };
+
+  const handleDownload = () => {
+    console.log("File Downloaded!");
   };
 
   const {
@@ -176,19 +188,19 @@ const Quotation = ({ formData, quotationData }) => {
           </button>
         </span>
         <span className='font-open-sans text-[16px] font-semibold leading-[24px] text-left'>
-          Get Group Credit Cover
+          Get Credit Cover(Group)
         </span>
       </div>
       <div
         style={{
           border: "2px solid black",
-          maxWidth: "800px",
+          maxWidth: "1000px",
           margin: "auto",
           position: "relative",
           paddingBottom: "60px",
         }}
       >
-        <div style={{ maxWidth: "750px", margin: "auto" }}>
+        <div style={{ maxWidth: "950px", margin: "auto" }}>
           <Row
             justify='space-between'
             align='middle'
@@ -322,6 +334,46 @@ const Quotation = ({ formData, quotationData }) => {
           }}
         >
           Equity Life Assurance (Kenya) Limited
+        </div>
+      </div>
+      <br />
+
+      <div
+        style={{
+          marginTop: "20px",
+          maxWidth: "1000px",
+          margin: "auto",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
+        <Checkbox checked={isCheckboxChecked} onChange={handleCheckboxChange}>
+          I accept the{" "}
+          <span
+            onClick={() => setIsPolicyModalVisible(true)}
+            style={{
+              textAlign: "right",
+              marginTop: "20px",
+              color: "#A32A29",
+            }}
+          >
+            policy exclusions
+          </span>
+        </Checkbox>
+
+        <div style={{ color: "#A32A29" }}>
+          <Button
+            type='primary'
+            style={{ marginRight: "10px" }}
+            disabled={!isPolicyAccepted || !isCheckboxChecked}
+          >
+            Continue with Payment
+          </Button>
+          <Button style={{ marginRight: "10px" }} onClick={handleDownload}>
+            Download
+          </Button>
+          <Button style={{ marginRight: "3px" }}>Send to Email</Button>
         </div>
       </div>
     </>

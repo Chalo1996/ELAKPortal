@@ -16,10 +16,10 @@ const initialState = {
   countryCode: "+254",
   countryFlag: null,
   termschecked: false,
-  sumAssured: 5000000,
+  sumAssured: "",
   termsInMonths: "",
-  frequency: "Single",
-  installments: 1,
+  frequency: "",
+  installments: "",
   retrenchment: false,
   isLoading: false,
   gcRate: 0.675,
@@ -29,7 +29,7 @@ const initialState = {
   quoteSubmitted: false,
   loading: false,
   quotationData: null,
-  numOfPartners: 0,
+  numOfPartners: "",
   partnerDates: [],
 };
 

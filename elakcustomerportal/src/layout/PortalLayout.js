@@ -67,11 +67,7 @@ const PortalLayout = ({ children }) => {
             overflow: "initial",
           }}
         >
-          <div
-            className={` min-h-[100vh] h-[100%] p-[24px]`}
-          >
-            {children}
-          </div>
+          <div className={` min-h-[100vh] p-[24px]`}>{children}</div>
         </Content>
       </Layout>
     </Layout>

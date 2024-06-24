@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Card, Row, Col, Table, Button, Checkbox, Typography } from "antd";
+import { Card, Row, Col, Table, Button, Checkbox, Typography, message } from "antd";
 import { useLocation } from "react-router-dom";
 import PolicyExclusionsModal from "../../components/Group Life/Modals/PolicyExclusionsModal";
 import Docxtemplater from "docxtemplater";
@@ -44,7 +44,7 @@ const QuotationTable = () => {
       lastExpenseSA: formatCurrency(data.mainMemberLastExpense),
       benefitName: data.gla.benefits[0].benefitDescriptionGla,
       level: data.gla.benefits[0].benefitLevel,
-      insuredSum: formatCurrency(data.gla.benefits[0].derivedSumAssured),
+      insuredSum: formatCurrency(data.gla.benefits[0].appliedSumAssured),
       premium: formatCurrency(data.gla.benefits[0].premium),
       annualPremiumGLA: formatCurrency(data.glaPremium),
       FCL: formatCurrency(
@@ -68,43 +68,48 @@ const QuotationTable = () => {
         premium: formatCurrency(benefit.premium)
       }))
     };
-  
+
     fetch(templateFile)
       .then((res) => res.arrayBuffer())
       .then((buffer) => {
         const zip = new PizZip(buffer);
         const doc = new Docxtemplater(zip);
-  
+
         doc.setData(docData);
-  
+
         try {
           doc.render();
         } catch (error) {
           console.error("Error rendering document:", error);
           return;
         }
-  
+
         const generatedDoc = doc.getZip().generate({ type: "blob" });
         FileSaver.saveAs(generatedDoc, "Quotation.docx");
+        message.success('Quote downloaded successfully!');
       })
       .catch((error) => {
         console.error("Error loading template file:", error);
       });
   };
-  
+
+  const NumberFormat = {
+    formatter: (value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+    parser: (value) => value.replace(/(,*)/g, ""),
+  };
 
   const location = useLocation();
-  const { data = {}, formData= {} } = location.state || {};
+  const { data = {}, formData = {} } = location.state || {};
 
   const proposedClientDetails = [
     { key: "nameOfClient", attribute: "Name of Client", value: data.proposedClientDetails.nameOfClient },
     { key: "totalAnnualSalaries", attribute: "Total Annual Salaries", value: formatCurrency(data.proposedClientDetails.totalAnnualSalaries) },
-    { key: "totalNumberOfStaff", attribute: "Total Number of Staff", value: data.proposedClientDetails.totalNumberOfStaff },
-    { key: "mobileNumber", attribute: "Mobile Number", value: `${formData.phoneArea} ${formData.mobileNumber}`},
+    { key: "totalNumberOfStaff", attribute: "Total Number of Staff", value: NumberFormat.formatter(data.proposedClientDetails.totalNumberOfStaff) },
+    { key: "mobileNumber", attribute: "Mobile Number", value: `${formData.phoneArea} ${formData.mobileNumber}` },
     { key: "email", attribute: "Email Address", value: formData.email },
     { key: "glaAsMultipleofAnnualSalary", attribute: "GLA Benefit Level as Multiple of Annual Salary", value: data.gla.benefits[0].benefitLevel },
     { key: "criticalIllnessBenefitPercentage", attribute: "Critical Illness Benefit Percentage", value: `${data.criticalIllnessBenefitPercentage}%` },
-    { key: "mainMemberLastExpense", attribute: "Main Member Last Expense SA", value: formatCurrency(data.mainMemberLastExpense) },
+    { key: "mainMemberLastExpense", attribute: "Main Member Last Expense Sum Assured", value: formatCurrency(data.mainMemberLastExpense) },
   ];
 
   const illnessNaturalCausesAccidents = [];
@@ -147,16 +152,16 @@ const QuotationTable = () => {
   return (
     <div className="pt-5 pl-4">
       <div className="flex items-center" style={{ marginBottom: "20px", marginTop: "10px" }} >
-          <button className="mb-1.5 focus:outline-none hover:text-[#A32A29]" >
-            <LeftOutlined className="w-8 h-8" onClick={handleNavigate}/>
-          </button>
-          <Title level={5} className="font-open-sans text-[16px] font-semibold leading-[24px] text-left">
-            Group Life Assurance Cover
-          </Title>
+        <button className="mb-1.5 focus:outline-none hover:text-[#A32A29]" >
+          <LeftOutlined className="w-8 h-8" onClick={handleNavigate} />
+        </button>
+        <Title level={5} className="font-open-sans text-[16px] font-semibold leading-[24px] text-left">
+          Group Life Assurance Cover
+        </Title>
       </div>
-      <Card style={{ border: "1px solid maroon" }}>
+      <Card style={{ border: "1px solid #A32A29" }}>
         <div style={{ width: "90%", margin: "auto" }}>
-          <Row justify="space-between" style={{ border: "1px solid maroon", padding: "10px" }}>
+          <Row justify="space-between" style={{ border: "1px solid #A32A29", padding: "10px" }}>
             <Col>
               <h3 style={{ fontWeight: "bold", marginBottom: 0 }}>EQUITY LIFE ASSURANCE (KENYA) LIMITED</h3>
               <h4 style={{ fontWeight: "bold", marginBottom: 0 }}>Group Life Assurance - Combined Solution</h4>
@@ -175,7 +180,7 @@ const QuotationTable = () => {
             bordered
             pagination={false}
             showHeader={false}
-            style={{ marginBottom: "20px", border: "1px solid maroon" }}
+            style={{ marginBottom: "20px", border: "1px solid #A32A29" }}
           />
 
           <h4 style={{ fontWeight: "bold", marginBottom: 0 }}>Group Life Assurance – (Illness, Natural Causes or Accidental Causes)</h4>
@@ -192,7 +197,7 @@ const QuotationTable = () => {
                 <Table.Summary.Cell index={3}>{formatCurrency(data.glaPremium)}</Table.Summary.Cell>
               </Table.Summary.Row>
             )}
-            style={{ marginBottom: "20px", border: "1px solid maroon" }}
+            style={{ marginBottom: "20px", border: "1px solid #A32A29" }}
           />
 
           <Table
@@ -204,7 +209,7 @@ const QuotationTable = () => {
               { dataIndex: "label", key: "label", render: (text) => <strong>{text}</strong> },
               { dataIndex: "value", key: "value", align: "right", render: (text) => <strong>{text}</strong> },
             ]}
-            style={{ marginBottom: "20px", border: "1px solid maroon" }}
+            style={{ marginBottom: "20px", border: "1px solid #A32A29" }}
           />
 
           <Table
@@ -216,7 +221,7 @@ const QuotationTable = () => {
               { dataIndex: "label", key: "label", render: (text) => <strong>{text}</strong> },
               { dataIndex: "value", key: "value", align: "right", render: (text) => <strong>{text}</strong> },
             ]}
-            style={{ marginBottom: "20px", border: "1px solid maroon" }}
+            style={{ marginBottom: "20px", border: "1px solid #A32A29" }}
           />
 
           <h4 style={{ fontWeight: "bold", marginBottom: 0 }}>Accidental/Occupational Causes Only</h4>
@@ -233,7 +238,7 @@ const QuotationTable = () => {
                 <Table.Summary.Cell index={3}>{formatCurrency(data.gpaWibaglaPremium)}</Table.Summary.Cell>
               </Table.Summary.Row>
             )}
-            style={{ marginBottom: "20px", border: "1px solid maroon" }}
+            style={{ marginBottom: "20px", border: "1px solid #A32A29" }}
           />
 
           <Table
@@ -245,46 +250,50 @@ const QuotationTable = () => {
               { dataIndex: "label", key: "label", render: (text) => <strong>{text}</strong> },
               { dataIndex: "value", key: "value", align: "right", render: (text) => <strong>{text}</strong> },
             ]}
-            style={{ marginBottom: "20px", border: "1px solid maroon" }}
+            style={{ marginBottom: "20px", border: "1px solid #A32A29" }}
           />
 
-          <h4 style={{ fontWeight: "bold", marginTop: "20px" }}>Notes</h4>
+          <h4 style={{ fontWeight: "bold", marginTop: "20px" }}>Notes:</h4>
           <ol>
-            <li>Our Quotation is valid for a period of 90 days from the date of issue</li>
-            <li>Passive terrorism included</li>
-            <li>We reserve the right to review our quotation should the basis against which the quotation has been done vary significantly</li>
-            <li>Terms and Conditions of ELAK's Group Life Assurance policy apply and will be availed on scheme admission</li>
+            <li>1. Our Quotation is valid for a period of 90 days from the date of issue</li>
+            <li>2. Passive terrorism included</li>
+            <li>3. We reserve the right to review our quotation should the basis against which the quotation has been done vary significantly</li>
+            <li>4. Terms and Conditions of ELAK's Group Life Assurance policy apply and will be availed on scheme admission</li>
           </ol>
         </div>
 
-        <div style={{ width: "100%", backgroundColor: "maroon", textAlign: "center", padding: "6px", marginTop: "20px" }}>
+        <div style={{ width: "100%", backgroundColor: "#A32A29", textAlign: "center", padding: "6px", marginTop: "20px" }}>
           <h3 style={{ color: "white", margin: 0 }}><strong>Equity Life Assurance (Kenya) Limited</strong></h3>
         </div>
       </Card>
-      <div style={{ marginTop: "20px" }}>
-        <Checkbox checked={isCheckboxChecked} onChange={handleCheckboxChange} >
-          I accept the{" "}
-          <span onClick={() => setIsPolicyModalVisible(true)} style={{ textAlign: "right", marginTop: "20px", color: "#A32A29" }}>
-            policy exclusions
-          </span>
-        </Checkbox>
-
-        <div style={{ textAlign: "right", marginTop: "20px", color: "#A32A29" }}>
-          <Button
-            type="primary"
-            style={{ marginRight: "10px" }}
-            disabled={!isPolicyAccepted || !isCheckboxChecked}
-          >
-            Continue with Payment
-          </Button>
-          <Button className="mr-4" style={{ marginRight: "10px" }} onClick={handleDownload}>
-            Download
-          </Button>
-          <Button className="mr-4" style={{ marginRight: "10px" }}>
-            Send to Email
-          </Button>
-        </div>
-
+      <div style={{ marginTop: "30px" }}>
+        <Row>
+          <Col span={12} style={{ marginTop: "4px"}}>
+            <Checkbox checked={isCheckboxChecked} onChange={handleCheckboxChange} >
+              I accept the{" "}
+              <span onClick={() => setIsPolicyModalVisible(true)} style={{ textAlign: "right", marginTop: "20px", color: "#A32A29" }}>
+                policy exclusions
+              </span>
+            </Checkbox>
+          </Col>
+          <Col span={12}>
+            <div style={{ textAlign: "right", color: "#A32A29"}}>
+              <Button
+                type="primary"
+                style={{ marginRight: "10px" }}
+                disabled={!isPolicyAccepted || !isCheckboxChecked}
+              >
+                Continue with Payment
+              </Button>
+              <Button className="mr-4" style={{ marginRight: "10px" }} onClick={handleDownload}>
+                Download
+              </Button>
+              <Button className="mr-4" style={{ marginRight: "10px" }}>
+                Send to Email
+              </Button>
+            </div>
+          </Col>
+        </Row>
         <PolicyExclusionsModal
           visible={isPolicyModalVisible}
           onCancel={() => setIsPolicyModalVisible(false)}

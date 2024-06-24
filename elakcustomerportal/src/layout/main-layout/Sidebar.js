@@ -18,8 +18,8 @@ import {
 import { useTheme } from "../../store/context/theme-context";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import imgLogo from "../../assets/Equity_Group_Logo.png";
-import darkLogo from "../../assets/dark-logo.png";
+import imgLogo from "../../assets/images/Equity_Group_Logo.png";
+import darkLogo from "../../assets/images/dark-logo.png";
 import { Link } from "react-router-dom";
 import { logoutUser } from "../../store/redux/features/authSlice";
 
@@ -95,36 +95,36 @@ const Sidebar = ({ onSelect, collapsed, toggleCollapsed }) => {
       label: <Divider />,
       className: "non-interactive",
     },
-    {
-      key: "more",
-      icon: <EllipsisOutlined className="rotate-90" />,
-      label: <Link to="/more">More</Link>,
-    },
-    {
-      key: "accounts",
-      icon: <AccountsIcon />,
-      label: <Link to="/accounts">Accounts</Link>,
-    },
-    {
-      key: "transact",
-      icon: <TransactIcon />,
-      label: <Link to="/transact">Transact</Link>,
-    },
-    {
-      key: "borrow",
-      icon: <BorrowIcon />,
-      label: <Link to="/borrow">Borrow</Link>,
-    },
-    {
-      key: "save",
-      icon: <SaveIcon />,
-      label: <Link to="/save">Save</Link>,
-    },
-    {
-      key: "insure",
-      icon: <UmbrellaIcon />,
-      label: <Link to="/insure">Insure</Link>,
-    },
+    // {
+    //   key: "more",
+    //   icon: <EllipsisOutlined className="rotate-90" />,
+    //   label: <Link to="/more">More</Link>,
+    // },
+    // {
+    //   key: "accounts",
+    //   icon: <AccountsIcon />,
+    //   label: <Link to="/accounts">Accounts</Link>,
+    // },
+    // {
+    //   key: "transact",
+    //   icon: <TransactIcon />,
+    //   label: <Link to="/transact">Transact</Link>,
+    // },
+    // {
+    //   key: "borrow",
+    //   icon: <BorrowIcon />,
+    //   label: <Link to="/borrow">Borrow</Link>,
+    // },
+    // {
+    //   key: "save",
+    //   icon: <SaveIcon />,
+    //   label: <Link to="/save">Save</Link>,
+    // },
+    // {
+    //   key: "insure",
+    //   icon: <UmbrellaIcon />,
+    //   label: <Link to="/insure">Insure</Link>,
+    // },
     {
       key: "theme",
       icon: theme === "dark" ? <MoonOutlined /> : <SunOutlined />,
@@ -139,11 +139,11 @@ const Sidebar = ({ onSelect, collapsed, toggleCollapsed }) => {
         </div>
       ),
     },
-    {
-      key: "english",
-      icon: <GlobalOutlined />,
-      label: <Link to="/english">English</Link>,
-    },
+    // {
+    //   key: "english",
+    //   icon: <GlobalOutlined />,
+    //   label: <Link to="/english">English</Link>,
+    // },
     {
       key: "signout",
       icon: <LogoutOutlined />,

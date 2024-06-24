@@ -4,19 +4,9 @@ import Img from "../../../assets/groupcredit.png";
 import { useTheme } from "../../../store/context/theme-context";
 const GroupCreditModal = ({ isModalOpen, onCancel, onOkay, product }) => {
   const { theme } = useTheme();
-  const customTitle = (
-    <p
-      className={`${
-        theme === "dark" ? "text-white bg-gray-800" : "text-black"
-      } text-lg font-medium text-center font-roboto `}
-    >
-      Group Credit Cover
-    </p>
-  );
 
   return (
     <Modal
-      title={customTitle}
       open={isModalOpen}
       onOk={onOkay}
       onCancel={onCancel}

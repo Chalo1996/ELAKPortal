@@ -12,6 +12,7 @@ import SumAssuredPercentageForm from "../../components/Funeral Expense/SumAssure
 import ConfirmDetailsForm from "../../components/Funeral Expense/ConfirmDetails";
 import { fetchData } from "../../store/redux/features/gleSlice";
 import CallBackForm from "../../components/Funeral Expense/CallBack";
+import ErrorPage from "../../shared/ErrorPage";
 
 const { Step } = Steps;
 
@@ -54,6 +55,7 @@ const GroupCustomer = () => {
   const authStatus = useSelector((state) => state.auth.status);
   const isLoading = useSelector((state) => state.funeralExpense.isLoading);
   const tableData = useSelector((state) => state.funeralExpense.gleData);
+  const isError = useSelector((state) => state.funeralExpense.isError);
 
   const [current, setCurrent] = useState(0);
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -76,9 +78,9 @@ const GroupCustomer = () => {
     };
   });
 
-  useEffect(() => {
-    localStorage.setItem("groupGLEData", JSON.stringify(formData));
-  }, [formData]);
+  // useEffect(() => {
+  //   localStorage.setItem("groupGLEData", JSON.stringify(formData));
+  // }, [formData]);
 
   const dataToPost = {
     inputData: {
@@ -171,7 +173,6 @@ const GroupCustomer = () => {
     if (selectedOption === "generateQuote") {
       setCurrent(current + 1);
     } else if (selectedOption === "requestCallback") {
-      // navigate("/home/funeral-expense/request-callback");
       setShowCallback(true);
     }
   };
@@ -196,13 +197,13 @@ const GroupCustomer = () => {
   };
 
   useEffect(() => {
-    if (!isLoading) {
+    if (!isLoading && !isError) {
       navigate("/home/funeral-expense/quotation-details", {
         state: { formData, tableData },
       });
       localStorage.removeItem("groupGLEData");
     }
-  }, [isLoading, navigate, formData, tableData]);
+  }, [isLoading, navigate, formData, tableData, isError]);
 
   const steps = [
     {
@@ -250,6 +251,17 @@ const GroupCustomer = () => {
       content: <ConfirmDetailsForm formData={formData} />,
     },
   ];
+
+  if (isError) {
+    return (
+      <ErrorPage
+        status="error"
+        title="Quote Generation Failed!"
+        subtitle="Sorry, there was an issue generating a quotation. Please try again later."
+        onRetry={() => window.location.reload()}
+      />
+    );
+  }
 
   return (
     <div className="pt-5 pl-4">

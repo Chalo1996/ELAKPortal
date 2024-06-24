@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { LeftOutlined } from "@ant-design/icons/";
@@ -11,6 +11,7 @@ import ProductParametersForm from "../../components/Annuity/ProductParameters";
 import CoverageForm from "../../components/Annuity/Coverage";
 import ConfirmDetailsForm from "../../components/Annuity/ConfirmDetails";
 import axios from "axios";
+import ErrorPage from "../../shared/ErrorPage";
 
 const { Step } = Steps;
 
@@ -35,10 +36,10 @@ const getInitialFormData = () => {
         frequencyValue: 12,
         isDeferredAnnuity: true,
         startDate: null,
-        deferrementPeriod: 180,
-        purchasePrice: 1000000,
+        deferrementPeriod: null,
+        purchasePrice: null,
         isPurchasePrice: true,
-        annuityPerMonth: 50000,
+        annuityPerMonth: null,
         segment: "Joint Life",
         isSingleLife: false,
         spouseReversion: 25,
@@ -59,6 +60,7 @@ const AnnuityPage = () => {
   const token = useSelector((state) => state.auth.token);
   const [current, setCurrent] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
   const [formData, setFormData] = useState(() => {
     const initialData = getInitialFormData();
     return {
@@ -71,9 +73,9 @@ const AnnuityPage = () => {
   const [showCallback, setShowCallback] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
 
-  useEffect(() => {
-    localStorage.setItem("yourAnnuityData", JSON.stringify(formData));
-  }, [formData]);
+  // useEffect(() => {
+  //   localStorage.setItem("yourAnnuityData", JSON.stringify(formData));
+  // }, [formData]);
 
   const params = {
     annuitant: {
@@ -182,13 +184,20 @@ const AnnuityPage = () => {
         context: JSON.stringify(params),
       },
     };
-    const response = await axios.post(url, dataToPost, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    console.log("annuity response: ", response);
-    return response.data.outData;
+
+    try {
+      const response = await axios.post(url, dataToPost, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      console.log("annuity response: ", response);
+      return response.data.outData;
+    } catch (error) {
+      console.error("Error fetching annuity data:", error);
+      throw error; // Re-throw the error to be handled by the calling function
+    }
   };
 
   const handleSubmit = async () => {
@@ -197,14 +206,16 @@ const AnnuityPage = () => {
     try {
       await Promise.all(forms.map((form) => form.validateFields()));
       tableData = await fetchAnnuityData();
-    } catch (error) {
-      console.log("Validation Failed:", error);
-    } finally {
-      setIsLoading(false);
+
       navigate("/home/annuity/quotation-details", {
         state: { formData, tableData },
       });
       localStorage.removeItem("yourAnnuityData");
+    } catch (error) {
+      setIsError(true);
+      console.log("Error Occurred:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -244,6 +255,17 @@ const AnnuityPage = () => {
       content: <ConfirmDetailsForm formData={formData} />,
     },
   ];
+
+  if (isError) {
+    return (
+      <ErrorPage
+        status="error"
+        title="Quote Generation Failed!"
+        subtitle="Sorry, there was an issue generating a quotation. Please try again later."
+        onRetry={() => window.location.reload()}
+      />
+    );
+  }
 
   return (
     <div className="pt-5 pl-4">

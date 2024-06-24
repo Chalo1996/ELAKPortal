@@ -23,7 +23,6 @@ const Education = () => {
   const [current, setCurrent] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isTermsModalVisible, setIsTermsModalVisible] = useState(false);
-  const [currentStep, setCurrentStep] = useState(0);
   const [isPrivacyModalVisible, setIsPrivacyModalVisible] = useState(false);
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
   const [form] = Form.useForm();
@@ -222,7 +221,7 @@ const dataToPost = {
   };
     
   return (
-    <div>
+    <div className="pt-5 pl-4">
       <div className="flex items-center">
         <button className="mb-5 focus:outline-none hover:text-[#A32A29]">
           <LeftOutlined className="w-8 h-8" onClick={handleNavigate} />
@@ -244,9 +243,9 @@ const dataToPost = {
         {current === 0 && (
           
   <>
-  <div>
+  <div className="pt-4 pl-3">
    <Row gutter={16}>
-            <h3>Please enter your personal details to continue</h3>
+            <h3> Please enter your personal details to continue</h3>
     </Row>
    </div>
     <br></br>
@@ -358,12 +357,13 @@ const dataToPost = {
         <Select
           style={{ width: 100 }}
           defaultValue="+254"
-          onChange={(value) =>
+          onChange={(value) => {
             setFormData((prevData) => ({
               ...prevData,
               phoneArea: value,
-            }))
-          }
+            }));
+            handleChange(value);
+          }}
         >
           {phoneAreas.map((item) => (
             <Option value={item.code} key={item.code}>

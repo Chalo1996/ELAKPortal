@@ -22,6 +22,7 @@ const CompanyDetails = ({form, formData, setFormData }) => {
       throw new Error("Average age must be between 20 and 60.");
     }
   };
+  
 
   return (
     <Form  form={form} layout="vertical" initialValues={formData}>
@@ -70,7 +71,7 @@ const CompanyDetails = ({form, formData, setFormData }) => {
       <Row gutter={16} style={{ marginBottom: '25px' }}>
         <Col xs={24} sm={12}>
           <Form.Item
-            label="How many employees are to be covered by this cover?"
+            label="How many employees are to be covered by this policy?"
             name="numberOfEmployees"
             rules={[
                   {

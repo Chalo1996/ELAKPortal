@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Form, Input, DatePicker, Select, Checkbox, Row, Col } from "antd";
 import sspFlag from "../../assets/flags/ssp.png";
 import cdfFlag from "../../assets/flags/cdf.png";
@@ -6,6 +6,8 @@ import rwfFlag from "../../assets/flags/rwf.png";
 import kesFlag from "../../assets/flags/kes.png";
 import tzsFlag from "../../assets/flags/tzs.png";
 import ugxFlag from "../../assets/flags/ugx.png";
+import TermsModal from "./modals/TermsModal";
+import PrivacyPolicyModal from "./modals/PrivacyModal";
 
 const { Option } = Select;
 const PhoneAreas = [
@@ -20,6 +22,9 @@ const PhoneAreas = [
 const Genders = ["Male", "Female"];
 
 const CustomerDetailsForm = ({ form, formData, setFormData }) => {
+  const [termsVisible, setTermsVisible] = useState(false);
+  const [privacyVisible, setPrivacyVisible] = useState(false);
+
   useEffect(() => {
     form.setFieldsValue(formData);
   }, [form, formData]);
@@ -261,19 +266,50 @@ const CustomerDetailsForm = ({ form, formData, setFormData }) => {
                   setFormData({ ...formData, terms: e.target.checked })
                 }
               >
-                I accept the{" "}
-                <a href="#terms" style={{ color: "#A32A29" }}>
+                I accept the
+                <span
+                  style={{ color: "#A32A29", cursor: "pointer" }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    setTermsVisible(true);
+                  }}
+                >
+                  {" "}
                   terms
-                </a>{" "}
-                &{" "}
-                <a href="#privacy" style={{ color: "#A32A29" }}>
+                </span>
+                {" and "}
+                <span
+                  style={{ color: "#A32A29", cursor: "pointer" }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    setPrivacyVisible(true);
+                  }}
+                >
                   privacy policy
-                </a>
+                </span>
               </Checkbox>
             </Form.Item>
           </Col>
         </Row>
       </Form>
+
+      {termsVisible && (
+        <TermsModal
+          isVisible={termsVisible}
+          onClose={() => setTermsVisible(false)}
+          formData={formData}
+          setFormData={setFormData}
+        />
+      )}
+
+      {privacyVisible && (
+        <PrivacyPolicyModal
+          isVisible={privacyVisible}
+          onClose={() => setPrivacyVisible(false)}
+        />
+      )}
     </>
   );
 };

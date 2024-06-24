@@ -1,6 +1,6 @@
-import gleImg from "../assets/funeral-expense.jpg";
+import gleImg from "../assets/images/funeral-expense.jpg";
 import glaImg from "../assets/glaImg.png";
-import edu from "../assets/edu.png";
+import edu from "../assets/edu.jpg";
 import goal from "../assets/goal.png";
 import introImage from "../assets/introImage.jpg";
 import happyfamily from "../assets/happyfamily.png";
@@ -23,11 +23,11 @@ const products = [
       "Critical Illness insurance provides comprehensive coverage for against chronic illnesses such as cancer, ensuring you receive the best healthcare possible.",
   },
   {
-    title: "Group Life Insurance",
+    title: "Group Life Asurance",
     url: "group-life-assurance",
     image: glaImg,
     description:
-      "We offer group life insurance solutions to provide financial security to your employees' families in the event of an unexpected loss.",
+      "This cover is available to organizations, providing a death benefit in the event an employee dies before attainment of the retirement age in accordance with the benefits specified in the policy.",
   },
   {
     title: "Education Insurance Cover",
