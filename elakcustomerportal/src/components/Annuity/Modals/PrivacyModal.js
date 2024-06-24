@@ -1,17 +1,12 @@
 import { useState } from "react";
 import { Modal, Button } from "antd";
-import { Document, Page, pdfjs } from "react-pdf";
+import { Document, Page } from "react-pdf";
 import "react-pdf/dist/esm/Page/AnnotationLayer.css";
 import "react-pdf/dist/esm/Page/TextLayer.css";
 
-import termsAndConditions from "../../../assets/policy-pdfs/termsAndConditions.pdf";
+import privacyPDF from "../../../assets/policy-pdfs/PrivacyPolicy.pdf";
 
-pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-  "pdfjs-dist/build/pdf.worker.min.mjs",
-  import.meta.url
-).toString();
-
-const PrivacyPolicyModal = ({ isVisible, onClose, formData, setFormData }) => {
+const PrivacyPolicyModal = ({ isVisible, onClose }) => {
   const [numPages, setNumPages] = useState(null);
   const [pageWidth, setPageWidth] = useState(window.innerWidth * 0.6);
 
@@ -19,11 +14,7 @@ const PrivacyPolicyModal = ({ isVisible, onClose, formData, setFormData }) => {
     setNumPages(numPages);
   }
 
-  const handleTermsModalAccept = () => {
-    setFormData({ ...formData, terms: true });
-    onClose();
-  };
-
+  // Update page width on window resize for responsiveness
   window.addEventListener("resize", () => {
     setPageWidth(window.innerWidth * 0.6);
   });
@@ -32,7 +23,7 @@ const PrivacyPolicyModal = ({ isVisible, onClose, formData, setFormData }) => {
     <Modal
       title={
         <span className="text-left font-semibold text-[16px] leading-6">
-          Terms and Conditions
+          Privacy Policy
         </span>
       }
       open={isVisible}
@@ -40,28 +31,20 @@ const PrivacyPolicyModal = ({ isVisible, onClose, formData, setFormData }) => {
         <Button key="close" onClick={onClose}>
           Close
         </Button>,
-        <Button
-          key="accept"
-          type="primary"
-          className="shadow-none"
-          onClick={handleTermsModalAccept}
-        >
-          Accept
-        </Button>,
       ]}
       onCancel={onClose}
       width="60vw"
     >
       <div className="flex flex-col items-center justify-center w-full">
-        <div className="w-full h-[90vh] overflow-y-auto lg:overflow-x-hidden">
+        <div className="w-full h-full max-h-[90vh]  overflow-y-auto lg:overflow-x-hidden">
           <div className="w-full flex justify-center">
-            <Document file={termsAndConditions} onLoadSuccess={onDocumentLoadSuccess}>
+            <Document file={privacyPDF} onLoadSuccess={onDocumentLoadSuccess}>
               {Array.from(new Array(numPages), (el, index) => (
                 <Page
                   key={`page_${index + 1}`}
                   pageNumber={index + 1}
                   className="mb-4"
-                  width={pageWidth}
+                  width={pageWidth} // Responsive width (60% of window width)
                   scale={1}
                 />
               ))}

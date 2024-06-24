@@ -1,10 +1,13 @@
-import React, { useState, createContext, useContext } from 'react';
+import React, { useState, createContext, useContext,useRef} from 'react';
 import { Row, Col, Table,Space,Form, Input,Divider,Tooltip,Button, DatePicker, Select,Steps, Modal, Radio, Checkbox,Typography } from 'antd';
 import {ArrowLeftOutlined} from '@ant-design/icons';
 import moment from 'moment';
 import { useNavigate } from 'react-router-dom';
 import { NavLink } from "react-router-dom";
 import { InfoCircleOutlined,QuestionCircleOutlined } from '@ant-design/icons';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
+
 
 import sspFlag from '../../assets/flags/ssp.png';
 import cdfFlag from '../../assets/flags/cdf.png';
@@ -21,7 +24,10 @@ const TermLifeQuote = () => {
 const { Option } = Select;
 const { Step } = Steps;
 const { Title, Text,Link } = Typography;
+const pdfRef = useRef();
 
+
+const [isPolicyModalVisible, setIsPolicyModalVisible] = useState(false);
 const [isTermsModalVisible, setIsTermsModalVisible] = useState(false);
 const [isConditionsModalVisible, setIsConditionsModalVisible] = useState(false);
 const [isFirstDivVisible, setFirstDivVisible] = useState(true);
@@ -84,6 +90,21 @@ const phoneAreas = [
   { code: "+255", flag: tzsFlag, country: "Tanzania" },
   { code: "+256", flag: ugxFlag, country: "Uganda" },
 ];
+
+const showPolicyModal = () => {
+  setIsPolicyModalVisible(true);
+};
+const handlePolicyOk = () => {
+  setIsPolicyModalVisible(false);
+};
+const handlePolicyCancel = () => {
+  setIsPolicyModalVisible(false);
+};
+
+
+
+
+
 
 const handleCustomerClick = () =>{
   navigate('/home'); 
@@ -297,6 +318,36 @@ const selectedOPtionalBenefits = [
 { key: 'perPreRet', attribute: 'Percentage Of Premium Returned', value: formData.percentageOfPremToBReturned},
 ];
 
+
+const generatePDF = () => {
+  const input = pdfRef.current;
+  html2canvas(input).then((canvas) => {
+    const imgData = canvas.toDataURL('image/png');
+    const pdf = new jsPDF('p', 'mm', 'a4');
+    const imgProps = pdf.getImageProperties(imgData);
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+    
+    let heightLeft = pdfHeight;
+    let position = 0;
+
+    pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, pdfHeight);
+    heightLeft -= pdf.internal.pageSize.getHeight();
+
+    while (heightLeft >= 0) {
+      position = heightLeft - pdfHeight;
+      pdf.addPage();
+      pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, pdfHeight);
+      heightLeft -= pdf.internal.pageSize.getHeight();
+    }
+
+    pdf.save('quotation.pdf');
+  }).catch((error) => {
+    console.error('Error generating PDF:', error);
+  });
+};
+
+
 const contextObject = {
 dateOfBirth: formData.dateOfBirth,
 principalAmount: formData.principalAmount, //.replace(/,/g, ''),
@@ -466,9 +517,8 @@ return current && (current > today || current > eighteenYearsAgo);
 </Form.Item>
 
 
-
         <Form.Item
-            label="Mobile No"
+            label="Mobile Number"
             name="tel"
             rules={[
               { required: true, message: 'Please enter your Mobile number',},{ pattern: "^[0-9]{9}$", message: "The Phone number should be 9 digits!",},]}>
@@ -528,11 +578,10 @@ onChange={handleInputChange}/>
 <Row gutter={16}>
 <Col span={12}>
     
-<>
+    <>
       <Form.Item
         style={{ marginTop: '30px', marginLeft: '0px' }}
-        valuePropName="checked"
-      >
+        valuePropName="checked">
         <Checkbox style={{ color: 'black' }}>
           <span style={{ color: 'black' }}>I accept </span>
           <Link onClick={showTermsModal} style={{ color: '#8B4513' }}>
@@ -544,22 +593,18 @@ onChange={handleInputChange}/>
           </Link>
         </Checkbox>
       </Form.Item>
-
       <Modal
         title="Terms"
         visible={isTermsModalVisible}
         onOk={handleTermsOk}
-        onCancel={handleTermsCancel}
-      >
+        onCancel={handleTermsCancel}>
         <p>Your terms content goes here...</p>
       </Modal>
-
       <Modal
         title="Conditions"
         visible={isConditionsModalVisible}
         onOk={handleConditionsOk}
-        onCancel={handleConditionsCancel}
-      >
+        onCancel={handleConditionsCancel}>
         <p>Your conditions content goes here...</p>
       </Modal>
     </>
@@ -685,7 +730,7 @@ style={{ width: '100%' }}>
 
 <Col span={12}>
 <Item
-label="Is the cover for a single person or a joint entity?"
+label="Is this cover for you (single) or you and your partner (joint)?"
 name="singleJoint"
 rules={getRequiredRule()}>
 <Select
@@ -1071,11 +1116,12 @@ style={{ width: '100%' }}>
   : 
   
   ( 
-    <div 
-        value={{ quoteData, updateQuoteData }} 
-        style={{ maxWidth: '800px',marginTop: '30px', padding: '20px',backgroundColor: 'white' ,border: '2px solid black', margin: 'auto'}}>
-        
-        <Row justify="start">
+  <>
+    <div
+      ref={pdfRef}
+      value={{ quoteData, updateQuoteData }} 
+      style={{ maxWidth: '800px',marginTop: '30px', padding: '20px',backgroundColor: 'white' ,border: '2px solid black', margin: 'auto'}}>
+      <Row justify="start">
         <Col span={12}>
         <Title
         style={{ textAlign: 'start', marginTop: '20px',}} level={4}>
@@ -1106,7 +1152,6 @@ style={{ width: '100%' }}>
         </Title>
         </Col>
         </Row>
-        
         <Title
         style={{ textAlign: 'start', marginTop: '20px', fontSize: '17px'}}
         level={4}>
@@ -1122,8 +1167,7 @@ style={{ width: '100%' }}>
         border: '2px solid black',
         padding: '20px',
         marginBottom: '20px',
-        }}/>
-        
+        }}/> 
         <Title
         style={{ textAlign: 'start'}} level={4}>
         <span style={{ fontWeight: 'bold', color: 'black' }}>Policy Details</span>
@@ -1139,7 +1183,6 @@ style={{ width: '100%' }}>
         padding: '20px',
         marginBottom: '20px',
         }}/>
-        
         <Title
         style={{ textAlign: 'start'}} level={4}>
         <span style={{ fontWeight: 'bold', color: 'black'}}>
@@ -1158,23 +1201,22 @@ style={{ width: '100%' }}>
         marginBottom: '20px',
         }}/>
         
-
-      <Title
-      style={{ textAlign: 'start'}} level={4}>
-      <span style={{ fontWeight: 'bold',  width: '100%' ,color: 'black' }}>Premium Details</span>
-      </Title>
-      <div style={{ border: '1px solid #ccc', padding: '16px', borderRadius: '8px', weight: 800}}>
-      <Row gutter={[16, 16]} style={{ flexDirection: 'column' }}>
-        {Object.keys(quotationData).map((key) => (
-          <Col span={24} key={key} style={{ marginBottom: '16px' }}>
-            <Text strong style={{ display: 'inline-block', width: '450px' }}>{key}:</Text>
-            <Text>
-              {numberFormatter.format(quotationData[key])}
-            </Text>
-          </Col>
-        ))}
-      </Row>
-      </div>
+        <Title
+        style={{ textAlign: 'start'}} level={4}>
+        <span style={{ fontWeight: 'bold',  width: '100%' ,color: 'black',marginTop:'30px' }}>Premium Details</span>
+        </Title>
+        <div style={{ border: '1px solid #ccc', padding: '16px', borderRadius: '8px', weight: 800}}>
+        <Row gutter={[16, 16]} style={{ flexDirection: 'column' }}>
+          {Object.keys(quotationData).map((key) => (
+            <Col span={24} key={key} style={{ marginBottom: '16px' }}>
+              <Text strong style={{ display: 'inline-block', width: '450px' }}>{key}:</Text>
+              <Text>
+                {numberFormatter.format(quotationData[key])}
+              </Text>
+            </Col>
+          ))}
+        </Row>
+        </div>
         
         <Title
         style={{ textAlign: 'start'}} level={4}>
@@ -1202,9 +1244,52 @@ style={{ width: '100%' }}>
         <Title style={{ textAlign: 'start', color: 'black' }} level={4}>
         Tel: 0765000000
         </Title>
+        </div>
 
-    </div>
-    )}
+      <div>
+      <Checkbox 
+         style= {{marginTop: '40px',marginLeft : '150px'}}>
+        <span style={{ color: 'black' }}>I accept </span>
+        <span style={{ color: 'brown', cursor: 'pointer' }}
+              onClick={showPolicyModal}> policy exclusions
+        </span>
+      </Checkbox>
+      <Modal
+        title="Policy Exclusions"
+        visible={isPolicyModalVisible}
+        onOk={handlePolicyOk}
+        onCancel={handlePolicyCancel}>
+        <p>
+           When considering term life insurance, it's important to be aware of
+            potential policy exclusions that may affect coverage. Common exclusions
+            often include pre-existing conditions, where deaths resulting from undisclosed
+            medical conditions are not covered. Many policies have a suicide exclusion clause,
+            typically within the first two years of the policy, meaning if the policyholder
+            commits suicide during this period, the insurer may not pay out the death benefit.
+
+            Engaging in hazardous activities, such as extreme sports like skydiving or scuba diving,
+            may also lead to exclusions. Deaths resulting from these activities might not be covered
+            if they were not disclosed during the application process. Similarly, deaths occurring
+            during illegal activities, including drug use or committing a crime, are often excluded from coverage.
+
+            Acts of war and terrorism can also be excluded from term life insurance policies.
+            This means that if the policyholder dies due to war or terrorism, the insurance company may not pay
+            out the benefit. Additionally, deaths resulting from alcohol or drug abuse are commonly excluded,
+
+            and insurers may deny claims if the death is directly linked to substance misuse.
+            Understanding these exclusions helps policyholders ensure they are adequately covered a
+            nd avoid situations that might invalidate their policy.
+        </p>
+      </Modal>
+      <Button
+        type="primary"
+        style={{ marginLeft: 850}}
+        onClick={generatePDF}>
+        Download
+       </Button>
+      </div>    
+  </>
+  )}
 </>
 )}
 {(!isDivVisible &&
@@ -1213,7 +1298,7 @@ style={{ width: '100%' }}>
     <Button
     style={{ marginRight: 8 }}
     onClick={handlePrev}>
-    Go Back
+    Previous
     </Button>
     )}
     {currentStep < 3 && (
@@ -1229,42 +1314,8 @@ style={{ width: '100%' }}>
       type="primary"
       onClick={toggleDivVisibility} 
       style={{ marginRight: 8,marginLeft: 10 , marginTop: '20px'}}>
-        Quote
+        Generate Quotation
       </Button> 
-
-      <div>
-      <Checkbox
-      onChange={handlePolicyCheckboxChange}>Policy Exclusions</Checkbox>
-      {isModalVisible && (
-      <div style={{ width: '100%', height: '50%',marginTop: '10px', overflowY: 'auto', position: 'relative', border: '1px solid #ccc', padding: '16px', boxSizing: 'border-box' }}>
-      <h3>Policy Exclusions</h3>
-      <p>
-      When considering term life insurance, it's important to be aware of
-      potential policy exclusions that may affect coverage. Common exclusions
-      often include pre-existing conditions, where deaths resulting from undisclosed
-      medical conditions are not covered. Many policies have a suicide exclusion clause,
-      typically within the first two years of the policy, meaning if the policyholder
-      commits suicide during this period, the insurer may not pay out the death benefit.
-
-      Engaging in hazardous activities, such as extreme sports like skydiving or scuba diving,
-      may also lead to exclusions. Deaths resulting from these activities might not be covered
-      if they were not disclosed during the application process. Similarly, deaths occurring
-      during illegal activities, including drug use or committing a crime, are often excluded from coverage.
-
-      Acts of war and terrorism can also be excluded from term life insurance policies.
-      This means that if the policyholder dies due to war or terrorism, the insurance company may not pay
-      out the benefit. Additionally, deaths resulting from alcohol or drug abuse are commonly excluded,
-
-      and insurers may deny claims if the death is directly linked to substance misuse.
-      Understanding these exclusions helps policyholders ensure they are adequately covered a
-      nd avoid situations that might invalidate their policy.
-      </p>
-      <Button key="agree" type="primary" onClick={handleOk}>
-      Agree
-      </Button>
-      </div>
-      )}
-      </div>
       </>
     )}
    </Form.Item>

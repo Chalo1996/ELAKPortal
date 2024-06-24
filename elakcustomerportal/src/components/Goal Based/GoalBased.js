@@ -23,7 +23,6 @@ const Goalbased = () => {
   const [current, setCurrent] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isTermsModalVisible, setIsTermsModalVisible] = useState(false);
-  const [currentStep, setCurrentStep] = useState(0);
   const [isPrivacyModalVisible, setIsPrivacyModalVisible] = useState(false);
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
   const [form] = Form.useForm();
@@ -125,6 +124,8 @@ const dataToPost = {
     }
   }, [isFormSubmitted, isLoading, navigate, formData, cData]);
 
+
+
   useEffect(() => {
     if (formData.startDate && formData.TermInYears) {
       const calculatedEndDate = calculateEndDate(formData.startDate, formData.TermInYears);
@@ -139,7 +140,8 @@ const dataToPost = {
     }));
   };
   const handleTermInYearsChange = (value) => {
-    setFormData((prevData) => ({ ...prevData, TermInYears: value }));
+    setFormData((prevData) => ({ 
+      ...prevData, TermInYears: value }));
   };
   const calculateEndDate = (startDate, years) => {
     const startMoment = moment.utc(startDate); // Parse as UTC date
@@ -158,10 +160,26 @@ const dataToPost = {
       currency: value,
     }));
   };
+
+  const getTermInYearsOptions = (goalType) => {
+    switch (goalType) {
+      case 'ShortTerm':
+        return [1, 2];
+      case 'MediumTerm':
+        return [3, 4, 5];
+      case 'LongTerm':
+        return [6, 7, 8, 9, 10];
+      default:
+        return [];
+    }
+  };
+  
+
   const handlegoalTypeChange = (value) => {
     setFormData((prevData) => ({
       ...prevData,
       goalType: value,
+      TermInYears: null 
     }));
   };
   const phoneAreas = [
@@ -376,12 +394,13 @@ const dataToPost = {
                 <Select
                   style={{ width: 100 }}
                   defaultValue="+254"
-                  onChange={(value) =>
+                  onChange={(value) => {
                     setFormData((prevData) => ({
                       ...prevData,
                       phoneArea: value,
-                    }))
-                  }
+                    }));
+                    handleChange(value);
+                  }}
                 >
                   {phoneAreas.map((item) => (
                     <Option value={item.code} key={item.code}>
@@ -473,9 +492,10 @@ const dataToPost = {
           <Col span={12}>
             <Form.Item
               label="What is your intended Target?"
-              tooltip="Investment Premium:You can comfortably set a specific sum for your regular insurance payments. 
-    Fund value: You have the flexibility to set a specific fund value that you aspire 
-    to achieve over time."
+              tooltip={`Targets:
+                - Investment Premium: You can comfortably set a specific sum for your regular insurance payments.
+                - Fund value: You have the flexibility to set a specific fund value that you aspire to achieve over time.`}
+                
               name="targetType"
               id="targetType"
               style={{ width: "100%" }}
@@ -503,9 +523,9 @@ const dataToPost = {
             <Form.Item
               label="Goal Type"
               tooltip={`Understand your choice:
-                Short Term: Choose 6 to 24 Months
-                Medium Term: Choose 25 to 60 Months
-                Long Term: Choose 61 to 120 Months`}
+                Short Term: Choose 1 or 2 years
+                Medium Term: Choose 3 to 5 years
+                Long Term: Choose 6 to 10 years`}
               name="goalType"
               id="goalType"
               style={{ width: '100%' }}
@@ -654,13 +674,14 @@ const dataToPost = {
       value={formData.TermInYears}
       onChange={handleTermInYearsChange}
       style={{ width: "100%" }}
+      disabled={!formData.goalType}
     >
-      {Array.from({ length: 10 }, (_, i) => (
-        <Select.Option key={i + 1} value={i + 1}>
-          {i + 1}
-        </Select.Option>
-      ))}
-    </Select>
+        {getTermInYearsOptions(formData.goalType).map((year) => (
+                    <Select.Option key={year} value={year}>
+                        {year} year{year > 1 ? 's' : ''}
+                    </Select.Option>
+                ))}
+            </Select>
   </Form.Item>
 </Col>
 
@@ -681,11 +702,19 @@ const dataToPost = {
         </Col>   
           {formData.goalType === 'ShortTerm' && (
           <Col span={12}>
-            <Form.Item label="Optional Benefit" name="optionalBenefit">
-              <Select placeholder="Select an option">
-                <Select.Option value="None">None</Select.Option>
-                <Select.Option value="OptionalBenefit">Optional Benefit</Select.Option>
-              </Select>
+            <Form.Item 
+            label="Optional Benefit" 
+            name="optionalBenefit">
+                  <Select
+            onChange={(value) =>
+              setFormData((prevData) => ({ ...prevData, optionalBenefit: value }))
+            }
+            value={formData.optionalBenefit}
+          >
+            <Option value="Death/Disability">Death/Disability</Option>
+            <Option value="None">None</Option>
+            
+          </Select>
             </Form.Item>
           </Col>
         )}
@@ -771,6 +800,19 @@ const dataToPost = {
           <h4 style={{ color: '#888', marginBottom: '5px' }}>Premium</h4>
           <span>{new Intl.NumberFormat('en-US', { style: 'currency', currency: formData.currency }).format(formData.premium)}</span>
         </Col>
+      </Row>
+      <br />
+      <Row gutter={16}>
+        <Col span={12}>
+          <h4 style={{ color: '#888', marginBottom: '5px' }}>Goal Type</h4>
+          <span>{formData.goalType}</span>
+        </Col>
+        {formData.goalType === 'ShortTerm' && (
+          <Col span={12}>
+            <h4 style={{ color: '#888', marginBottom: '5px' }}>Optional Benefit</h4>
+            <span>{formData.optionalBenefit}</span>
+          </Col>
+        )}
       </Row>
       <br />
       <Row gutter={16}>

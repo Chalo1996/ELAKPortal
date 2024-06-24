@@ -10,7 +10,7 @@ import tzsFlag from "../../assets/flags/tzs.png";
 import ugxFlag from "../../assets/flags/ugx.png";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchData } from "../../store/redux/features/callBackSlice";
-import CallBackModal from "./CallBackModal";
+import CallBackModal from "./callBackModal";
 
 const { Option } = Select;
 

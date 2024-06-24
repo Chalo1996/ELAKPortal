@@ -181,11 +181,15 @@ const ContactDetails = ({ form, formData, setFormData }) => {
       <TermsModal
         isVisible={termsVisible}
         onClose={() => setTermsVisible(false)}
+        formData={formData}
+        setFormData={setFormData}
       />
 
       <PrivacyPolicyModal
         isVisible={privacyVisible}
         onClose={() => setPrivacyVisible(false)}
+        formData={formData}
+        setFormData={setFormData}
       />
     </Form>
   );
