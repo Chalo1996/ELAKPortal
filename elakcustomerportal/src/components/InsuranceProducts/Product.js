@@ -10,7 +10,7 @@ import Educamodal from "../Education/Educamodal";
 import Goalbasedmodal from "../Goal Based/Goalbasedmodal";
 import GroupTermLifeModal from "../Group Term Life/GroupTermLifeModal";
 import "./Product.css";
-import AnnuityModal from "../Annuity/modals/AnnuityModal"
+import AnnuityModal from "../Annuity/modals/AnnuityModal";
 import MotorVehicleModal from "../MotorVehicleInsurance/modals/MotorVehicleModal";
 
 const { Meta } = Card;
@@ -102,15 +102,15 @@ const Product = ({ product, index }) => {
             product={product}
           />
         );
-        case 8:
-          return (
-            <MotorVehicleModal
-              isModalOpen={isModalOpen}
-              onOkay={handleOk}
-              onCancel={handleCancel}
-              product={product}
-            />
-          );
+      case 8:
+        return (
+          <MotorVehicleModal
+            isModalOpen={isModalOpen}
+            onOkay={handleOk}
+            onCancel={handleCancel}
+            product={product}
+          />
+        );
       default:
         return null;
     }
@@ -123,7 +123,7 @@ const Product = ({ product, index }) => {
         <img
           alt={product.title}
           src={product.image}
-          className="h-40 object-cover"
+          className='h-40 object-cover'
         />
       }
       className={`m-4 card-hover`}
@@ -132,15 +132,15 @@ const Product = ({ product, index }) => {
         title={<span>{product.title}</span>}
         description={<span>{product.description}</span>}
       />
-      <div className="flex flex-col lg:flex-row justify-start mt-4 gap-1">
+      <div className='flex flex-col lg:flex-row justify-start mt-4 gap-1'>
         <Button
-          className="border-0 shadow-none text-[#A32A29]"
+          className='border-0 shadow-none text-[#A32A29]'
           onClick={showModal}
         >
           Learn More
         </Button>
 
-        <Button type="primary" className="border-0 shadow-none">
+        <Button type='primary' className='border-0 shadow-none'>
           <NavLink to={product.url}>Get Cover</NavLink>
         </Button>
       </div>
