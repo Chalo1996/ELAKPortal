@@ -55,3 +55,24 @@ code {
   border-radius: 60px; /* Add rounded corners */
   padding: 15px; /* Add padding for better appearance */
 }
+.scroll-container {
+  display: flex;
+  overflow-x: auto;
+  white-space: nowrap;
+  padding: 20px;
+}
+.scroll-container::-webkit-scrollbar {
+  display: none; /* Hide the scrollbar */
+}
+.custom-item {
+  width: 400px;
+  margin: 0 2px;
+  padding: 20px;
+  border: 1px solid #ccc; /* Example border */
+  border-radius: 4px;
+  background-color: #fff;
+}
+.content {
+  margin-top: 20px;
+}
+

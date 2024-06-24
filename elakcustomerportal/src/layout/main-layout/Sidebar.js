@@ -4,6 +4,7 @@ import {
   SunOutlined,
   MoonOutlined,
   HomeOutlined,
+  MedicineBoxOutlined,
   GlobalOutlined,
   EllipsisOutlined,
   DownOutlined,
@@ -36,6 +37,10 @@ const Sidebar = ({ onSelect, collapsed, toggleCollapsed }) => {
     localStorage.clear();
     dispatch(logoutUser());
     navigate("/");
+  };
+
+  const Claim = () => {
+    navigate("/home/claim");
   };
 
   const items = [
@@ -86,8 +91,13 @@ const Sidebar = ({ onSelect, collapsed, toggleCollapsed }) => {
     },
     {
       key: "home",
-      icon: <HomeOutlined />,
+      icon: <HomeOutlined/>,
       label: <Link to="/home">Home</Link>,
+    },
+    {
+      key: "claim",
+      icon: <MedicineBoxOutlined/>,
+      label: <Link to="/home/claim">Claims</Link>,
     },
     {
       key: "divider1",
