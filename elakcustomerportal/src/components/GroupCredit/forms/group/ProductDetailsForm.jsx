@@ -79,8 +79,14 @@ const ProductDetailsForm = ({ formData, handleFormChange, form }) => {
   };
 
   useEffect(() => {
+    form.resetFields(
+      Array.from(
+        { length: formData.numOfPartners },
+        (_, index) => `dob_partner_${index}`
+      )
+    );
     handleFormChange("partnerDates", Array(formData.numOfPartners).fill(null));
-  }, [formData.numOfPartners]);
+  }, [formData.numOfPartners, form]);
 
   return (
     <Form layout='vertical' form={form}>

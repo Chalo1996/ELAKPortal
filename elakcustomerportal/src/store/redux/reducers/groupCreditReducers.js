@@ -9,11 +9,11 @@ const initialState = {
   firstname: "",
   lastname: "",
   gender: "",
-  country: "Kenya",
+  country: "",
   phone: "",
   dob: null,
   email: "",
-  countryCode: "+254",
+  countryCode: "",
   countryFlag: null,
   termschecked: false,
   sumAssured: "",
@@ -29,7 +29,7 @@ const initialState = {
   quoteSubmitted: false,
   loading: false,
   quotationData: null,
-  numOfPartners: "",
+  numOfPartners: 0,
   partnerDates: [],
 };
 

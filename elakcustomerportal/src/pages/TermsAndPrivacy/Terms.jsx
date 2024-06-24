@@ -17,7 +17,7 @@ const Terms = ({ visible, onClose }) => {
   return (
     <Modal
       title='Terms and Conditions'
-      visible={visible}
+      open={visible}
       onOk={handleOk}
       onCancel={onClose}
       footer={[

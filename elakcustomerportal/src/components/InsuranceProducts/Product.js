@@ -4,7 +4,7 @@ import { NavLink } from "react-router-dom";
 
 import FuneralExpenseModal from "../Funeral Expense/modals/FuneralExpenseModal";
 import CriticalIllnessModal from "../Group Critical Illness/CriticalIllnessModal";
-import GroupCreditModal from "../GroupCredit/Modals/GroupCreditModal";
+import GroupCreditModal from "../GroupCredit/modals/GroupCreditModal";
 import GroupLifeModal from "../Group Life/Modals/groupLifeModal";
 import Educamodal from "../Education/Educamodal";
 import Goalbasedmodal from "../Goal Based/Goalbasedmodal";
