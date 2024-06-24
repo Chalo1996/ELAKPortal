@@ -1,15 +1,10 @@
 import { useState } from "react";
 import { Modal, Button } from "antd";
-import { Document, Page, pdfjs } from "react-pdf";
+import { Document, Page } from "react-pdf";
 import "react-pdf/dist/esm/Page/AnnotationLayer.css";
 import "react-pdf/dist/esm/Page/TextLayer.css";
 
 import termsPDF from "../../../assets/policy-pdfs/Annuity Policy.pdf";
-
-pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-  "pdfjs-dist/build/pdf.worker.min.mjs",
-  import.meta.url
-).toString();
 
 const TermsModal = ({ isVisible, onClose, formData, setFormData }) => {
   const [numPages, setNumPages] = useState(null);
