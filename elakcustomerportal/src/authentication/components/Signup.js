@@ -23,6 +23,12 @@ const Genders = ["Male", "Female"];
 const Signup = () => {
   const [formData, setFormData] = useState({
     fullName: "",
+    gender: "",
+    birthDate: null,
+    phoneArea: "+254",
+    country: "Kenya",
+    phoneNo: "",
+    email: "",
   });
   const [form] = Form.useForm();
 
@@ -71,6 +77,20 @@ const Signup = () => {
     }
   };
 
+  const validatePassword = (_, value) => {
+    // Check if the password meets all criteria
+    if (
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!£$#&*%])[A-Za-z\d!£$#&*%]{10,}$/.test(
+        value
+      )
+    ) {
+      return Promise.resolve();
+    }
+    return Promise.reject(
+      "Password must be at least 10 characters, have upper and lower case letters, one digit (0-9), and one special character (!,£,$,#,&,*,%)."
+    );
+  };
+
   const preventNumericInput = (event) => {
     if (/[0-9]/.test(event.key)) {
       event.preventDefault();
@@ -96,14 +116,14 @@ const Signup = () => {
         </span>
       </div>
 
-      <div className="w-[710px] h-[76px] top-[408px] left-[425px]">
+      <div className="my-2">
         <p className="font-open-sans text-[16px] font-semibold leading-[28px] text-left">
           Create your profile
         </p>
       </div>
 
       <Form form={form} layout="vertical">
-        <div className="grid grid-cols-1 gap-2">
+        <div className="grid grid-cols-1 gap-1">
           <Form.Item
             label="Full Name"
             name="fullName"
@@ -218,6 +238,56 @@ const Signup = () => {
               value={formData.phoneNo}
               onChange={(e) =>
                 setFormData({ ...formData, phoneNo: e.target.value })
+              }
+            />
+          </Form.Item>
+          <Form.Item
+            label="Password"
+            name="password"
+            rules={[
+              {
+                required: true,
+                message: "Please enter your password.",
+              },
+              {
+                validator: validatePassword,
+              },
+            ]}
+          >
+            <Input.Password
+              placeholder="Enter your password"
+              value={formData.password}
+              onChange={(e) =>
+                setFormData({ ...formData, password: e.target.value })
+              }
+            />
+          </Form.Item>
+          <Form.Item
+            label="Confirm Password"
+            name="confirmPassword"
+            dependencies={["password"]}
+            rules={[
+              {
+                required: true,
+                message: "Please confirm your password.",
+              },
+              ({ getFieldValue }) => ({
+                validator(rule, value) {
+                  if (!value || getFieldValue("password") === value) {
+                    return Promise.resolve();
+                  }
+                  return Promise.reject(
+                    "The two passwords that you entered do not match!"
+                  );
+                },
+              }),
+            ]}
+          >
+            <Input.Password
+              placeholder="Confirm your password"
+              value={formData.confirmPassword}
+              onChange={(e) =>
+                setFormData({ ...formData, confirmPassword: e.target.value })
               }
             />
           </Form.Item>
