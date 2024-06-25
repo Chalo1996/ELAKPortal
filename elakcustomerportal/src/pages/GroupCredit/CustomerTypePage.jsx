@@ -9,7 +9,7 @@ import {
 } from "@ant-design/icons";
 import { Divider } from "antd";
 import { useTheme } from "../../store/context/theme-context";
-import CustomerTypeModal from "../../components/GroupCredit/Modals/CustomerTypeModal";
+import CustomerTypeModal from "../../components/GroupCredit/modals/CustomerTypeModal";
 
 const { Title } = Typography;
 

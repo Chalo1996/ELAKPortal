@@ -1,8 +1,36 @@
-import { Row, Col, Card, Typography } from "antd";
+import React from "react";
+import { Row, Col, Card, notification } from "antd";
+import dayjs from "dayjs";
 
-const { Title } = Typography;
+const ConfirmDetailsForm = ({ formData }) => {
+  const calculateAge = (dob) => {
+    if (!dob) return "";
 
-const ConfirmDetailsForm = ({ formData, form }) => {
+    const dateRegex = /^\d{1,2}\/\d{1,2}\/\d{4}$/;
+    if (!dateRegex.test(dob)) {
+      notification.error({
+        message:
+          "Invalid date format. Please provide date in MM/DD/YYYY format.",
+      });
+      return "";
+    }
+
+    const [month, day, year] = dob.split("/").map(Number);
+    const birthDate = new Date(year, month - 1, day);
+    const today = new Date();
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDifference = today.getMonth() - birthDate.getMonth();
+    const dayDifference = today.getDate() - birthDate.getDate();
+
+    if (monthDifference < 0 || (monthDifference === 0 && dayDifference < 0)) {
+      age--;
+    }
+
+    return age;
+  };
+
+  const partnerAges = formData.partnerDates.map((dob) => calculateAge(dob));
+
   return (
     <Card className='mb-10 mt-10'>
       <p className='font-open-sans text-[15px] font-semibold text-left'>
@@ -29,7 +57,7 @@ const ConfirmDetailsForm = ({ formData, form }) => {
           </Col>
           <Col xs={24} sm={24} md={12}>
             <div className='flex flex-col items-start justify-start mb-4'>
-              <p className='text-[#929497]'>Date of birth</p>
+              <p className='text-[#929497]'>Date of Birth</p>
               <p>{formData.dob}</p>
             </div>
             <div className='flex flex-col items-start justify-start mb-4'>
@@ -66,7 +94,11 @@ const ConfirmDetailsForm = ({ formData, form }) => {
           <Col xs={24} sm={24} md={12}>
             <div className='flex flex-col items-start justify-start mb-4'>
               <p className='text-[#929497]'>Premium Frequency</p>
-              <p>{formData.frequency}</p>
+              <p>
+                {formData.frequency === "Single"
+                  ? "One-Off"
+                  : formData.frequency}
+              </p>
             </div>
           </Col>
           <Col xs={24} sm={24} md={12}>
@@ -82,15 +114,14 @@ const ConfirmDetailsForm = ({ formData, form }) => {
             </div>
           </Col>
           {formData.partnerDates.map((partnerDate, index) => (
-            <Col xs={24} sm={24} md={12}>
-              <div
-                className='flex flex-col items-start justify-start mb-4'
-                key={index}
-              >
+            <Col xs={24} sm={24} md={12} key={index}>
+              <div className='flex flex-col items-start justify-start mb-4'>
                 <p className='text-[#929497]'>
                   Partner {index + 1} Date of Birth
                 </p>
-                <p>{partnerDate}</p>
+                <p>
+                  {partnerDate} || Age: {partnerAges[index]}
+                </p>
               </div>
             </Col>
           ))}

@@ -105,7 +105,7 @@ const VehicleCategoryPage = () => {
           isModalOpen={selectedSection === "Private"}
           onOkay={handleOk}
           onCancel={handleCancel}
-          customerType="Private"
+          motorUse="Private"
         />
       )}
       {selectedSection === "Commercial" && (
@@ -113,7 +113,7 @@ const VehicleCategoryPage = () => {
           isModalOpen={selectedSection === "Commercial"}
           onOkay={handleOk}
           onCancel={handleCancel}
-          customerType="Commercial"
+          motorUse="Commercial"
         />
       )}
     </div>

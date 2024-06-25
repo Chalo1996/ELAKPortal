@@ -16,30 +16,14 @@ const { Title } = Typography;
 
 const MultipleCover = ({ userDetails, quotationData, dispatch }) => {
   const [currentStep, setCurrentStep] = useState(0);
-  const [isNextDisabled, setIsNextDisabled] = useState(true);
-  const [hasInteracted, setHasInteracted] = useState(false);
   const [form] = Form.useForm();
   const navigate = useNavigate();
   const [isQuotationGenerated, setIsQuotationGenerated] = useState(false);
-
-  useEffect(() => {
-    const validateForm = async () => {
-      if (!hasInteracted) return;
-      try {
-        await form.validateFields();
-        setIsNextDisabled(false);
-      } catch {
-        setIsNextDisabled(true);
-      }
-    };
-    validateForm();
-  }, [form, userDetails, hasInteracted]);
 
   const next = async () => {
     try {
       await form.validateFields();
       setCurrentStep(currentStep + 1);
-      setHasInteracted(false);
     } catch (errorInfo) {
       console.error("Failed:", errorInfo);
     }
@@ -49,9 +33,8 @@ const MultipleCover = ({ userDetails, quotationData, dispatch }) => {
     setCurrentStep(currentStep - 1);
   };
 
-  const handleFormChange = (field, value) => {
-    setHasInteracted(true);
-    dispatch(updateUserDetails(field, value));
+  const handleFormChange = (key, value) => {
+    dispatch(updateUserDetails(key, value));
   };
 
   const handleNavigate = () => {
@@ -103,9 +86,7 @@ const MultipleCover = ({ userDetails, quotationData, dispatch }) => {
     },
     {
       title: "Product Details",
-      message: (
-        <Title level={5}>Please enter or select product details.</Title>
-      ),
+      message: <Title level={5}>Please enter or select product details.</Title>,
       content: (
         <ProductDetailsForm
           formData={userDetails}
@@ -144,6 +125,7 @@ const MultipleCover = ({ userDetails, quotationData, dispatch }) => {
         ))}
       </Steps>
       <div className='mb-2'>{steps[currentStep].message}</div>
+
       <div className='steps-content mb-8'>{steps[currentStep].content}</div>
       <div className='steps-action flex'>
         {currentStep > 0 && (
@@ -159,7 +141,6 @@ const MultipleCover = ({ userDetails, quotationData, dispatch }) => {
             className='h-full px-4 py-2 shadow-none text-center'
             type='primary'
             onClick={next}
-            disabled={isNextDisabled}
           >
             Next
           </Button>
