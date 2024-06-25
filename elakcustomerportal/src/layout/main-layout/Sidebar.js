@@ -5,9 +5,11 @@ import {
   MoonOutlined,
   HomeOutlined,
   // GlobalOutlined,
-  EllipsisOutlined,
+  // EllipsisOutlined,
   DownOutlined,
+  SnippetsOutlined,
 } from "@ant-design/icons";
+
 // import {
 //   AccountsIcon,
 //   TransactIcon,
@@ -28,6 +30,10 @@ const Sidebar = ({ onSelect, collapsed, toggleCollapsed }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const handleShowPolicies = () => {
+    navigate("/home/policies");
+  };
+
   const handleClick = (e) => {
     onSelect(e.key);
   };
@@ -44,12 +50,12 @@ const Sidebar = ({ onSelect, collapsed, toggleCollapsed }) => {
       style: { height: "auto" },
       className: "non-interactive",
       label: (
-        <div className="flex items-center">
+        <div className='flex items-center'>
           {!collapsed && (
             <>
               <img
                 src={theme === "dark" ? darkLogo : imgLogo}
-                alt="Equity Bank"
+                alt='Equity Bank'
                 style={{ width: 90, height: 60, marginTop: 20 }}
               />
             </>
@@ -67,19 +73,19 @@ const Sidebar = ({ onSelect, collapsed, toggleCollapsed }) => {
             theme === "dark" ? "text-white bg-stone-900" : "bg-[#F7F7F7]"
           } flex items-center justify-start pl-1 pr-8 py-3 rounded-lg my-7 mx-0 gap-3`}
         >
-          <div className="flex-shrink-0">
-            <div className="w-12 h-12 bg-[#A32A29] text-white flex items-center justify-center rounded-full">
+          <div className='flex-shrink-0'>
+            <div className='w-12 h-12 bg-[#A32A29] text-white flex items-center justify-center rounded-full'>
               PN
             </div>
           </div>
-          <div className="h-12 text-base">
+          <div className='h-12 text-base'>
             <p>
-              <span className="font-semibold">Profile Name</span>
-              <span className="text-gray-500 text-sm block">Personal</span>
+              <span className='font-semibold'>Profile Name</span>
+              <span className='text-gray-500 text-sm block'>Personal</span>
             </p>
           </div>
-          <div className="ml-[3px]">
-            <DownOutlined className="text-[#A32A29]" />
+          <div className='ml-[3px]'>
+            <DownOutlined className='text-[#A32A29]' />
           </div>
         </div>
       ),
@@ -87,7 +93,7 @@ const Sidebar = ({ onSelect, collapsed, toggleCollapsed }) => {
     {
       key: "home",
       icon: <HomeOutlined />,
-      label: <Link to="/home">Home</Link>,
+      label: <Link to='/home'>Home</Link>,
     },
     {
       key: "divider1",
@@ -129,12 +135,12 @@ const Sidebar = ({ onSelect, collapsed, toggleCollapsed }) => {
       key: "theme",
       icon: theme === "dark" ? <MoonOutlined /> : <SunOutlined />,
       label: (
-        <div className="flex items-center justify-between">
-          <span className="mr-2">Dark Mode</span>
+        <div className='flex items-center justify-between'>
+          <span className='mr-2'>Dark Mode</span>
           <Switch
             checked={theme === "dark"}
             onChange={toggleTheme}
-            size="small"
+            size='small'
           />
         </div>
       ),
@@ -144,6 +150,12 @@ const Sidebar = ({ onSelect, collapsed, toggleCollapsed }) => {
     //   icon: <GlobalOutlined />,
     //   label: <Link to="/english">English</Link>,
     // },
+    {
+      key: "policies",
+      icon: <SnippetsOutlined />,
+      label: "Policies",
+      onClick: handleShowPolicies,
+    },
     {
       key: "signout",
       icon: <LogoutOutlined />,
@@ -156,7 +168,7 @@ const Sidebar = ({ onSelect, collapsed, toggleCollapsed }) => {
     <Menu
       onClick={handleClick}
       defaultSelectedKeys={["home"]}
-      mode="inline"
+      mode='inline'
       style={{
         height: "100vh",
         overflow: "auto",
