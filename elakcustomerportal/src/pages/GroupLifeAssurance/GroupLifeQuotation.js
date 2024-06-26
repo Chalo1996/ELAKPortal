@@ -267,8 +267,8 @@ const QuotationTable = () => {
         </div>
       </Card>
       <div style={{ marginTop: "30px" }}>
-        <Row>
-          <Col span={12} style={{ marginTop: "4px"}}>
+        <Row gutter={[16, 16]}>
+          <Col xs={24} sm={12} style={{ marginTop: "4px"}}>
             <Checkbox checked={isCheckboxChecked} onChange={handleCheckboxChange} >
               I accept the{" "}
               <span onClick={() => setIsPolicyModalVisible(true)} style={{ textAlign: "right", marginTop: "20px", color: "#A32A29" }}>
@@ -276,7 +276,7 @@ const QuotationTable = () => {
               </span>
             </Checkbox>
           </Col>
-          <Col span={12}>
+          <Col xs={24} sm={12}>
             <div style={{ textAlign: "right", color: "#A32A29"}}>
               <Button
                 type="primary"

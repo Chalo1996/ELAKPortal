@@ -1,13 +1,12 @@
-import { useEffect, useState } from "react";
-import { Form, Input, Row, Col, DatePicker, Select, Checkbox } from "antd";
+import { useState } from "react";
+import { LeftOutlined } from "@ant-design/icons";
+import { Form, Input, Select, DatePicker } from "antd";
 import sspFlag from "../../assets/flags/ssp.png";
 import cdfFlag from "../../assets/flags/cdf.png";
 import rwfFlag from "../../assets/flags/rwf.png";
 import kesFlag from "../../assets/flags/kes.png";
 import tzsFlag from "../../assets/flags/tzs.png";
 import ugxFlag from "../../assets/flags/ugx.png";
-import TermsModal from "./modals/TermsModal";
-import PrivacyPolicyModal from "./modals/PrivacyModal";
 
 const { Option } = Select;
 const PhoneAreas = [
@@ -21,13 +20,21 @@ const PhoneAreas = [
 
 const Genders = ["Male", "Female"];
 
-const PersonalDetailsForm = ({ form, formData, setFormData }) => {
-  const [termsVisible, setTermsVisible] = useState(false);
-  const [privacyVisible, setPrivacyVisible] = useState(false);
+const Signup = () => {
+  const [formData, setFormData] = useState({
+    fullName: "",
+    gender: "",
+    birthDate: null,
+    phoneArea: "+254",
+    country: "Kenya",
+    phoneNo: "",
+    email: "",
+  });
+  const [form] = Form.useForm();
 
-  useEffect(() => {
-    form.setFieldsValue(formData);
-  }, [form, formData]);
+  const handleNavigate = () => {
+    console.log("Navigate back");
+  };
 
   const handlePhoneAreaChange = (newValue) => {
     const selectedCountry = PhoneAreas.find((area) => area.code === newValue);
@@ -38,12 +45,6 @@ const PersonalDetailsForm = ({ form, formData, setFormData }) => {
         country: selectedCountry.country,
       });
     }
-  };
-
-  const validateTerms = (_, value) => {
-    return value
-      ? Promise.resolve()
-      : Promise.reject(new Error("Please agree to our terms to proceed"));
   };
 
   const validateBirthDate = (_, value) => {
@@ -76,6 +77,20 @@ const PersonalDetailsForm = ({ form, formData, setFormData }) => {
     }
   };
 
+  const validatePassword = (_, value) => {
+    // Check if the password meets all criteria
+    if (
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!£$#&*%])[A-Za-z\d!£$#&*%]{10,}$/.test(
+        value
+      )
+    ) {
+      return Promise.resolve();
+    }
+    return Promise.reject(
+      "Password must be at least 10 characters, have upper and lower case letters, one digit (0-9), and one special character (!,£,$,#,&,*,%)."
+    );
+  };
+
   const preventNumericInput = (event) => {
     if (/[0-9]/.test(event.key)) {
       event.preventDefault();
@@ -89,52 +104,42 @@ const PersonalDetailsForm = ({ form, formData, setFormData }) => {
   };
 
   return (
-    <>
-      <div className="w-[710px] h-[76px] top-[408px] left-[425px] mt-3 py-3 px-0 flex flex-col gap-4">
+    <div className="p-4">
+      <div className="mb-4">
+        <span>
+          <button className="mb-2 focus:outline-none hover:text-[#A32A29]">
+            <LeftOutlined className="w-8 h-8" onClick={handleNavigate} />
+          </button>
+        </span>
+        <span className="font-open-sans text-[20px] font-semibold leading-[24px] text-left">
+          Register
+        </span>
+      </div>
+
+      <div className="my-2">
         <p className="font-open-sans text-[16px] font-semibold leading-[28px] text-left">
-          Please enter your details
+          Create your profile
         </p>
       </div>
 
       <Form form={form} layout="vertical">
-        <div className="grid md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-1">
           <Form.Item
-            label="First Name"
-            name="firstName"
+            label="Full Name"
+            name="fullName"
             onKeyPress={preventNumericInput}
             rules={[
               {
                 required: true,
-                message: "Please enter your first name.",
+                message: "Please enter your full name.",
               },
             ]}
-            style={{ marginBottom: "35px" }}
           >
             <Input
-              placeholder="Enter your first name"
-              value={formData.firstName}
+              placeholder="Enter your full name"
+              value={formData.fullName}
               onChange={(e) =>
-                setFormData({ ...formData, firstName: e.target.value })
-              }
-            />
-          </Form.Item>
-          <Form.Item
-            label="Last Name"
-            name="lastName"
-            onKeyPress={preventNumericInput}
-            rules={[
-              {
-                required: true,
-                message: "Please enter your last name.",
-              },
-            ]}
-            style={{ marginBottom: "35px" }}
-          >
-            <Input
-              placeholder="Enter your last name"
-              value={formData.lastName}
-              onChange={(e) =>
-                setFormData({ ...formData, lastName: e.target.value })
+                setFormData({ ...formData, fullName: e.target.value })
               }
             />
           </Form.Item>
@@ -142,7 +147,6 @@ const PersonalDetailsForm = ({ form, formData, setFormData }) => {
             label="Gender"
             name="gender"
             rules={[{ required: true, message: "Please select a gender." }]}
-            style={{ marginBottom: "35px" }}
           >
             <Select
               value={formData.gender}
@@ -186,7 +190,6 @@ const PersonalDetailsForm = ({ form, formData, setFormData }) => {
                 message: "Please enter your email address.",
               },
             ]}
-            style={{ marginBottom: "35px" }}
           >
             <Input
               placeholder="Enter your email address"
@@ -210,7 +213,6 @@ const PersonalDetailsForm = ({ form, formData, setFormData }) => {
                 message: "The input must have exactly 9 digits.!",
               },
             ]}
-            style={{ marginBottom: "35px" }}
           >
             <Input
               addonBefore={
@@ -239,71 +241,60 @@ const PersonalDetailsForm = ({ form, formData, setFormData }) => {
               }
             />
           </Form.Item>
-        </div>
-        <Row>
-          <Col>
-            <Form.Item
-              name="terms"
-              valuePropName="checked"
-              rules={[
-                {
-                  validator: validateTerms,
+          <Form.Item
+            label="Password"
+            name="password"
+            rules={[
+              {
+                required: true,
+                message: "Please enter your password.",
+              },
+              {
+                validator: validatePassword,
+              },
+            ]}
+          >
+            <Input.Password
+              placeholder="Enter your password"
+              value={formData.password}
+              onChange={(e) =>
+                setFormData({ ...formData, password: e.target.value })
+              }
+            />
+          </Form.Item>
+          <Form.Item
+            label="Confirm Password"
+            name="confirmPassword"
+            dependencies={["password"]}
+            rules={[
+              {
+                required: true,
+                message: "Please confirm your password.",
+              },
+              ({ getFieldValue }) => ({
+                validator(rule, value) {
+                  if (!value || getFieldValue("password") === value) {
+                    return Promise.resolve();
+                  }
+                  return Promise.reject(
+                    "The two passwords that you entered do not match!"
+                  );
                 },
-              ]}
-              style={{ marginBottom: "35px" }}
-            >
-              <Checkbox
-                checked={formData.terms}
-                onChange={(e) =>
-                  setFormData({ ...formData, terms: e.target.checked })
-                }
-              >
-                I accept the
-                <span
-                  style={{ color: "#A32A29", cursor: "pointer" }}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    e.preventDefault();
-                    setTermsVisible(true);
-                  }}
-                >
-                  {" "}
-                  terms
-                </span>
-                {" and "}
-                <span
-                  style={{ color: "#A32A29", cursor: "pointer" }}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    e.preventDefault();
-                    setPrivacyVisible(true);
-                  }}
-                >
-                  privacy policy
-                </span>
-              </Checkbox>
-            </Form.Item>
-          </Col>
-        </Row>
+              }),
+            ]}
+          >
+            <Input.Password
+              placeholder="Confirm your password"
+              value={formData.confirmPassword}
+              onChange={(e) =>
+                setFormData({ ...formData, confirmPassword: e.target.value })
+              }
+            />
+          </Form.Item>
+        </div>
       </Form>
-
-      {termsVisible && (
-        <TermsModal
-          isVisible={termsVisible}
-          onClose={() => setTermsVisible(false)}
-          formData={formData}
-          setFormData={setFormData}
-        />
-      )}
-
-      {privacyVisible && (
-        <PrivacyPolicyModal
-          isVisible={privacyVisible}
-          onClose={() => setPrivacyVisible(false)}
-        />
-      )}
-    </>
+    </div>
   );
 };
 
-export default PersonalDetailsForm;
+export default Signup;
