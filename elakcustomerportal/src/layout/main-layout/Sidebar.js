@@ -103,10 +103,10 @@ const Sidebar = ({ onSelect, collapsed, toggleCollapsed }) => {
       label: <Link to="/home">Home</Link>,
     },
     {
-      key: "claim",
-      icon: <MedicineBoxOutlined/>,
-      label: <Link to="/home/claim">
-      Claims</Link>,
+      key: "claims",
+      icon: <MedicineBoxOutlined />,
+      label: "Claims",
+      onClick: Claim,
     },
     {
       key: "divider1",
