@@ -629,7 +629,7 @@ const VehicleDetails = ({form, formData, setFormData }) => {
           </Col>
           <Col span={12}>
             <Form.Item 
-            label="Which month was your vehicle manufactured"
+            label="Which month was your vehicle manufactured?"
             name="monthOfManufacture"
             rules={[{ required: true, message: "Please select month of manufacture!" }]}
             >
