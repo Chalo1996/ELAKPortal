@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Form,
   Input,
@@ -34,6 +34,11 @@ const countryOptions = [
 const ClientDetailsForm = ({ formData, handleFormChange, form }) => {
   const [termsVisible, setTermsVisible] = useState(false);
   const [privacyVisible, setPrivacyVisible] = useState(false);
+  const [checked, setChecked] = useState(formData.termschecked || false);
+
+  useEffect(() => {
+    setChecked(formData.termschecked || false);
+  }, [formData.termschecked]);
 
   const initialFormData = {
     ...formData,
@@ -80,14 +85,19 @@ const ClientDetailsForm = ({ formData, handleFormChange, form }) => {
     return Promise.resolve();
   };
 
+  const handleTermsChecked = (e) => {
+    setChecked(e.target.checked);
+    handleFormChange("termschecked", e.target.checked);
+  };
+
   const handleTermsClose = () => {
     setTermsVisible(false);
+    setChecked(true);
     handleFormChange("termschecked", true);
   };
 
   const handlePrivacyClose = () => {
     setPrivacyVisible(false);
-    handleFormChange("termschecked", true);
   };
 
   return (
@@ -256,11 +266,10 @@ const ClientDetailsForm = ({ formData, handleFormChange, form }) => {
           <Col span={24}>
             <Item
               name='terms'
-              valuePropName='checked'
               rules={[
                 {
                   validator: (_, value) =>
-                    value
+                    checked
                       ? Promise.resolve()
                       : Promise.reject(
                           "You must accept the terms and conditions"
@@ -268,12 +277,7 @@ const ClientDetailsForm = ({ formData, handleFormChange, form }) => {
                 },
               ]}
             >
-              <Checkbox
-                checked={formData.termschecked}
-                onChange={(e) =>
-                  handleInputChange("termschecked", e.target.checked)
-                }
-              >
+              <Checkbox checked={checked} onChange={handleTermsChecked}>
                 I accept the
                 <Button
                   type='link'
