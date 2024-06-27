@@ -65,6 +65,7 @@ const Extras = ({ form, formData, setFormData }) => {
               <InputNumber
                 className="w-full custom-input-number"
                 placeholder="Enter extra windscreen limit"
+                addonBefore={formData.currencySymbol}
                 formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                 parser={(value) => value.replace(/(,*)/g, "")}
                 onChange={(value) => handleInputChange(value, 'extraWindscreenLimit')}
@@ -84,6 +85,7 @@ const Extras = ({ form, formData, setFormData }) => {
             >
               <InputNumber
                 className="w-full custom-input-number"
+                addonBefore={formData.currencySymbol}
                 placeholder="Enter extra vehicle entertainment limits"
                 formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                 parser={(value) => value.replace(/(,*)/g, "")}
@@ -135,6 +137,7 @@ const Extras = ({ form, formData, setFormData }) => {
             >
               <InputNumber
                 className="w-full custom-input-number"
+                addonBefore={formData.currencySymbol}
                 placeholder="Enter extra authorised repair limit"
                 formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                 parser={(value) => value.replace(/(,*)/g, "")}
@@ -156,6 +159,7 @@ const Extras = ({ form, formData, setFormData }) => {
               <InputNumber
                 className="w-full custom-input-number"
                 placeholder="Enter loss of use limit"
+                addonBefore={formData.currencySymbol}
                 formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                 parser={(value) => value.replace(/(,*)/g, "")}
                 onChange={(value) => handleInputChange(value, 'lossOfUse')}
