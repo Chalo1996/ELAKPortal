@@ -61,11 +61,17 @@ const CoverTerms = ({ form, formData, setFormData }) => {
             name="coverPeriodDays"
             rules={[{ required: true, message: "Please enter cover period!" }]}
           >
-            <InputNumber
+            <Select
               className="w-full custom-input-number"
               placeholder="Enter cover period in days"
               onChange={(value) => handleInputChange(value, 'coverPeriodDays')}
-            />
+            >
+            <Option value="30">30 days</Option>
+            <Option value="60">60 days</Option>
+            <Option value="90">90 days</Option>
+            <Option value="180">180 days</Option>
+            <Option value="365">365 days</Option>
+            </Select>
           </Form.Item>
         </Col>
         <Col xs={24} sm={12}>
@@ -76,6 +82,7 @@ const CoverTerms = ({ form, formData, setFormData }) => {
           >
             <InputNumber
               className="w-full custom-input-number"
+              addonBefore={formData.currencySymbol}
               placeholder="Enter estimated sum insured"
               formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
               parser={(value) => value.replace(/(,*)/g, "")}
@@ -94,6 +101,7 @@ const CoverTerms = ({ form, formData, setFormData }) => {
           >
             <InputNumber
               className="w-full custom-input-number"
+              addonBefore={formData.currencySymbol}
               placeholder="Enter minimum cover premium"
               formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
               parser={(value) => value.replace(/(,*)/g, "")}
@@ -109,6 +117,7 @@ const CoverTerms = ({ form, formData, setFormData }) => {
           >
             <InputNumber
               className="w-full custom-input-number"
+              addonBefore={formData.currencySymbol}
               placeholder="Enter catalogue value (depreciated)"
               formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
               parser={(value) => value.replace(/(,*)/g, "")}
