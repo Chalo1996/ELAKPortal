@@ -1,14 +1,14 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   LeftOutlined,
   UserOutlined,
   TeamOutlined,
   RightOutlined,
-} from "@ant-design/icons";
-import { Divider } from "antd";
-import { useTheme } from "../../store/context/theme-context";
-import CustomerTypeModal from "../../components/Funeral Expense/modals/CustomerTypeModal";
+} from '@ant-design/icons';
+import { Divider } from 'antd';
+import { useTheme } from '../../store/context/theme-context';
+import CustomerTypeModal from '../../components/Funeral Expense/modals/CustomerTypeModal';
 
 const CustomerTypePage = () => {
   const { theme } = useTheme();
@@ -56,14 +56,14 @@ const CustomerTypePage = () => {
         <div className="flex flex-col items-start lg:flex-row lg:items-center lg:justify-start gap-[24px] mt-5">
           <div
             className="cursor-pointer"
-            onClick={() => handleClick("Personal")}
+            onClick={() => handleClick('Personal')}
           >
             <div className="flex items-center justify-between w-[335px] h-[81px]">
               <div className="flex flex-row items-center justify-center gap-3">
                 <div className="bg-[#92949733] rounded-full p-3">
                   <UserOutlined
                     className="text-[#A32A29]"
-                    style={{ fontSize: "24px" }}
+                    style={{ fontSize: '24px' }}
                   />
                 </div>
                 <p className="mt-4">Personal</p>
@@ -71,20 +71,20 @@ const CustomerTypePage = () => {
               <div>
                 <RightOutlined
                   className="text-[#A32A29]"
-                  style={{ fontSize: "18px" }}
+                  style={{ fontSize: '18px' }}
                 />
               </div>
             </div>
-            <Divider className={`${theme === "dark" ? "bg-gray-700" : ""}`} />
+            <Divider className={`${theme === 'dark' ? 'bg-gray-700' : ''}`} />
           </div>
 
-          <div className="cursor-pointer" onClick={() => handleClick("Group")}>
+          <div className="cursor-pointer" onClick={() => handleClick('Group')}>
             <div className="flex items-center justify-between w-[335px] h-[81px]">
               <div className="flex flex-row items-center justify-center gap-3">
                 <div className="bg-[#92949733] rounded-full p-3">
                   <TeamOutlined
                     className="text-[#A32A29]"
-                    style={{ fontSize: "24px" }}
+                    style={{ fontSize: '24px' }}
                   />
                 </div>
                 <p className="mt-4">Group</p>
@@ -92,25 +92,25 @@ const CustomerTypePage = () => {
               <div>
                 <RightOutlined
                   className="text-[#A32A29]"
-                  style={{ fontSize: "18px" }}
+                  style={{ fontSize: '18px' }}
                 />
               </div>
             </div>
-            <Divider className={`${theme === "dark" ? "bg-gray-700" : ""}`} />
+            <Divider className={`${theme === 'dark' ? 'bg-gray-700' : ''}`} />
           </div>
         </div>
       </div>
-      {selectedSection === "Personal" && (
+      {selectedSection === 'Personal' && (
         <CustomerTypeModal
-          isModalOpen={selectedSection === "Personal"}
+          isModalOpen={selectedSection === 'Personal'}
           onOkay={handleOk}
           onCancel={handleCancel}
           customerType="Personal"
         />
       )}
-      {selectedSection === "Group" && (
+      {selectedSection === 'Group' && (
         <CustomerTypeModal
-          isModalOpen={selectedSection === "Group"}
+          isModalOpen={selectedSection === 'Group'}
           onOkay={handleOk}
           onCancel={handleCancel}
           customerType="Group"
