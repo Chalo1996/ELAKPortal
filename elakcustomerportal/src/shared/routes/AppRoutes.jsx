@@ -42,6 +42,8 @@ import VehicleCategoryPage from '../../pages/MotorVehicleInsurance/VehicleCatego
 import HandleMotorSelection from '../../pages/MotorVehicleInsurance/HandleMotorSelection';
 import PoliciesRoutes from '../../components/Routes/PoliciesRoutes';
 import GroupCreditRoutes from '../../components/Routes/GroupCreditRoutes';
+import Claims from '../../components/Claims/Claims';
+import Payments from '../../components/Payments/Payments';
 
 const AppRoutes = () => {
   const dispatch = useDispatch();
@@ -92,7 +94,7 @@ const AppRoutes = () => {
 
             {/* Routes under /home */}
             <Route
-              path="/home"
+              path="/home/*"
               element={
                 <PortalLayout>
                   <Routes>
@@ -187,13 +189,13 @@ const AppRoutes = () => {
 
             {/* Routes outside of /home */}
             <Route
-              path="/inner/*"
+              path="/*"
               element={
                 <InnerLayout>
                   <Routes>
                     <Route path="policies/*" element={<PoliciesRoutes />} />
-                    {/* <Route path='claims' element={<Claims />} />
-                    <Route path='payments' element={<Payments />} /> */}
+                    <Route path="claims" element={<Claims />} />
+                    <Route path="payments" element={<Payments />} />
                     <Route path="*" element={<NotFound />} />
                   </Routes>
                 </InnerLayout>
