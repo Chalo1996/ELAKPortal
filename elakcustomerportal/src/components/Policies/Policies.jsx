@@ -16,10 +16,6 @@ const Policies = () => {
     navigate(`/home/policies/${policyId}`);
   };
 
-  const handleCancelPolicy = (policyId) => {
-    setPolicies(policies.filter((policy) => policy.id !== policyId));
-  };
-
   return (
     <div className='p-8'>
       <h2 className='text-2xl font-bold mb-4'>Policies</h2>
@@ -32,15 +28,6 @@ const Policies = () => {
           >
             <h3 className='text-xl font-semibold'>{policy.name}</h3>
             <p className='text-gray-700'>{policy.description}</p>
-            <button
-              className='mt-2 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-700'
-              onClick={(e) => {
-                e.stopPropagation();
-                handleCancelPolicy(policy.id);
-              }}
-            >
-              Cancel Policy
-            </button>
           </div>
         ))}
       </div>
