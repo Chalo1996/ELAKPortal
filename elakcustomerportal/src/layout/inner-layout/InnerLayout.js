@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Layout } from 'antd';
-import Sidebar from './main-layout/Sidebar';
+import Sidebar from '../main-layout/Sidebar';
+
 const { Content, Sider } = Layout;
 
-const PortalLayout = ({ children }) => {
+const InnerLayout = ({ children }) => {
   const [collapsed, setCollapsed] = useState(window.innerWidth < 768);
 
   const toggleCollapsed = () => {
@@ -45,7 +46,7 @@ const PortalLayout = ({ children }) => {
         <Sidebar
           collapsed={collapsed}
           toggleCollapsed={toggleCollapsed}
-          type="portal"
+          type="inner"
         />
       </Sider>
       <Layout
@@ -66,4 +67,4 @@ const PortalLayout = ({ children }) => {
   );
 };
 
-export default PortalLayout;
+export default InnerLayout;
