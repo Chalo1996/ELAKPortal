@@ -1,10 +1,18 @@
 import { useState, useEffect } from 'react';
 import { Layout } from 'antd';
 import Sidebar from './main-layout/Sidebar';
+
 const { Content, Sider } = Layout;
 
 const PortalLayout = ({ children }) => {
+  // eslint-disable-next-line no-unused-vars
+  const [selectedKey, setSelectedKey] = useState('home');
   const [collapsed, setCollapsed] = useState(window.innerWidth < 768);
+
+  const handleMenuSelect = (key) => {
+    if (key === 'theme' || key === 'expanded' || key === 'collapsed') return;
+    setSelectedKey(key);
+  };
 
   const toggleCollapsed = () => {
     setCollapsed(!collapsed);
@@ -43,6 +51,7 @@ const PortalLayout = ({ children }) => {
         }}
       >
         <Sidebar
+          onSelect={handleMenuSelect}
           collapsed={collapsed}
           toggleCollapsed={toggleCollapsed}
           type="portal"

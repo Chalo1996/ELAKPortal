@@ -11,7 +11,7 @@ import GoalBased from '../../components/Goal Based/GoalBased';
 import GroupLifeAssurance from '../../pages/GroupLifeAssurance/GroupLife';
 import GroupCriticalIllness from '../../components/Group Critical Illness/CriticalIlness';
 import NotFound from '../../pages/NotFound';
-import CustomerTypePage from '../../pages/GroupCredit/CustomerTypePage';
+import CustomerTypePage from '../../pages/FuneralExpensePages/CustomerType';
 import LandingPage from '../../pages/landingPage';
 import FuneralExpenseQuotation from '../../pages/FuneralExpensePages/Quotation';
 import CriticalIllnessQuotation from '../../components/Group Critical Illness/CriticalIllnessQuotation';
@@ -83,6 +83,7 @@ const AppRoutes = () => {
             {/* Redirect to /landing-page */}
             <Route path="/" element={<Navigate to="/landing-page" />} />
 
+            {/* Home route */}
             <Route
               path="/home"
               element={
@@ -181,7 +182,6 @@ const AppRoutes = () => {
                       path="motor-vehicle"
                       element={<HandleMotorSelection />}
                     />
-                    <Route path="policies/*" element={<PoliciesRoutes />} />
                   </Routes>
                 </PortalLayout>
               }
