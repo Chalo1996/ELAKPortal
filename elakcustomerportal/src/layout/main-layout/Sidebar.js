@@ -8,6 +8,7 @@ import {
   SnippetsOutlined,
   FileTextOutlined,
   DollarCircleOutlined,
+  MedicineBoxOutlined 
 } from '@ant-design/icons';
 import { useTheme } from '../../store/context/theme-context';
 import { useNavigate } from 'react-router-dom';
@@ -59,6 +60,12 @@ const Sidebar = ({ onSelect, collapsed, toggleCollapsed, type }) => {
             key: 'home',
             icon: <HomeOutlined />,
             label: <Link to="/home">Home</Link>,
+          },
+
+          {
+            key: 'claim',
+            icon: <MedicineBoxOutlined />,
+            label: <Link to="/home/claim">Claims</Link>,
           },
           {
             key: 'theme',
