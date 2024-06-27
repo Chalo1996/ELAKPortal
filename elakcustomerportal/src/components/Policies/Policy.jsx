@@ -32,7 +32,7 @@ const Policy = ({ setPolicies }) => {
   }
 
   return (
-    <div className="p-8">
+    <div className="p-8 center">
       <h2 className="text-2xl font-bold">{policy.name}</h2>
       <p className="text-gray-700">{policy.description}</p>
       <p className="mt-4">More policy details...</p>
