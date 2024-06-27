@@ -5,7 +5,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useTheme } from "../../store/context/theme-context";
 import darkLogo from "../../assets/images/dark-logo.png";
 import generatePDF, { Resolution, Margin } from "react-to-pdf";
-import AnnuityExclusionsModal from "../../components/Annuity/modals/Exclusions";
+import AnnuityExclusionsModal from "../../components/Annuity/Modals/Exclusions";
 import ErrorPage from "../../shared/ErrorPage";
 
 const options = {

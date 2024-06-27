@@ -6,8 +6,8 @@ import rwfFlag from "../../assets/flags/rwf.png";
 import kesFlag from "../../assets/flags/kes.png";
 import tzsFlag from "../../assets/flags/tzs.png";
 import ugxFlag from "../../assets/flags/ugx.png";
-import TermsModal from "./modals/TermsModal";
-import PrivacyPolicyModal from "./modals/PrivacyModal";
+import TermsModal from "./Modals/TermsModal";
+import PrivacyPolicyModal from "./Modals/PrivacyModal";
 
 const { Option } = Select;
 const PhoneAreas = [
