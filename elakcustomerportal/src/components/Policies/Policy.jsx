@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { v4 as uuid4 } from 'uuid';
+import { Divider } from 'antd';
 
-const Policy = ({ setPolicies }) => {
+const Policy = () => {
   const { policyId } = useParams();
   const navigate = useNavigate();
   const [policy, setPolicy] = useState(null);
@@ -18,30 +20,37 @@ const Policy = ({ setPolicies }) => {
       method: 'DELETE',
     })
       .then(() => {
-        // Update parent state
-        setPolicies((prevPolicies) =>
-          prevPolicies.filter((p) => p.id !== policyId),
-        );
-        navigate('/home/policies');
+        navigate('/policies');
       })
       .catch((error) => console.error('Error canceling policy:', error));
   };
 
   if (!policy) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex justify-center items-center h-screen">
+        Loading...
+      </div>
+    );
   }
 
   return (
-    <div className="p-8 center">
-      <h2 className="text-2xl font-bold">{policy.name}</h2>
-      <p className="text-gray-700">{policy.description}</p>
-      <p className="mt-4">More policy details...</p>
-      <button
-        className="mt-2 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-700"
-        onClick={handleCancelPolicy}
-      >
-        Cancel Policy
-      </button>
+    <div className="flex justify-center items-center h-screen">
+      <div className="p-8 bg-white shadow-md rounded-lg h-4/5 w-4/5">
+        <div className="flex">
+          <h2 className="text-2xl font-bold mb-4">Policy Number: {uuid4()}</h2>
+          <button type="text ml-20">Live Policy</button>
+        </div>
+        <Divider />
+        {/* <h3 className="text-xl font-bold mb-2">{policy.title}</h3> */}
+        <p className="text-gray-700 mb-4">{policy.description}</p>
+        <p className="mb-4">More policy details...</p>
+        <button
+          className="mt-2 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-700 align-bottom"
+          onClick={handleCancelPolicy}
+        >
+          Cancel Policy
+        </button>
+      </div>
     </div>
   );
 };
