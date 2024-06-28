@@ -28,8 +28,9 @@ const products = [
     ];
 
 const NewClaim = () => {
-  const { Option } = Select;
-
+const { Option } = Select;
+  
+const [selectedProvider, setSelectedProvider] = useState(null);
 const [cashCall, setCashCall] = useState(false);
 const [cooperationClause, setCooperationClause] = useState(false);
 const [facultative, setFacultative] = useState(false);
@@ -51,9 +52,15 @@ const [formData, setFormData] = useState({
   dateOfOccurrence:'',
   krapin:'',
   idnumber:'',
-  description:''
-
+  description:'',
+  nameOfProvider:''
 });
+
+
+const providerOptions = [
+  { label: 'DR BONIFACE OSUKA', value: 'DR BONIFACE OSUKA' },
+  { label: 'DR CAROLINE', value: 'DR CAROLINE' },
+];
 
 const handleCashCallChange = (checked) => {
   setCashCall(checked);
@@ -107,10 +114,10 @@ const contentMapping = {
         <div>
         <Tabs defaultActiveKey="1">
             <TabPane tab={ <span><UserOutlined style={{ marginRight: '10px' }}/>Main</span>} key="1"> 
-            <h1
-            style={{ textAlign: 'left', fontSize: '16px', marginBottom: '20px',marginTop: '5px' }}>
-            Main section
+            <h1 style={{ textAlign: 'left', fontSize: '16px', marginBottom: '20px',marginTop: '5px' }}>
+                Main section
             </h1>
+
             <Form 
               layout="vertical" 
               onValuesChange={(_, allValues) => handleFormChange(allValues)} initialValues={formData}>
@@ -335,12 +342,54 @@ const contentMapping = {
         </Col>
               </Row>
 
-              </Form>
+            </Form>
             
             </TabPane>
 
             <TabPane tab={ <span><MedicineBoxOutlined style={{ marginRight: '10px' }}/>Medical</span>} key="2">
-            Content for Medical
+            <h1
+            style={{ textAlign: 'left', fontSize: '16px', marginBottom: '20px',marginTop: '5px' }}>
+             Medical section
+            </h1>
+            <Row gutter={16}>
+            <Col span={12}>
+
+            <Form.Item
+              label="Name of Provider"
+              name="nameOfProvider"
+              rules={[{ required: true, message: 'Please select a provider!' }]}>
+              <Select
+                placeholder="Select Provider"
+                value={formData.nameOfProvider}
+                onChange={(value) => handleSelectChange(value, 'nameOfProvider')}>
+                {providerOptions.map((provider) => (
+                  <Option key={provider.value} value={provider.value}>
+                    {provider.label}
+                  </Option>
+                ))}
+              </Select>
+            </Form.Item>
+
+
+
+            </Col>
+            </Row>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             </TabPane>
 
             <TabPane tab={ <span><EuroCircleOutlined  style={{ marginRight: '10px' }}/>Preliminary Fees</span> }key="3">
