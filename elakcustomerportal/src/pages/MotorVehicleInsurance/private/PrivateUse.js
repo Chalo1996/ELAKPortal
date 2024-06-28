@@ -5,16 +5,16 @@ import { LeftOutlined } from "@ant-design/icons";
 import { Steps, Button, Typography, message, Form } from "antd";
 
 import dayjs from "dayjs";
-import ClientDetailsForm from "../../components/MotorVehicleInsurance/ClientDetailsForm";
-import VehicleDetails from "../../components/MotorVehicleInsurance/VehicleDetails";
-import CoverTerms from "../../components/MotorVehicleInsurance/CoverTerms";
-import Extras from "../../components/MotorVehicleInsurance/Extras";
-import ToDoModal from "../../components/MotorVehicleInsurance/modals/ToDoModal";
-import CallBackForm from "../../components/MotorVehicleInsurance/CallBackForm";
-import { fetchData } from "../../store/redux/features/glaSlice";
+import ClientDetailsForm from "../../../components/MotorVehicleInsurance/ClientDetailsForm";
+import VehicleDetails from "../../../components/MotorVehicleInsurance/VehicleDetails";
+import CoverTerms from "../../../components/MotorVehicleInsurance/CoverTerms";
+import Extras from "../../../components/MotorVehicleInsurance/Extras";
+import ToDoModal from "../../../components/MotorVehicleInsurance/modals/ToDoModal";
+import CallBackForm from "../../../components/MotorVehicleInsurance/CallBackForm";
+import { fetchData } from "../../../store/redux/features/glaSlice";
 
 
-import ReviewAndConfirm from "../../components/MotorVehicleInsurance/ReviewForm";
+import ReviewAndConfirm from "../../../components/MotorVehicleInsurance/ReviewForm";
 
 
 
@@ -57,7 +57,7 @@ const PrivateUse = () => {
     make: "",
     model: "",
     bodyType: "",
-    monthOfManufacture: "",
+    dateOfManufacture: null,
     yearOfManufacture: "",
     chassisNumber: "",
     fuel: "",
@@ -111,7 +111,7 @@ const PrivateUse = () => {
         make: formData.make,
         model: formData.model,
         bodyType: formData.bodyType,
-        monthOfManufacture: formData.monthOfManufacture,
+        dateOfManufacture: formData.dateOfManufacture,
         yearOfManufacture: formData.yearOfManufacture,
         chassisNumber: formData.chassisNumber,
         fuel: formData.fuel,
@@ -186,24 +186,11 @@ const handleSubmitCallback = () => {
 };
 
 const handleSubmit = async () => {
-  if (authStatus === 'succeeded') {
-    try {
-      setLoading(true); 
-      await dispatch(fetchData(dataToPost)).unwrap();
-      message.success('Quote generated successfully!');
-      setIsFormSubmitted(true);
-    } catch (error) {
-      message.error('Failed to submit form data.');
-    } finally {
-      setLoading(false); 
-    }
-  } else {
-    message.error('Authentication failed.');
-  }
+navigate("quotation");
 };
 useEffect(() => {
   if (isFormSubmitted && !isLoading) {
-    navigate("quotation-details", {
+    navigate("quotation", {
       state: { formData, data },
     });
   }
@@ -263,7 +250,7 @@ useEffect(() => {
               </Button>
             )}
             {currentStep > 3 && (
-              <Button type="primary" onClick={handleSubmit} loading={loading} disabled>
+              <Button type="primary" onClick={handleSubmit} loading={loading} >
                 Generate Quote
               </Button>
             )}
