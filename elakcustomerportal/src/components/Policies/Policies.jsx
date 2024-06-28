@@ -1,23 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Row, Col, Card } from 'antd';
-import { v4 as uuid4 } from 'uuid';
 import { LeftOutlined } from '@ant-design/icons';
 import PolicyDetails from './PolicyDetails';
+import myPolicies from './myPolicies';
 
 const Policies = () => {
-  const [policies, setPolicies] = useState([]);
+  const [policies] = useState(myPolicies);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    fetch('http://localhost:3001/api/policies')
-      .then((response) => response.json())
-      .then((data) => setPolicies(data))
-      .catch((error) => console.error('Error fetching policies:', error));
-  }, []);
-
-  const handlePolicyClick = (policyId) => {
-    navigate(`/policies/${policyId}`);
+  const handlePolicyClick = (policyNumber) => {
+    navigate(`/policies/${policyNumber}`);
   };
 
   const handleNavigate = () => {
@@ -39,11 +32,11 @@ const Policies = () => {
       </div>
       <Row gutter={[16, 16]}>
         {policies.map((policy) => (
-          <Col key={policy.id} xs={24} sm={12} md={8} lg={6}>
+          <Col key={policy.policyNumber} xs={24} sm={12} md={8} lg={6}>
             <Card
               hoverable
               className="rounded-lg overflow-hidden cursor-pointer transform transition duration-300 hover:scale-105 hover:shadow-lg"
-              onClick={() => handlePolicyClick(policy.id)}
+              onClick={() => handlePolicyClick(policy.policyNumber)}
             >
               <PolicyDetails policy={policy} />
             </Card>

@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { v4 as uuid4 } from 'uuid';
 import { Divider } from 'antd';
+import { LeftOutlined } from '@ant-design/icons';
+import myPolicies from './myPolicies';
 
 const Policy = () => {
   const { policyId } = useParams();
@@ -9,20 +10,20 @@ const Policy = () => {
   const [policy, setPolicy] = useState(null);
 
   useEffect(() => {
-    fetch(`http://localhost:3001/api/policies/${policyId}`)
-      .then((response) => response.json())
-      .then((data) => setPolicy(data))
-      .catch((error) => console.error('Error fetching policy details:', error));
+    const foundPolicy = myPolicies.find((p) => p.policyNumber === policyId);
+    if (foundPolicy) {
+      setPolicy(foundPolicy);
+    } else {
+      console.error('Policy not found');
+    }
   }, [policyId]);
 
   const handleCancelPolicy = () => {
-    fetch(`http://localhost:3001/api/policies/${policyId}`, {
-      method: 'DELETE',
-    })
-      .then(() => {
-        navigate('/policies');
-      })
-      .catch((error) => console.error('Error canceling policy:', error));
+    navigate('/policies');
+  };
+
+  const handleNavigate = () => {
+    navigate(-1);
   };
 
   if (!policy) {
@@ -34,22 +35,87 @@ const Policy = () => {
   }
 
   return (
-    <div className="flex justify-center items-center h-screen">
-      <div className="p-8 bg-white shadow-md rounded-lg h-4/5 w-4/5">
-        <div className="flex">
-          <h2 className="text-2xl font-bold mb-4">Policy Number: {uuid4()}</h2>
-          <button type="text ml-20">Live Policy</button>
-        </div>
-        <Divider />
-        {/* <h3 className="text-xl font-bold mb-2">{policy.title}</h3> */}
-        <p className="text-gray-700 mb-4">{policy.description}</p>
-        <p className="mb-4">More policy details...</p>
+    <div className="p-8 bg-gray-100">
+      <div className="mb-4 flex items-center">
         <button
-          className="mt-2 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-700 align-bottom"
-          onClick={handleCancelPolicy}
+          className="mr-2 focus:outline-none hover:text-[#A32A29]"
+          onClick={handleNavigate}
         >
-          Cancel Policy
+          <LeftOutlined className="w-8 h-8" />
         </button>
+        <span className="font-open-sans text-xl font-semibold leading-24">
+          Policies
+        </span>
+      </div>
+      <div className="max-w-4xl mx-auto bg-white shadow-lg rounded-lg p-8">
+        <button
+          className="absolute top-4 right-4 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-700 text-lg"
+          onClick={() => alert('Live Policy')}
+        >
+          Live Policy
+        </button>
+        <h2 className="text-4xl font-bold mb-4">
+          Policy Number: {policy.policyNumber}
+        </h2>
+        <Divider />
+        <div className="mb-4">
+          <p className="mb-2 text-lg">
+            <strong>Traveller:</strong> {policy.travellerName}
+          </p>
+          <p className="mb-2 text-lg">
+            <strong>Cover level:</strong> {policy.coverLevel}
+          </p>
+        </div>
+        <div className="mb-4 flex">
+          <div className="flex-1">
+            <p className="mb-2 text-lg">
+              <strong>Start Date:</strong> {policy.startDate}
+            </p>
+          </div>
+          <div className="flex-1">
+            <p className="mb-2 text-lg">
+              <strong>End Date:</strong> {policy.endDate}
+            </p>
+          </div>
+        </div>
+        <div className="mb-4">
+          <p className="mb-2 text-lg">
+            <strong>Destination:</strong> {policy.destination}
+          </p>
+          <p className="mb-2 text-lg">
+            <strong>Max Trip Duration:</strong> {policy.maxTripDuration} days
+          </p>
+        </div>
+        <div className="mb-4">
+          <p className="mb-2 text-lg">
+            <strong>Issue Date:</strong> {policy.issueDate}
+          </p>
+        </div>
+        <div className="mb-4">
+          <p className="mb-2 text-lg">
+            <strong>Total Policy Cost:</strong> {policy.totalCost}
+          </p>
+        </div>
+        <a
+          href="/policy-documents"
+          className="text-blue-500 underline mb-4 block text-lg"
+        >
+          View your policy documents
+        </a>
+        <div className="flex justify-end space-x-4">
+          <button
+            className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-700 text-lg"
+            onClick={() => navigate(`/make-a-claim?id=${policyId}`)}
+          >
+            Make a Claim
+          </button>
+          <button
+            className="px-4 py-2 bg-white-500 border-red-300 border text-red-500 rounded hover:bg-white-700 text-lg"
+            onClick={handleCancelPolicy}
+          >
+            Cancel policy
+          </button>
+        </div>
       </div>
     </div>
   );
