@@ -1,8 +1,11 @@
 import React, { useCallback } from 'react';
-import { Form, Input, InputNumber, Row, Col, Select , Typography} from 'antd';
+import { Form, Input, InputNumber, Row, Col, Select, Typography, DatePicker } from 'antd';
+import dayjs from 'dayjs';
 
 const { Option } = Select;
 const { Title } = Typography;
+const { MonthPicker } = DatePicker;
+
 
 const carMakes = [
   "ALFA_ROMEO", "AUDI", "BEDFORD", "BEI_BEN", "BENTLEY", "BMW", "CADILLAC",
@@ -16,46 +19,8 @@ const carMakes = [
   "TATA", "TELSA", "TIGGO", "TOYOTA", "LEXUS", "VAUXHALL", "VOLKSWAGEN", "VOLVO"
 ];
 
-const colors = [
-  "Amethyst Purple", "Aquamarine", "Beige", "Black", "Blue", "Brown", "Burgundy",
-  "Champagne", "Charcoal", "Copper", "Coral", "Dark Blue", "Emerald Green",
-  "Forest Green", "Gold", "Gray", "Green", "Indigo", "Ivory", "Light Blue",
-  "Lime Green", "Maroon", "Metallic Bronze", "Navy", "Olive Green", "Orange",
-  "Pearl", "Pink", "Purple", "Red", "Ruby Red", "Sapphire Blue", "Silver",
-  "Tan", "Teal", "Titanium", "Turquoise", "Violet", "White", "Yellow"
-];
-
-const years = [
-  1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 
-  2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 
-  2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 
-  2020, 2021, 2022, 2023, 2024, 2025
-];
-
-const months = {
-"January" :	1,
-"February":	2,
-"March":	3,
-"April":	4,
-"May":	5,
-"June":	6,
-"July":	7,
-"August":	8,
-"September":	9,
-"October":	10,
-"November":	11,
-"December":	12,
-};
-
-const monthOptions = Object.keys(months).map(month => (
-  <Option key={months[month]} value={months[month]} className="w-full custom-input-number">
-    {month}
-  </Option>
-));
-
-
 const toyotaModels = [
-  "AMBULANCE - L/CRUISER HZJ78R-RJMRS STANDARD"                                               ,
+  "AMBULANCE - L/CRUISER HZJ78R-RJMRS STANDARD",
   "AMBULANCE - L/CRUISER HZJ78R-RJMRS DELUXE ",
   "AMBULANCE - L/CRUISER HZJ78R-RJMRS DUBAI SPECS",
   "AMBULANCE-HIACE 2KD KDH222R-LEMDY",
@@ -482,31 +447,31 @@ const toyotaModels = [
 ];
 
 const bodyTypes = [
-"Coupe",
-"AMB",
-"BUS",
-"Convertible",
-"COUPE",
-"DOUBLE  CAB",
-"ESTATE",
-"EXTENDED CABIN",
-"HATCHBACK",
-"Mini Bus",
-"MIXER",
-"MPV",
-"P/MOVER",
-"PICK UP",
-"PM",
-"Rigid",
-"S/WAGON",
-"SALOON",
-"SINGLE CABIN",
-"SPORT",
-"SUV",
-"TIPPER",
-"TRACK/MIXER",
-"TRUCK",
-"VAN",
+  "Coupe",
+  "AMB",
+  "BUS",
+  "Convertible",
+  "COUPE",
+  "DOUBLE  CAB",
+  "ESTATE",
+  "EXTENDED CABIN",
+  "HATCHBACK",
+  "Mini Bus",
+  "MIXER",
+  "MPV",
+  "P/MOVER",
+  "PICK UP",
+  "PM",
+  "Rigid",
+  "S/WAGON",
+  "SALOON",
+  "SINGLE CABIN",
+  "SPORT",
+  "SUV",
+  "TIPPER",
+  "TRACK/MIXER",
+  "TRUCK",
+  "VAN",
 ];
 
 const fuels = [
@@ -518,236 +483,227 @@ const fuels = [
   "Hybrid Petrol"
 ];
 
+const YearMonthPicker = ({form, formData, setFormData }) => {
+  const handleInputChange = useCallback((value, field) => {
+    setFormData((prevData) => ({ ...prevData, [field]: value }));
+  }, [setFormData]);
 
+  const currentYear = dayjs().year();
+  const currentMonth = dayjs().month() + 1; 
 
+  const disabledDate = (current) => {
+    const year = current.year();
+    const month = current.month() + 2;
 
-const VehicleDetails = ({form, formData, setFormData }) => {
+    if (year < 1990 || year > currentYear) {
+      return true;
+    }
+
+    if (year === currentYear && month > currentMonth) {
+      return true;
+    }
+
+    return false;
+  };
+
+  return (
+    <Form.Item label="When was your vehicle manufactured?" name="dateOfManufacture">
+      <MonthPicker
+        className="w-full custom-input"
+        picker="month"
+        format="MMMM YYYY"
+        value={formData.dateOfManufacture ? dayjs(formData.dateOfManufacture , 'YYYY-MM') : null}
+        onChange={(date) => handleInputChange(date, 'dateOfManufacture')}
+        disabledDate={disabledDate}
+      />
+    </Form.Item>
+  );
+};
+
+const VehicleDetails = ({ form, formData, setFormData }) => {
   const handleInputChange = useCallback((value, field) => {
     setFormData(prevData => ({ ...prevData, [field]: value }));
   }, [setFormData]);
 
+  const YearMonthPicker = () => {  
+    const currentYear = dayjs().year();
+    const currentMonth = dayjs().month() + 1; 
+  
+    const disabledDate = (current) => {
+      const year = current.year();
+      const month = current.month() + 2;
+  
+      if (year < 1990 || year > currentYear) {
+        return true;
+      }
+  
+      if (year === currentYear && month > currentMonth) {
+        return true;
+      }
+  
+      return false;
+    };
+  
+    return (
+      <Form.Item label="When was your vehicle manufactured?" name="dateOfManufacture">
+        <MonthPicker
+          className="w-full custom-input"
+          picker="month"
+          format="MMMM YYYY"
+          value={formData.dateOfManufacture ? dayjs(formData.dateOfManufacture , 'YYYY-MM') : null}
+          onChange={(date) => handleInputChange(date, 'dateOfManufacture')}
+          disabledDate={disabledDate}
+        />
+      </Form.Item>
+    );
+  };
+
   return (
-      <Form  form={form} layout="vertical" initialValues={formData}>
+    <Form form={form} layout="vertical" initialValues={formData}>
       <Row gutter={16} style={{ marginBottom: '25px' }}>
         <Col span={24}>
           <Title level={5} >Please enter vehicle details</Title>
         </Col>
       </Row>
-        <Row gutter={[16, 16]} style={{ marginBottom: '25px' }}>
-          <Col span={12}>
-            <Form.Item 
+      <Row gutter={[16, 16]} style={{ marginBottom: '25px' }}>
+        <Col span={12}>
+          <Form.Item
             label="What is your vehicle registration number?"
             name="vehicleRegistrationNumber"
             rules={[{ required: true, message: "Please enter vehicle registration number!" }]}
-            >
-              <Input
-                placeholder='Enter vehicle registration number'
-                value={formData.vehicleRegistrationNumber}
-                onChange={value => handleInputChange(value, "")}
-              />
-            </Form.Item>
-          </Col>
-          <Col span={12}>
-            <Form.Item 
+          >
+            <Input
+              placeholder='Enter vehicle registration number'
+              value={formData.vehicleRegistrationNumber}
+              onChange={(e) => handleInputChange(e.target.value, 'vehicleRegistrationNumber')}
+            />
+          </Form.Item>
+        </Col>
+        <Col span={12}>
+          <Form.Item
             label="What is the transmission of your vehicle?"
             name="transmission"
             rules={[{ required: true, message: "Please select the transmission of your vehicle!" }]}
-            >
-              <Select
+          >
+            <Select
               placeholder='Enter transmission'
-                value={formData.transmission}
-                onChange={value => handleInputChange(value, "transmission")}
-              >
-              <Option value="administrative">Automatic</Option>
-              <Option value="parastatalGovernment">Manual</Option>
-              </Select>
-            </Form.Item>
-          </Col>
-        </Row>
+              value={formData.transmission}
+              onChange={value => handleInputChange(value, "transmission")}
+            >
+              <Option value="Automatic">Automatic</Option>
+              <Option value="Manual">Manual</Option>
+            </Select>
+          </Form.Item>
+        </Col>
+      </Row>
 
-        <Row gutter={[16, 16]} style={{ marginBottom: '25px' }}>
-          <Col span={12}>
-            <Form.Item 
+      <Row gutter={[16, 16]} style={{ marginBottom: '25px' }}>
+        <Col span={12}>
+          <Form.Item
             label="What is the make of your vehicle?"
             name="make"
             rules={[{ required: true, message: "Please select the make of your vehicle!" }]}
-            >
-              <Select
+          >
+            <Select
               placeholder='Enter make'
-                value={formData.make}
-                onChange={value => handleInputChange(value, "make")}
-              >
+              value={formData.make}
+              onChange={value => handleInputChange(value, "make")}
+            >
               {carMakes.map(make => (
-                  <Option key={make} value={make}>
-                    {make}
-                  </Option>
-                ))}
+                <Option key={make} value={make}>
+                  {make}
+                </Option>
+              ))}
 
-              </Select>
-            </Form.Item>
-          </Col>
-          <Col span={12}>
-            <Form.Item 
+            </Select>
+          </Form.Item>
+        </Col>
+        <Col span={12}>
+          <Form.Item
             label="What is the model of your vehicle?"
             name="model"
             rules={[{ required: true, message: "Please select the model of your vehicle!" }]}
-            >
-              <Select
+          >
+            <Select
               placeholder='Enter model'
-                value={formData.model}
-                onChange={value => handleInputChange(value, "model")}
-              >
-              {toyotaModels.map(model=>(
+              value={formData.model}
+              onChange={value => handleInputChange(value, "model")}
+            >
+              {toyotaModels.map(model => (
                 <Option key={model} value={model}>
                   {model}
                 </Option>
               ))}
-              </Select>
-            </Form.Item>
-          </Col>
-        </Row>
+            </Select>
+          </Form.Item>
+        </Col>
+      </Row>
 
-        <Row gutter={[16, 16]} style={{ marginBottom: '25px' }}>
-          <Col span={12}>
-            <Form.Item 
+      <Row gutter={[16, 16]} style={{ marginBottom: '25px' }}>
+        <Col span={12}>
+          <Form.Item
             label="What is the body type of your vehicle?"
             name="bodyType"
             rules={[{ required: true, message: "Please select body type of your vehicle!" }]}
-            >
-              <Select
+          >
+            <Select
               placeholder='Enter body type'
-                value={formData.bodyType}
-                onChange={value => handleInputChange(value, "bodyType")}
-              >
-              {bodyTypes.map(bodyType=>(
+              value={formData.bodyType}
+              onChange={value => handleInputChange(value, "bodyType")}
+            >
+              {bodyTypes.map(bodyType => (
                 <Option key={bodyType} value={bodyType}>
                   {bodyType}
                 </Option>
               ))}
-              </Select>
-            </Form.Item>
-          </Col>
-          <Col span={12}>
-            <Form.Item 
-            label="Which month was your vehicle manufactured?"
-            name="monthOfManufacture"
-            rules={[{ required: true, message: "Please select month of manufacture!" }]}
-            >
-              <Select defaultValue={1} style={{ width: 120 }} placeholder="Please select month of manufacture">
-                {monthOptions}
-              </Select>
-            </Form.Item>
-          </Col>
-        </Row>
+            </Select>
+          </Form.Item>
+        </Col>
+        <Col span={12}>
+          <YearMonthPicker name="dateOfManufacture" value={formData.dateOfManufacture} />
+        </Col>
+      </Row>
 
-        <Row gutter={[16, 16]} style={{ marginBottom: '25px' }}>
-          <Col span={12}>
-            <Form.Item 
-            label="Which year was your vehicle manufactured?"
-            name="yearOfManufacture"
-            rules={[{ required: true, message: "Please select company year of manufacture!" }]}
-            >
-              <Select
-              placeholder='Enter year of manufacture'
-                value={formData.yearOfManufacture}
-                onChange={value => handleInputChange(value, "yearOfManufacture")}
-              >
-              {years.map(year => (
-                  <Option key={year} value={year}>
-                    {year}
-                  </Option>
-                ))}
+      <Row gutter={[16, 16]} style={{ marginBottom: '25px' }}>
 
-              </Select>
-            </Form.Item>
-          </Col>
-          <Col span={12}>
-            <Form.Item 
+        <Col span={12}>
+          <Form.Item
             label="Fuel"
             name="fuel"
             rules={[{ required: true, message: "Please enter select fuel!" }]}
-            >
-              <Select
+          >
+            <Select
               placeholder='Enter fuel'
-                value={formData.fuel}
-                onChange={value => handleInputChange(value, "fuel")}
-              >
-              {fuels.map(fuel=>(
+              value={formData.fuel}
+              onChange={value => handleInputChange(value, "fuel")}
+            >
+              {fuels.map(fuel => (
                 <Option key={fuel} value={fuel}>
                   {fuel}
                 </Option>
               ))}
-              </Select>
-            </Form.Item>
-          </Col>
-        </Row>
-
-        <Row gutter={[16, 16]} style={{ marginBottom: '25px' }}>
-          <Col span={12}>
-            <Form.Item 
-            label="What is the performance of your vehicle in (CC)"
+            </Select>
+          </Form.Item>
+        </Col>
+        <Col span={12}>
+          <Form.Item
+            label="What is the performance of your vehicle in cubic capacity?"
             name="performanceCC"
             rules={[{ required: true, message: "Please enter vehicle performance!" }]}
-            >
-              <InputNumber
+          >
+            <InputNumber
               className="w-full custom-input-number"
               placeholder='Enter performance'
-                value={formData.performanceCC}
-                onChange={value => handleInputChange(value, "performanceCC")}
-              />
-            </Form.Item>
-          </Col>
-          <Col span={12}>
-            <Form.Item 
-            label="What is the colour of your vehicle?"
-            name="colour"
-            rules={[{ required: true, message: "Please enter colour!" }]}
-            >
-              <Select
-              placeholder='Enter color'
-                value={formData.colour}
-                onChange={value => handleInputChange(value, "colour")}
-              >
-              {colors.map(color => (
-                  <Option key={color} value={color}>
-                    {color}
-                  </Option>
-                ))}
-              
-              </Select>
-            </Form.Item>
-          </Col>
-        </Row>
-
-        <Row gutter={[16, 16]} style={{ marginBottom: '25px' }}>
-          <Col span={12}>
-            <Form.Item 
-            label="Anti Theft Devices"
-            name="antiTheftDevices"
-            rules={[{ required: true, message: "Please enter anti theft devices!" }]}
-            >
-              <Input
-                placeholder='Enter anti-theft devices'
-                value={formData.antiTheftDevices}
-                onChange={value => handleInputChange(value, "antiTheftDevices")}
-              />
-            </Form.Item>
-          </Col>
-          <Col span={12}>
-            <Form.Item 
-            label="Garage Address" 
-            name="garagedAddress"
-            rules={[{ required: true, message: "Please enter garaged address!" }]}
-            >
-              <Input
-                placeholder='Enter garage location'
-                value={formData.garagedAddress}
-                onChange={value => handleInputChange(value, "garagedAddress")}
-              />
-            </Form.Item>
-          </Col>
-        </Row>
-      </Form>
+              addonAfter="cc"
+              value={formData.performanceCC}
+              formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+              parser={(value) => value.replace(/(,*)/g, "")}
+              onChange={value => handleInputChange(value, "performanceCC")}
+            />
+          </Form.Item>
+        </Col>
+      </Row>
+    </Form>
 
   );
 };

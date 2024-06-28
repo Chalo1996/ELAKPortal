@@ -42,6 +42,7 @@ const Extras = ({ form, formData, setFormData }) => {
           <Form.Item
             label="Roadside Assistance"
             name="roadsideAssistance"
+            tooltip="Service designed to help you get going again if your vehicle breaks down while in transit"
             valuePropName="checked"
           >
             <Switch
@@ -101,6 +102,7 @@ const Extras = ({ form, formData, setFormData }) => {
           <Form.Item
             label="Political Violence & Terrorism"
             name="politicalViolenceAndTerrorism"
+            tooltip="Policy covers against political violence and terrorism"
             valuePropName="checked"
           >
             <Switch

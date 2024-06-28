@@ -19,10 +19,22 @@ const ReviewAndConfirm = ({ formDataToSubmit }) => {
     return `${year}-${month}-${day}`;
   };
 
+  const formatManufactureDate = (dateString) => {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    return `${year}-${month}`;
+  };
+
+  const NumberFormat = {
+    formatter: (value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+    parser: (value) => value.replace(/(,*)/g, ""),
+  };
+
   return (
     <Card className="mb-10 mt-10">
       <p className="font-open-sans text-[15px] font-semibold text-left">
-        To continue, please confirm your details
+      To continue, please confirm your insurance purchase details
       </p>
 
       <Card title="Client Details" className="mb-10">
@@ -88,18 +100,18 @@ const ReviewAndConfirm = ({ formDataToSubmit }) => {
               <p>{formDataToSubmit.bodyType}</p>
             </div>
             <div className="flex flex-col items-start justify-start mb-4">
-              <p className="text-[#929497]">Month of Manufacture</p>
-              <p>{formDataToSubmit.monthOfManufacture}</p>
+              <p className="text-[#929497]">Fuel</p>
+              <p>{formDataToSubmit.fuel}</p>
             </div>
           </Col>
           <Col xs={24} sm={24} md={12}>
             <div className="flex flex-col items-start justify-start mb-4">
-              <p className="text-[#929497]">Year of Manufacture</p>
-              <p>{formDataToSubmit.yearOfManufacture}</p>
+              <p className="text-[#929497]">Date of Manufacture</p>
+              <p>{formatManufactureDate(formDataToSubmit.dateOfManufacture)}</p>
             </div>
             <div className="flex flex-col items-start justify-start mb-4">
-              <p className="text-[#929497]">Chassis Number</p>
-              <p>{formDataToSubmit.chassisNumber}</p>
+              <p className="text-[#929497]">Performance in cubic capacity</p>
+              <p>{NumberFormat.formatter(formDataToSubmit.performanceCC)} cc</p>
             </div>
           </Col>
         </Row>
@@ -119,8 +131,8 @@ const ReviewAndConfirm = ({ formDataToSubmit }) => {
           </Col>
           <Col xs={24} sm={24} md={12}>
             <div className="flex flex-col items-start justify-start mb-4">
-              <p className="text-[#929497]">Cover Period (in days)</p>
-              <p>{formDataToSubmit.coverPeriodDays}</p>
+              <p className="text-[#929497]">Cover Period</p>
+              <p>{formDataToSubmit.coverPeriodDays} days</p>
             </div>
             <div className="flex flex-col items-start justify-start mb-4">
               <p className="text-[#929497]">Estimated Sum Insured</p>
