@@ -361,7 +361,7 @@ fetch('https://sisos-eu.azurewebsites.net/api/cmd', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IlNUQUNZLk9ESElBTUJPQGVic2FmcmljYS5vbm1pY3Jvc29mdC5jb20iLCJyb2xlIjoiVXNlciIsImdyb3Vwc2lkIjoiZXF1aXR5IiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbG9jYWxpdHkiOiJFTiIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL3N5c3RlbSI6IiIsIm5iZiI6MTcxODY5MDE4NiwiZXhwIjoxNzE5Mjk0OTg2LCJpYXQiOjE3MTg2OTAxODZ9.COf1FVjQmnpZwfoCnMRWL1oXmNeAWoVIeSJuy5EteJY'
+      'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IlNUQUNZLk9ESElBTUJPQGVic2FmcmljYS5vbm1pY3Jvc29mdC5jb20iLCJyb2xlIjoiVXNlciIsImdyb3Vwc2lkIjoiZXF1aXR5IiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbG9jYWxpdHkiOiJFTiIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL3N5c3RlbSI6IiIsIm5iZiI6MTcxOTU2ODUwMiwiZXhwIjoxNzIwMTczMzAyLCJpYXQiOjE3MTk1Njg1MDJ9.iGjHcwvHDR8TALd6ZQhLyckNfvH3LpDkMJlKCcLvybA'
     },
     body: JSON.stringify({
       cmd: "ExeChain",
@@ -386,7 +386,10 @@ fetch('https://sisos-eu.azurewebsites.net/api/cmd', {
   .catch(error => {
     //console.error('Error:', error.message);
    });
+   
    console.log('ContextObject', contextObject);
+   console.log(formData.phoneNumber);
+
 
 return (
 <div>
