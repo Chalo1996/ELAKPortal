@@ -250,7 +250,7 @@ useEffect(() => {
               </Button>
             )}
             {currentStep > 3 && (
-              <Button type="primary" onClick={handleSubmit} loading={loading} >
+              <Button type="primary" onClick={handleSubmit} loading={loading} disabled>
                 Generate Quote
               </Button>
             )}
