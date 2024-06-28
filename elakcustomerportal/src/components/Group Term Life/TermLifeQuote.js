@@ -8,7 +8,6 @@ import { InfoCircleOutlined,QuestionCircleOutlined } from '@ant-design/icons';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 
-
 import sspFlag from '../../assets/flags/ssp.png';
 import cdfFlag from '../../assets/flags/cdf.png';
 import rwfFlag from '../../assets/flags/rwf.png';
@@ -25,7 +24,6 @@ const { Option } = Select;
 const { Step } = Steps;
 const { Title, Text,Link } = Typography;
 const pdfRef = useRef();
-
 
 const [isPolicyModalVisible, setIsPolicyModalVisible] = useState(false);
 const [isTermsModalVisible, setIsTermsModalVisible] = useState(false);
@@ -81,7 +79,6 @@ const isCoverForloan = { YES: 'Loan-Premium', NO: 'Non-LoanPremium',};
 const coverTypes = { INDIVIDUAL: 'Individual', KEYMANRISK: 'Another Key Person',};
 const countryCodes = { Kenya: '+254', Uganda: '+256', Tanzania: '+255', Rwanda: '+250', 'South Sudan': '+211', DRC: '+243' };
 const acceleratedCI = { YES: 'YES', NO: 'NO',};
-
 const phoneAreas = [
   { code: "+211", flag: sspFlag, country: "South Sudan" },
   { code: "+243", flag: cdfFlag, country: "DRC" },
@@ -100,11 +97,6 @@ const handlePolicyOk = () => {
 const handlePolicyCancel = () => {
   setIsPolicyModalVisible(false);
 };
-
-
-
-
-
 
 const handleCustomerClick = () =>{
   navigate('/home'); 
@@ -318,7 +310,6 @@ const selectedOPtionalBenefits = [
 { key: 'perPreRet', attribute: 'Percentage Of Premium Returned', value: formData.percentageOfPremToBReturned},
 ];
 
-
 const generatePDF = () => {
   const input = pdfRef.current;
   html2canvas(input).then((canvas) => {
@@ -346,8 +337,6 @@ const generatePDF = () => {
     console.error('Error generating PDF:', error);
   });
 };
-
-
 const contextObject = {
 dateOfBirth: formData.dateOfBirth,
 principalAmount: formData.principalAmount, //.replace(/,/g, ''),
@@ -398,7 +387,6 @@ fetch('https://sisos-eu.azurewebsites.net/api/cmd', {
     //console.error('Error:', error.message);
    });
    console.log('ContextObject', contextObject);
-
 
 return (
 <div>
