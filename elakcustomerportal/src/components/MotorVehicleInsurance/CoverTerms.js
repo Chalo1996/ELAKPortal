@@ -21,7 +21,7 @@ const CoverTerms = ({ form, formData, setFormData }) => {
       <Row gutter={16} style={{ marginBottom: '25px' }}>
         <Col xs={24} sm={12}>
           <Form.Item
-            label="Type of Cover"
+            label="What type of cover do you need?"
             name="typeOfCover"
             rules={[{ required: true, message: "Please select type of cover!" }]}
           >
@@ -29,9 +29,9 @@ const CoverTerms = ({ form, formData, setFormData }) => {
               placeholder="Please select type of cover"
               onChange={(value) => handleInputChange(value, 'typeOfCover')}
             >
-              <Option value="comprehensive">Comprehensive</Option>
-              <Option value="thirdParty">Third Party</Option>
-              <Option value="thirdPartyFireAndTheft">Third Party, Fire and Theft</Option>
+              <Option value="Comprehensive">Comprehensive</Option>
+              <Option value="Third Party">Third Party</Option>
+              <Option value="Third Party, Fire and Theft">Third Party, Fire and Theft</Option>
             </Select>
           </Form.Item>
         </Col>
@@ -45,10 +45,10 @@ const CoverTerms = ({ form, formData, setFormData }) => {
               placeholder="Please select payment frequency"
               onChange={(value) => handleInputChange(value, 'paymentOptionsFrequency')}
             >
-              <Option value="oneOff">One-off</Option>
-              <Option value="monthly">Monthly</Option>
-              <Option value="quarterly">Quarterly</Option>
-              <Option value="annually">Annually</Option>
+              <Option value="One-off">One-off</Option>
+              <Option value="Monthly">Monthly</Option>
+              <Option value="Quarterly">Quarterly</Option>
+              <Option value="Annually">Annually</Option>
             </Select>
           </Form.Item>
         </Col>
