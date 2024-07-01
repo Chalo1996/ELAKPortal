@@ -16,30 +16,14 @@ const { Title, Text } = Typography;
 
 const IndividualCover = ({ userDetails, quotationData, dispatch }) => {
   const [currentStep, setCurrentStep] = useState(0);
-  const [isNextDisabled, setIsNextDisabled] = useState(true);
-  const [hasInteracted, setHasInteracted] = useState(false);
   const [form] = Form.useForm();
   const navigate = useNavigate();
   const [isQuotationGenerated, setIsQuotationGenerated] = useState(false);
-
-  useEffect(() => {
-    const validateForm = async () => {
-      if (!hasInteracted) return;
-      try {
-        await form.validateFields();
-        setIsNextDisabled(false);
-      } catch {
-        setIsNextDisabled(true);
-      }
-    };
-    validateForm();
-  }, [form, userDetails, hasInteracted]);
 
   const next = async () => {
     try {
       await form.validateFields();
       setCurrentStep(currentStep + 1);
-      setHasInteracted(false);
     } catch (errorInfo) {
       console.error("Failed:", errorInfo);
     }
@@ -50,7 +34,6 @@ const IndividualCover = ({ userDetails, quotationData, dispatch }) => {
   };
 
   const handleFormChange = (field, value) => {
-    setHasInteracted(true);
     dispatch(updateUserDetails(field, value));
   };
 
@@ -158,7 +141,6 @@ const IndividualCover = ({ userDetails, quotationData, dispatch }) => {
             className='h-full px-4 py-2 shadow-none text-center'
             type='primary'
             onClick={next}
-            disabled={isNextDisabled}
           >
             Next
           </Button>

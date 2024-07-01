@@ -67,7 +67,7 @@ const products = [
   },
   {
     title: "Motor Vehicle Insurance",
-    url: "motor-vehicle",
+    url: "motor-vehicle/select-motor-use",
     image: motorImg,
     description:
       "Get protection against unforseen vehicle emergencies",

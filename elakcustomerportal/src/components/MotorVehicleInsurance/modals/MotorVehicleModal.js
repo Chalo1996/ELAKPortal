@@ -38,7 +38,7 @@ const MotorVehicleModal = ({ isModalOpen, onCancel, onOkay, product }) => {
               theme === "dark" ? "text-white" : ""
             } shadow-none font-semibold text-lg leading-6 text-center w-[177px] h-[48px] p-[12px_48px] gap-0 rounded-tl-lg `}
           >
-            <NavLink to="motor-vehicle">Apply Now</NavLink>
+            <NavLink to="motor-vehicle/select-motor-use">Apply Now</NavLink>
           </Button>
         </Row>,
       ]}
