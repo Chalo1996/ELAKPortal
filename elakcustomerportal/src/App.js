@@ -17,6 +17,7 @@ import IndividualCover from "./components/GroupCredit/personal/IndividualCover";
 import MultipleCover from "./components/GroupCredit/group/MultipleCover";
 import FuneralExpenseQuotation from "./pages/FuneralExpensePages/Quotation";
 import CriticalIllnessQuotation from "./components/Group Critical Illness/CriticalIllnessQuotation";
+import MotorQuotation from "./pages/MotorVehicleInsurance/MotorQuotation";
 
 
 import {
@@ -190,6 +191,10 @@ function App() {
                     <Route 
                       path="/motor-vehicle" 
                       element={<HandleMotorSelection />}
+                    />
+                    <Route 
+                      path="motor-vehicle/quotation" 
+                      element={<MotorQuotation />}
                     />
                   </Routes>
                 </PortalLayout>
