@@ -7,6 +7,7 @@ import rwfFlag from "../../assets/flags/rwf.png";
 import kesFlag from "../../assets/flags/kes.png";
 import tzsFlag from "../../assets/flags/tzs.png";
 import ugxFlag from "../../assets/flags/ugx.png";
+import { useNavigate } from "react-router-dom";
 
 const { Option } = Select;
 const PhoneAreas = [
@@ -41,9 +42,10 @@ const Signup = () => {
     answer: "",
   });
   const [form] = Form.useForm();
+  const navigate = useNavigate();
 
   const handleNavigate = () => {
-    console.log("Navigate back");
+    navigate("/authentication?mode=signin");
   };
 
   const handlePhoneAreaChange = (newValue) => {
@@ -360,9 +362,16 @@ const Signup = () => {
           </Form.Item>
         </div>
 
-        <div className="text-left mt-4">
+        <div className="text-left mt-4 flex justify-start gap-3">
           <Button type="primary" className="shadow-none" htmlType="submit">
-            Submit
+            Register
+          </Button>
+          <Button
+            className="shadow-none"
+            htmlType="button"
+            onClick={handleNavigate}
+          >
+            Signin
           </Button>
         </div>
       </Form>

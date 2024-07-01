@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { Form, Input, Button } from "antd";
+import { Link, useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [form] = Form.useForm();
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     email: "",
@@ -21,6 +23,10 @@ const Login = () => {
     return Promise.reject(
       "Password must be at least 10 characters, have upper and lower case letters, one digit (0-9), and one special character (!,£,$,#,&,*,%)."
     );
+  };
+
+  const handleRegister = () => {
+    navigate("/authentication?mode=signup");
   };
 
   const handleSubmit = () => {
@@ -50,9 +56,7 @@ const Login = () => {
         onFinishFailed={(event) => console.log(event)}
         onFinish={handleSubmit}
       >
-        {" "}
         <div className="grid grid-cols-1 gap-1">
-          {" "}
           <Form.Item
             label="Email Address"
             name="email"
@@ -93,9 +97,22 @@ const Login = () => {
             />
           </Form.Item>
         </div>
-        <div className="text-left mt-4">
+        <div className="mb-5">
+          <p className="font-open-sans text-[#A32A29] text-[14px] text-left">
+            <Link to="/forgot-password">Forgot your password?</Link>
+          </p>
+        </div>
+
+        <div className="text-left mt-4 flex justify-start gap-3">
           <Button type="primary" className="shadow-none" htmlType="submit">
-            Login
+            Signin
+          </Button>
+          <Button
+            className="shadow-none"
+            htmlType="button"
+            onClick={handleRegister}
+          >
+            Register
           </Button>
         </div>
       </Form>
