@@ -29,7 +29,6 @@ import AnnuityQuotation from "../../pages/AnnuityPages/Quotation";
 import SubmittedCallBack from "../../components/Group Life/SubmittedCallBackForm";
 import Authentication from "../../authentication/pages/Auth";
 import AuthLayout from "../../layout/auth-layout/AuthLayout";
-import Register from "../../components/Education/Register";
 import VehicleCategoryPage from "../../pages/MotorVehicleInsurance/VehicleCategory";
 import HandleMotorSelection from "../../pages/MotorVehicleInsurance/HandleMotorSelection";
 import PoliciesRoutes from "../../components/Routes/PoliciesRoutes";
