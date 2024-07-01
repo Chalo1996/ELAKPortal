@@ -84,7 +84,7 @@ const handleModalAccept = () => {
 };
  
 const handleContinuePayment = () => {
-  navigate('./home/Education/Register');
+  navigate('./Register');
 };
   const parsedCData = JSON.parse(cData);
   
