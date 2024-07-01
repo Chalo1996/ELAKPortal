@@ -1,5 +1,5 @@
 import { Modal, Button, Row } from "antd";
-import introImage from "../../assets/introImage.jpg";
+import ciImg from "../../assets/ciImg.jpg";
 import { NavLink } from "react-router-dom";
 
 const CriticalIllnessModal = ({ isModalOpen, onCancel, onOkay, product }) => {
@@ -35,7 +35,7 @@ const CriticalIllnessModal = ({ isModalOpen, onCancel, onOkay, product }) => {
     >
       <div className="flex flex-col gap-1 ">
         <img
-          src={introImage}
+          src={ciImg}
           alt={product.title}
           className="object-cover text-center rounded-[16px] h-[232px] w-[311px] m-auto"
         />

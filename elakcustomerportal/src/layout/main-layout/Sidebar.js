@@ -9,6 +9,7 @@ import {
   SnippetsOutlined,
   LoginOutlined,
   DollarCircleOutlined,
+  PhoneOutlined
 } from "@ant-design/icons";
 import { useTheme } from "../../store/context/theme-context";
 import { useNavigate } from "react-router-dom";
@@ -64,6 +65,11 @@ const Sidebar = ({ onSelect, collapsed, toggleCollapsed, type }) => {
             key: "home",
             icon: <HomeOutlined />,
             label: <Link to="/home">Home</Link>,
+          },
+          {
+            key: "callback",
+            icon: <PhoneOutlined />,
+            label: <Link to="/submit">Request a CallBack</Link>,
           },
           {
             key: "theme",
