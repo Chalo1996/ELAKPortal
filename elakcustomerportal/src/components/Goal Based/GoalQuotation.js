@@ -3,7 +3,6 @@ import { Table, Card, Row, Col, Checkbox, Button, Typography } from 'antd';
 import { useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { resetData } from "../../store/redux/features/eduSlice";
 import { LeftOutlined } from "@ant-design/icons";
 import PolicyExclusionsModal from "../Group Life/Modals/PolicyExclusionsModal";
 
@@ -83,21 +82,11 @@ const handleModalAccept = () => {
   setIsPolicyModalVisible(false);
 };
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const location = useLocation();
   const { cData = {}, formData = {} } = location.state || {};
   
   const parsedCData = JSON.parse(cData);
   
-  const [acceptedExclusions, setAcceptedExclusions] = useState(false);
-
-  const handleAcceptanceChange = (e) => {
-    setAcceptedExclusions(e.target.checked);
-  };
-
-  const handlePrevClick = () => {
-    console.log('Back button clicked');
-  };
 
   const handleDownload = () => {
     console.log('Download button clicked');

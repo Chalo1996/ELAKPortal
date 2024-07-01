@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 import { Layout } from "antd";
 import Sidebar from "./Sidebar";
-import ContentTrial from "./ContentTrial";
 
 const { Content, Sider } = Layout;
 
-const MainLayout = () => {
-  const [collapsed, setCollapsed] = useState(window.innerWidth < 768);
+const PortalLayout = ({ children }) => {
+  // eslint-disable-next-line no-unused-vars
   const [selectedKey, setSelectedKey] = useState("home");
+  const [collapsed, setCollapsed] = useState(window.innerWidth < 768);
 
   const handleMenuSelect = (key) => {
     if (key === "theme" || key === "expanded" || key === "collapsed") return;
@@ -38,7 +38,7 @@ const MainLayout = () => {
       <Sider
         collapsed={collapsed}
         onCollapse={setCollapsed}
-        width={256}
+        width={260}
         collapsedWidth={80}
         style={{
           overflow: "auto",
@@ -54,25 +54,25 @@ const MainLayout = () => {
           onSelect={handleMenuSelect}
           collapsed={collapsed}
           toggleCollapsed={toggleCollapsed}
+          type="portal"
         />
       </Sider>
       <Layout
         style={{
-          marginLeft: collapsed ? 80 : 256,
+          marginLeft: collapsed ? 80 : 260,
           overflow: "auto",
         }}
       >
         <Content
           style={{
-            overflow: "auto",
-            padding: "24px",
+            overflow: "initial",
           }}
         >
-          <ContentTrial selectedKey={selectedKey} />
+          <div className={`min-h-[100vh] p-[24px]`}>{children}</div>
         </Content>
       </Layout>
     </Layout>
   );
 };
 
-export default MainLayout;
+export default PortalLayout;

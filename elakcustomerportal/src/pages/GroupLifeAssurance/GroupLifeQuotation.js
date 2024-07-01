@@ -150,7 +150,7 @@ const QuotationTable = () => {
   };
 
   return (
-    <div className="pt-5 pl-4">
+    <div className="pt-5 pl-4"  style={{font: "DIN"}}>
       <div className="flex items-center" style={{ marginBottom: "20px", marginTop: "10px" }} >
         <button className="mb-1.5 focus:outline-none hover:text-[#A32A29]" >
           <LeftOutlined className="w-8 h-8" onClick={handleNavigate} />
