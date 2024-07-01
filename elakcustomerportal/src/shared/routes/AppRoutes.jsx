@@ -37,19 +37,20 @@ import GroupCreditRoutes from "../../components/Routes/GroupCreditRoutes";
 import Claims from "../../components/Claims/Claims";
 import Payments from "../../components/Payments/Payments";
 import Policy from "../../components/Policies/Policy";
+import Dashboard from "../../pages/Dashboard";
 
 const AppRoutes = () => {
   return (
     <BrowserRouter>
       <Routes>
         {/* Landing Page Route */}
-        <Route path="/landing-page" element={<LandingPage />} />
+        <Route path='/landing-page' element={<LandingPage />} />
         {/* Redirect to /landing-page */}
-        <Route path="/" element={<Navigate to="/landing-page" />} />
+        {/* <Route path='/' element={<Navigate to='/landing-page' />} /> */}
 
         {/* Home route */}
         <Route
-          path="/home"
+          path='/home'
           element={
             <PortalLayout>
               <Home />
@@ -57,90 +58,100 @@ const AppRoutes = () => {
           }
         />
 
+        {/* Dashboard route */}
+        <Route
+          path='/'
+          element={
+            <InnerLayout>
+              <Dashboard />
+            </InnerLayout>
+          }
+        />
+
         {/* Routes under /home */}
         <Route
-          path="/home/*"
+          path='/home/*'
           element={
             <PortalLayout>
               <Routes>
-                <Route path="education" element={<Education />} />
-                <Route path="goal-based" element={<GoalBased />} />
+                <Route path='education' element={<Education />} />
+                <Route path='goal-based' element={<GoalBased />} />
                 <Route
-                  path="funeral-expense/select-customer-type"
+                  path='funeral-expense/select-customer-type'
                   element={<CustomerTypePage />}
                 />
                 <Route
-                  path="funeral-expense"
+                  path='funeral-expense'
                   element={<HandleCustomerSelection />}
                 />
                 <Route
-                  path="funeral-expense/quotation-details"
+                  path='funeral-expense/quotation-details'
                   element={<FuneralExpenseQuotation />}
                 />
                 <Route
-                  path="group-life-assurance"
+                  path='group-life-assurance'
                   element={<GroupLifeAssurance />}
                 />
                 <Route
-                  path="group-life-assurance/quotation-details"
+                  path='group-life-assurance/quotation-details'
                   element={<GroupLifeQuotation />}
                 />
                 <Route
-                  path="customer-type/critical-illness"
+                  path='customer-type/critical-illness'
                   element={<GroupCriticalIllness />}
                 />
-                <Route path="customer-type" element={<CustomerType />} />
+                <Route path='customer-type' element={<CustomerType />} />
                 <Route
-                  path="customer-type/critical-illness/critical-illness-quotation"
+                  path='customer-type/critical-illness/critical-illness-quotation'
                   element={<CriticalIllnessQuotation />}
                 />
                 <Route
-                  path="customer-type/group-customer/critical-illness-quotation"
+                  path='customer-type/group-customer/critical-illness-quotation'
                   element={<CriticalIllnessQuotation />}
                 />
                 <Route
-                  path="customer-type/critical-illness/submit"
+                  path='customer-type/critical-illness/submit'
                   element={<Submit />}
                 />
                 <Route
-                  path="customer-type/group-customer"
+                  path='customer-type/group-customer'
                   element={<GroupCustomer />}
                 />
                 <Route
-                  path="customer-type/group-customer/upload-details"
+                  path='customer-type/group-customer/upload-details'
                   element={<UploadDetails />}
                 />
-                <Route path="group-credit/*" element={<GroupCreditRoutes />} />
-                <Route path="welcome" element={<Welcome />} />
+                <Route path='group-credit/*' element={<GroupCreditRoutes />} />
+                <Route path='welcome' element={<Welcome />} />
                 <Route
-                  path="term-life-quote"
+                  path='term-life-quote'
                   element={<GroupTermLifeQuote />}
                 />
                 <Route
-                  path="Education/Educ-Quotation"
+                  path='Education/Educ-Quotation'
                   element={<EducQuotation />}
                 />
-                <Route path="Education/Register" element={<Register />} />
+                <Route path='Education/Register' element={<Register />} />
                 <Route
-                  path="Goal-based/goal-quotation"
+                  path='Goal-based/goal-quotation'
                   element={<GoalQuotation />}
                 />
-                <Route path="annuity" element={<AnnuityPage />} />
+                <Route path='annuity' element={<AnnuityPage />} />
                 <Route
-                  path="annuity/quotation-details"
+                  path='annuity/quotation-details'
                   element={<AnnuityQuotation />}
                 />
-                <Route path="*" element={<NotFound />} />
+                <Route path='*' element={<NotFound />} />
                 <Route
-                  path="group-life-assurance/call-back-submission"
+                  path='group-life-assurance/call-back-submission'
                   element={<SubmittedCallBack />}
                 />
                 <Route
-                  path="motor-vehicle/select-motor-use"
+                  path='motor-vehicle/select-motor-use'
                   element={<VehicleCategoryPage />}
                 />
                 <Route
-                  path="motor-vehicle"
+                  path='motor-vehicle'
                   element={<HandleMotorSelection />}
                 />
               </Routes>
@@ -150,23 +161,23 @@ const AppRoutes = () => {
 
         {/* Routes outside of /home */}
         <Route
-          path="/*"
+          path='/*'
           element={
             <InnerLayout>
               <Routes>
-                <Route path="/policies" element={<PoliciesRoutes />} />
-                <Route path="/policies/:policyId" element={<Policy />} />
-                <Route path="claims" element={<Claims />} />
-                <Route path="payments" element={<Payments />} />
-                <Route path="*" element={<NotFound />} />
+                <Route path='/policies' element={<PoliciesRoutes />} />
+                <Route path='/policies/:policyId' element={<Policy />} />
+                <Route path='claims' element={<Claims />} />
+                <Route path='payments' element={<Payments />} />
+                <Route path='*' element={<NotFound />} />
               </Routes>
             </InnerLayout>
           }
         />
-        <Route path="/authentication/*" element={<AuthRoutes />} />
-        <Route path="/terms" element={<Terms />} />
-        <Route path="/privacy" element={<Privacy />} />
-        <Route path="*" element={<NotFound />} />
+        <Route path='/authentication/*' element={<AuthRoutes />} />
+        <Route path='/terms' element={<Terms />} />
+        <Route path='/privacy' element={<Privacy />} />
+        <Route path='*' element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   );
@@ -176,7 +187,7 @@ const AuthRoutes = () => {
   return (
     <AuthLayout>
       <Routes>
-        <Route path="/" element={<Authentication />} />
+        <Route path='/' element={<Authentication />} />
       </Routes>
     </AuthLayout>
   );
