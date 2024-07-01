@@ -131,7 +131,6 @@ const AppRoutes = () => {
                   path='Education/Educ-Quotation'
                   element={<EducQuotation />}
                 />
-                <Route path='Education/Register' element={<Register />} />
                 <Route
                   path='Goal-based/goal-quotation'
                   element={<GoalQuotation />}
