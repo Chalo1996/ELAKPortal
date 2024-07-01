@@ -1,6 +1,6 @@
 import { useLocation } from "react-router-dom";
-import PrivateUsePage from "./PrivateUse";
-import CommercialActivitiesPage from "./CommercialActivities";
+import PrivateUsePage from "./private/PrivateUse";
+import CommercialActivitiesPage from "./commercial/CommercialActivities";
 
 
 const HandleMotorSelection = () => {

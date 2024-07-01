@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { LeftOutlined } from "@ant-design/icons";
-import { Form, Input, Select, DatePicker } from "antd";
+import { Form, Input, Select, DatePicker, Button } from "antd";
 import sspFlag from "../../assets/flags/ssp.png";
 import cdfFlag from "../../assets/flags/cdf.png";
 import rwfFlag from "../../assets/flags/rwf.png";
@@ -17,12 +17,28 @@ const PhoneAreas = [
   { code: "+255", flag: tzsFlag, country: "Tanzania" },
   { code: "+256", flag: ugxFlag, country: "Uganda" },
 ];
-
 const Genders = ["Male", "Female"];
+const questions = [
+  "What is your mother's maiden name?",
+  "What city were you born in?",
+  "What is the name of your first pet?",
+  "What is the name of your first school?",
+  "What is the name of your favorite sports team?",
+];
 
 const Signup = () => {
   const [formData, setFormData] = useState({
     fullName: "",
+    gender: "",
+    birthDate: null,
+    phoneArea: "+254",
+    country: "Kenya",
+    phoneNo: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    selectedQuestion: "",
+    answer: "",
   });
   const [form] = Form.useForm();
 
@@ -39,6 +55,14 @@ const Signup = () => {
         country: selectedCountry.country,
       });
     }
+  };
+
+  const handleQuestionChange = (value) => {
+    setFormData({
+      ...formData,
+      selectedQuestion: value,
+      answer: "", // Clear answer when question changes
+    });
   };
 
   const validateBirthDate = (_, value) => {
@@ -71,6 +95,29 @@ const Signup = () => {
     }
   };
 
+  const validatePassword = (_, value) => {
+    // Check if the password meets all criteria
+    if (
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!£$#&*%])[A-Za-z\d!£$#&*%]{10,}$/.test(
+        value
+      )
+    ) {
+      return Promise.resolve();
+    }
+    return Promise.reject(
+      "Password must be at least 10 characters, have upper and lower case letters, one digit (0-9), and one special character (!,£,$,#,&,*,%)."
+    );
+  };
+
+  const validateConfirmPassword = ({ getFieldValue }) => ({
+    validator(_, value) {
+      if (!value || getFieldValue("password") === value) {
+        return Promise.resolve();
+      }
+      return Promise.reject("The two passwords that you entered do not match!");
+    },
+  });
+
   const preventNumericInput = (event) => {
     if (/[0-9]/.test(event.key)) {
       event.preventDefault();
@@ -81,6 +128,10 @@ const Signup = () => {
     if (!/[0-9]/.test(event.key)) {
       event.preventDefault();
     }
+  };
+
+  const handleSubmit = () => {
+    console.log("Form data", formData);
   };
 
   return (
@@ -96,14 +147,19 @@ const Signup = () => {
         </span>
       </div>
 
-      <div className="w-[710px] h-[76px] top-[408px] left-[425px]">
+      <div className="my-2">
         <p className="font-open-sans text-[16px] font-semibold leading-[28px] text-left">
           Create your profile
         </p>
       </div>
 
-      <Form form={form} layout="vertical">
-        <div className="grid grid-cols-1 gap-2">
+      <Form
+        form={form}
+        layout="vertical"
+        onFinishFailed={(event) => console.log(event)}
+        onFinish={handleSubmit}
+      >
+        <div className="grid grid-cols-1 gap-1">
           <Form.Item
             label="Full Name"
             name="fullName"
@@ -138,28 +194,6 @@ const Signup = () => {
                 </Option>
               ))}
             </Select>
-          </Form.Item>
-          <Form.Item
-            label="Date of Birth"
-            name="birthDate"
-            rules={[
-              {
-                required: true,
-                message: "Please select date of birth.",
-              },
-              { validator: validateBirthDate },
-            ]}
-            style={{ width: "100%", cursor: "pointer", marginBottom: "35px" }}
-          >
-            <DatePicker
-              style={{ width: "100%" }}
-              id="birthDate"
-              value={formData.birthDate}
-              onChange={(value) =>
-                setFormData({ ...formData, birthDate: value })
-              }
-              inputReadOnly={true}
-            />
           </Form.Item>
           <Form.Item
             label="Email Address"
@@ -221,6 +255,115 @@ const Signup = () => {
               }
             />
           </Form.Item>
+          <Form.Item
+            label="Date of Birth"
+            name="birthDate"
+            rules={[
+              {
+                required: true,
+                message: "Please select date of birth.",
+              },
+              { validator: validateBirthDate },
+            ]}
+            style={{ width: "100%", cursor: "pointer", marginBottom: "35px" }}
+          >
+            <DatePicker
+              style={{ width: "100%" }}
+              id="birthDate"
+              value={formData.birthDate}
+              onChange={(value) =>
+                setFormData({ ...formData, birthDate: value })
+              }
+              inputReadOnly={true}
+            />
+          </Form.Item>
+          <Form.Item
+            label="Password"
+            name="password"
+            rules={[
+              {
+                required: true,
+                message: "Please enter your password.",
+              },
+              {
+                validator: validatePassword,
+              },
+            ]}
+          >
+            <Input.Password
+              placeholder="Enter your password"
+              value={formData.password}
+              onChange={(e) =>
+                setFormData({ ...formData, password: e.target.value })
+              }
+            />
+          </Form.Item>
+          <Form.Item
+            label="Confirm Password"
+            name="confirmPassword"
+            dependencies={["password"]}
+            rules={[
+              {
+                required: true,
+                message: "Please confirm your password.",
+              },
+              validateConfirmPassword,
+            ]}
+          >
+            <Input.Password
+              placeholder="Confirm your password"
+              value={formData.confirmPassword}
+              onChange={(e) =>
+                setFormData({ ...formData, confirmPassword: e.target.value })
+              }
+            />
+          </Form.Item>
+          <Form.Item
+            label="Security Question"
+            name="securityQuestion"
+            rules={[
+              {
+                required: true,
+                message: "Please select a security question.",
+              },
+            ]}
+          >
+            <Select
+              placeholder="Select a security question"
+              value={formData.selectedQuestion}
+              onChange={handleQuestionChange}
+            >
+              {questions.map((item) => (
+                <Option key={item} value={item}>
+                  {item}
+                </Option>
+              ))}
+            </Select>
+          </Form.Item>
+          <Form.Item
+            label="Security Answer"
+            name="answer"
+            rules={[
+              {
+                required: true,
+                message: "Please enter your answer.",
+              },
+            ]}
+          >
+            <Input
+              placeholder="Enter your answer"
+              value={formData.answer}
+              onChange={(e) =>
+                setFormData({ ...formData, answer: e.target.value })
+              }
+            />
+          </Form.Item>
+        </div>
+
+        <div className="text-left mt-4">
+          <Button type="primary" className="shadow-none" htmlType="submit">
+            Submit
+          </Button>
         </div>
       </Form>
     </div>
