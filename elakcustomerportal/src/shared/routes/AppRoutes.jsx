@@ -37,6 +37,7 @@ import Payments from "../../components/Payments/Payments";
 import Policy from "../../components/Policies/Policy";
 import MotorQuotation from "../../pages/MotorVehicleInsurance/MotorQuotation";
 import Dashboard from "../../pages/Dashboard";
+import OTPPage from "../../authentication/pages/OTP";
 
 const AppRoutes = () => {
   return (
@@ -190,6 +191,7 @@ const AuthRoutes = () => {
     <AuthLayout>
       <Routes>
         <Route path="/" element={<Authentication />} />
+        <Route path="/otp" element={<OTPPage />} />
       </Routes>
     </AuthLayout>
   );

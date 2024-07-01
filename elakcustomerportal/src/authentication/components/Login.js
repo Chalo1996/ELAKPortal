@@ -31,6 +31,8 @@ const Login = () => {
 
   const handleSubmit = () => {
     console.log("Form data", formData);
+    // Navigate to the OTP page
+    navigate("/authentication/otp");
   };
 
   return (
