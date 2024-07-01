@@ -140,6 +140,10 @@ function App() {
                       element={<GroupCustomer />}
                     />
                     <Route
+                      path="customer-type/group-customer/submit"
+                      element={<Submit />}
+                    />
+                    <Route
                       path="customer-type/group-customer/upload-details"
                       element={<UploadDetails />}
                     />

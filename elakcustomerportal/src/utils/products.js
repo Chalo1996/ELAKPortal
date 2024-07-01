@@ -2,7 +2,7 @@ import gleImg from "../assets/images/funeral-expense.jpg";
 import glaImg from "../assets/glaImg.png";
 import edu from "../assets/edu.jpg";
 import goal from "../assets/goal.png";
-import introImage from "../assets/introImage.jpg";
+import ciImg from "../assets/ciImg.jpg";
 import happyfamily from "../assets/happyfamily.png";
 import groupcreditImg from "../assets/groupcredit.png";
 import annuityImg from "../assets/annuityImg.jpg";
@@ -17,7 +17,7 @@ const products = [
   },
   {
     title: "Critical Illness Cover",
-    image: introImage,
+    image: ciImg,
     url: "customer-type",
     description:
       "Critical Illness insurance provides comprehensive coverage for against chronic illnesses such as cancer, ensuring you receive the best healthcare possible.",
