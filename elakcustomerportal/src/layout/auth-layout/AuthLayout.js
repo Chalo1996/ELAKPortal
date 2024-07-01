@@ -7,9 +7,16 @@ const { Title, Text } = Typography;
 const AuthLayout = ({ children }) => {
   return (
     <div className="flex flex-row min-h-screen w-full overflow-hidden">
+      {/* Left Side */}
       <div
         className="flex flex-col w-3/5 min-h-screen relative bg-cover bg-center"
-        style={{ backgroundImage: `url(${bgLogo})` }}
+        style={{
+          backgroundImage: `url(${bgLogo})`,
+          position: "fixed", // Fixed positioning for the left side
+          top: 0, // Stick to the top of the viewport
+          bottom: 0, // Take full height of the viewport
+          left: 0, // Stick to the left side of the viewport
+        }}
       >
         <img
           src={imgLogo}
@@ -26,7 +33,11 @@ const AuthLayout = ({ children }) => {
           </Text>
         </div>
       </div>
-      <div className="w-2/5 min-h-screen">{children}</div>
+
+      {/* Right Side */}
+      <div className="ml-[60%] w-[40%] min-h-screen overflow-y-auto">
+        {children}
+      </div>
     </div>
   );
 };

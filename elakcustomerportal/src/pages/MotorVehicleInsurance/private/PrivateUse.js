@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { LeftOutlined } from "@ant-design/icons";
 import { Steps, Button, Typography, message, Form } from "antd";
@@ -22,15 +22,13 @@ const PrivateUse = () => {
   const [form] = Form.useForm();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [action, setAction] = useState();
-  const [isFormSubmitted, setIsFormSubmitted] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [isFormSubmitted] = useState(false);
+  const [loading] = useState(false);
 
-  const authStatus = useSelector((state) => state.auth.status);
   const isLoading = useSelector((state) => state.groupLifeAssurance.isLoading);
   const data = useSelector((state) => state.groupLifeAssurance.glaData);
 
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   const initialData = {
     firstName: "",
