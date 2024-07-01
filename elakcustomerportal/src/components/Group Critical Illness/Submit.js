@@ -62,6 +62,10 @@ const Submit = () => {
             <td style="padding: 8px; border: 1px solid #ddd; font-weight: bold;">Mobile Number:</td>
             <td style="padding: 8px; border: 1px solid #ddd;">${phoneArea}${mobileNumber}</td>
           </tr>
+          <tr>
+            <td style="padding: 8px; border: 1px solid #ddd; font-weight: bold;">Product:</td>
+            <td style="padding: 8px; border: 1px solid #ddd;">Critical Illness Cover</td>
+          </tr>
         </table>
         <p style="margin-top: 20px;">Best regards,<br>Equity Bank Limited</p>
       </div>

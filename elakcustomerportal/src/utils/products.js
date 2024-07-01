@@ -6,6 +6,7 @@ import ciImg from "../assets/ciImg.jpg";
 import happyfamily from "../assets/happyfamily.png";
 import groupcreditImg from "../assets/groupcredit.png";
 import annuityImg from "../assets/annuityImg.jpg";
+import motorImg from "../assets/images/motorImg.jpg"
 
 const products = [
   {
@@ -64,5 +65,13 @@ const products = [
     description:
       "Annuities provide a steady income stream during retirement, offering peace of mind and financial stability. Whether you're planning for retirement or looking to convert your savings into a reliable income, our annuity solutions are designed to meet your needs.",
   },
+  {
+    title: "Motor Vehicle Insurance",
+    url: "motor-vehicle/select-motor-use",
+    image: motorImg,
+    description:
+      "Get protection against unforseen vehicle emergencies",
+  },
+  
 ];
 export default products;
