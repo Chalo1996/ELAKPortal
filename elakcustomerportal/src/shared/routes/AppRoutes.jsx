@@ -37,6 +37,7 @@ import GroupCreditRoutes from "../../components/Routes/GroupCreditRoutes";
 import Claims from "../../components/Claims/Claims";
 import Payments from "../../components/Payments/Payments";
 import Policy from "../../components/Policies/Policy";
+import MotorQuotation from "../../pages/MotorVehicleInsurance/MotorQuotation";
 import Dashboard from "../../pages/Dashboard";
 
 const AppRoutes = () => {
@@ -153,6 +154,10 @@ const AppRoutes = () => {
                 <Route
                   path='motor-vehicle'
                   element={<HandleMotorSelection />}
+                />
+                <Route
+                  path="motor-vehicle/quotation"
+                  element={<MotorQuotation />}
                 />
               </Routes>
             </PortalLayout>

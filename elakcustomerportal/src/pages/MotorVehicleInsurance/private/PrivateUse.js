@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { LeftOutlined } from "@ant-design/icons";
 import { Steps, Button, Typography, message, Form } from "antd";
@@ -11,38 +11,26 @@ import CoverTerms from "../../../components/MotorVehicleInsurance/CoverTerms";
 import Extras from "../../../components/MotorVehicleInsurance/Extras";
 import ToDoModal from "../../../components/MotorVehicleInsurance/modals/ToDoModal";
 import CallBackForm from "../../../components/MotorVehicleInsurance/CallBackForm";
-import { fetchData } from "../../../store/redux/features/glaSlice";
-
 
 import ReviewAndConfirm from "../../../components/MotorVehicleInsurance/ReviewForm";
 
-
-
-
 const { Step } = Steps;
 const { Title } = Typography;
-
 
 const PrivateUse = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [form] = Form.useForm();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [action, setAction] = useState();
-  const [isFormSubmitted, setIsFormSubmitted] = useState(false);
-  const [loading, setLoading]= useState(false);
+  const [isFormSubmitted] = useState(false);
+  const [loading] = useState(false);
 
-  const authStatus = useSelector((state) => state.auth.status);
   const isLoading = useSelector((state) => state.groupLifeAssurance.isLoading);
   const data = useSelector((state) => state.groupLifeAssurance.glaData);
 
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-
-
-
 
   const initialData = {
-
     firstName: "",
     lastName: "",
     email: "",
@@ -68,7 +56,6 @@ const PrivateUse = () => {
     antiTheftDevices: "",
     garagedAddress: "",
 
-
     typeOfCover: "",
     paymentOptionsFrequency: "",
     coverPeriodDays: null,
@@ -85,8 +72,7 @@ const PrivateUse = () => {
     extraAuthorisedRepairLimit: null,
     ambulanceService: null,
     lossOfUse: null
-
-};
+  };
 
   const [formData, setFormData] = useState(() => ({
     ...initialData,
@@ -106,95 +92,93 @@ const PrivateUse = () => {
       selectedOption: formData.selectedOption,
     },
     vehicleDetails: {
-        vehicleRegistrationNumber: formData.vehicleRegistrationNumber,
-        transmission: formData.transmission,
-        make: formData.make,
-        model: formData.model,
-        bodyType: formData.bodyType,
-        dateOfManufacture: formData.dateOfManufacture,
-        yearOfManufacture: formData.yearOfManufacture,
-        chassisNumber: formData.chassisNumber,
-        fuel: formData.fuel,
-        performanceCC: formData.performanceCC,
-        colour: formData.colour,
-        weight: formData.weight,
-        engineNumber: formData.engineNumber,
-        antiTheftDevices: formData.antiTheftDevices,
-        garagedAddress: formData.garagedAddress
+      vehicleRegistrationNumber: formData.vehicleRegistrationNumber,
+      transmission: formData.transmission,
+      make: formData.make,
+      model: formData.model,
+      bodyType: formData.bodyType,
+      dateOfManufacture: formData.dateOfManufacture,
+      yearOfManufacture: formData.yearOfManufacture,
+      chassisNumber: formData.chassisNumber,
+      fuel: formData.fuel,
+      performanceCC: formData.performanceCC,
+      colour: formData.colour,
+      weight: formData.weight,
+      engineNumber: formData.engineNumber,
+      antiTheftDevices: formData.antiTheftDevices,
+      garagedAddress: formData.garagedAddress
     },
-    
     coverTerms: {
-        typeOfCover: formData.typeOfCover,
-        paymentOptionsFrequency: formData.paymentOptionsFrequency,
-        coverPeriodDays: formData.coverPeriodDays,
-        estimatedSumInsured: formData.estimatedSumInsured,
-        paymentMethod: formData.paymentMethod,
-        minimumCoverPremium: formData.minimumCoverPremium,
-        catalogueValueDepreciated: formData.catalogueValueDepreciated
+      typeOfCover: formData.typeOfCover,
+      paymentOptionsFrequency: formData.paymentOptionsFrequency,
+      coverPeriodDays: formData.coverPeriodDays,
+      estimatedSumInsured: formData.estimatedSumInsured,
+      paymentMethod: formData.paymentMethod,
+      minimumCoverPremium: formData.minimumCoverPremium,
+      catalogueValueDepreciated: formData.catalogueValueDepreciated
     },
-    
     additionalBenefits: {
-        excessProtector: formData.excessProtector,
-        extraWindscreenLimit: formData.extraWindscreenLimit,
-        roadsideAssistance: formData.roadsideAssistance,
-        extraVehicleEntertainmentLimits: formData.extraVehicleEntertainmentLimits,
-        politicalViolenceAndTerrorism: formData.politicalViolenceAndTerrorism,
-        extraAuthorisedRepairLimit: formData.extraAuthorisedRepairLimit,
-        ambulanceService: formData.ambulanceService,
-        lossOfUse: formData.lossOfUse
+      excessProtector: formData.excessProtector,
+      extraWindscreenLimit: formData.extraWindscreenLimit,
+      roadsideAssistance: formData.roadsideAssistance,
+      extraVehicleEntertainmentLimits: formData.extraVehicleEntertainmentLimits,
+      politicalViolenceAndTerrorism: formData.politicalViolenceAndTerrorism,
+      extraAuthorisedRepairLimit: formData.extraAuthorisedRepairLimit,
+      ambulanceService: formData.ambulanceService,
+      lossOfUse: formData.lossOfUse
     }
-};
+  };
 
+  const handleNavigate = () => {
+    navigate(-1);
+  };
 
-const handleNavigate = () => {
-  navigate(-1);
-};
+  const onNextStep = async () => {
+    try {
+      await form.validateFields();
+      if (currentStep === 0) {
+        setIsModalOpen(true);
+      } else {
+        setCurrentStep(currentStep + 1);
+        console.log(formData);
+      }
+    } catch (error) {
+      message.error("Please complete the form before proceeding.");
+    }
+  };
 
-const onNextStep = async () => {
-  try {
-    await form.validateFields();
-    if (currentStep === 0) {
-      setIsModalOpen(true);
-    } else {
+  const onPrevStep = () => {
+    setCurrentStep(currentStep - 1);
+  };
+
+  const handleModalContinue = (selectedOption) => {
+    setAction(selectedOption);
+    setIsModalOpen(false);
+    if (selectedOption === 'generateQuote') {
       setCurrentStep(currentStep + 1);
       console.log(formData);
+    } else if (selectedOption === 'requestCallback') {
+      setCurrentStep('callbackForm');
     }
-  } catch (error) {
-    message.error("Please complete the form before proceeding.");
-  }
-};
+  };
 
-const onPrevStep = () => {
-  setCurrentStep(currentStep - 1);
-};
+  const handleSubmitCallback = () => {
+    navigate("call-back-submission");
+    message.success('Form submitted successfully!');
+    console.log(dataToPost.ContactDetails);
+  };
 
-const handleModalContinue = (selectedOption) => {
-  setAction(selectedOption);
-  setIsModalOpen(false);
-  if (selectedOption === 'generateQuote') {
-    setCurrentStep(currentStep + 1);
-    console.log(formData);
-  } else if (selectedOption === 'requestCallback') {
-    setCurrentStep('callbackForm');
-  }
-};
+  const handleSubmit = async () => {
+    navigate("quotation");
+  };
 
-const handleSubmitCallback = () => {
-  navigate("call-back-submission")
-  message.success('Form submited successfully!');
-  console.log(dataToPost.ContactDetails);
-};
-
-const handleSubmit = async () => {
-navigate("quotation");
-};
-useEffect(() => {
-  if (isFormSubmitted && !isLoading) {
-    navigate("quotation", {
-      state: { formData, data },
-    });
-  }
-}, [isFormSubmitted, isLoading, navigate, formData, data]);
+  useEffect(() => {
+    if (isFormSubmitted && !isLoading) {
+      navigate("quotation", {
+        state: { formData, data },
+      });
+    }
+  }, [isFormSubmitted, isLoading, navigate, formData, data]);
 
   const steps = [
     {
@@ -223,7 +207,7 @@ useEffect(() => {
     <div className="pt-5 pl-4">
       <div className="flex items-center">
         <button className="mb-5 focus:outline-none hover:text-[#A32A29]">
-          <LeftOutlined className="w-8 h-4" style={{ marginTop: '10px' }}onClick={handleNavigate} />
+          <LeftOutlined className="w-8 h-4" style={{ marginTop: '10px' }} onClick={handleNavigate} />
         </button>
         <Title level={5} style={{ marginBottom: '10px' }} className="font-open-sans text-[16px] font-semibold leading-[24px] text-left">
           Motor Vehicle Insurance (Private use)
@@ -250,7 +234,7 @@ useEffect(() => {
               </Button>
             )}
             {currentStep > 3 && (
-              <Button type="primary" onClick={handleSubmit} loading={loading} disabled>
+              <Button type="primary" onClick={handleSubmit} loading={loading}>
                 Generate Quote
               </Button>
             )}
@@ -269,11 +253,10 @@ useEffect(() => {
               onClick={handleSubmitCallback}
               className="h-full px-4 py-2 shadow-none text-center mr-3"
             >
-              Submit  
+              Submit
             </Button>
           </div>
         </>
-
       )}
       <ToDoModal
         isModalOpen={isModalOpen}

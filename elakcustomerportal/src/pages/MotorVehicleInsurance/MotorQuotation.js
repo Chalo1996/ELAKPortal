@@ -3,7 +3,16 @@ import { Card, Row, Col, Table, Button, Checkbox, Typography, message, Divider }
 import { LeftOutlined } from "@ant-design/icons";
 import PolicyExclusionsModal from "../../components/Group Life/Modals/PolicyExclusionsModal";
 import { useNavigate } from "react-router-dom";
+import templateFile from "../../components/MotorVehicleInsurance/templates/Motor Quotation Template.docx";
+import Docxtemplater from "docxtemplater";
+import PizZip from "pizzip";
+import * as FileSaver from "file-saver";
+
+
+
 const { Title, Text } = Typography;
+
+const formatCurrency = (value) => `KES ${Math.round(value).toLocaleString()}`;
 
 const data = {
     coverDetails: {
@@ -17,7 +26,7 @@ const data = {
     },
     limitsOfLiability: [
         { key: '1', description: 'Third Party Personal Injury', limit: 'Unlimited', excess: '' },
-        { key: '2', description: 'Third Party Property Damage', limit: '20,000,000.00', excess: '' },
+        { key: '2', description: 'Third Party Property Damage', limit: formatCurrency(20000000), excess: '' },
         { key: '3', description: 'Passenger Liability', limit: '4,000,000.00 per person 20,000,000.00 per event', excess: '' },
         { key: '4', description: 'Medical Expenses', limit: '50,000.00', excess: '' },
         { key: '5', description: 'Towing Charges', limit: '50,000.00 Additional limit charge 10%', excess: '' },
@@ -48,39 +57,14 @@ const data = {
 };
 
 const columns = [
-    {
-        title: 'Description',
-        dataIndex: 'description',
-        key: 'description',
-        width: '50%'
-    },
-    {
-        title: 'Limits of Liability (Kshs)',
-        dataIndex: 'limit',
-        key: 'limit',
-        width: '25%'
-    },
-    {
-        title: 'Excess (Kshs)',
-        dataIndex: 'excess',
-        key: 'excess',
-        width: '25%'
-    }
+    { title: 'Description', dataIndex: 'description', key: 'description', width: '50%' },
+    { title: 'Limits of Liability (Kshs)', dataIndex: 'limit', key: 'limit', width: '25%' },
+    { title: 'Excess (Kshs)', dataIndex: 'excess', key: 'excess', width: '25%' }
 ];
 
 const extensionsColumns = [
-    {
-        title: 'Description',
-        dataIndex: 'description',
-        key: 'description',
-        width: '75%'
-    },
-    {
-        title: 'Value (Kshs)',
-        dataIndex: 'value',
-        key: 'value',
-        width: '25%'
-    }
+    { title: 'Description', dataIndex: 'description', key: 'description', width: '75%' },
+    { title: 'Value (Kshs)', dataIndex: 'value', key: 'value', width: '25%' }
 ];
 
 const MotorQuotation = () => {
@@ -95,8 +79,6 @@ const MotorQuotation = () => {
         navigate(-1);
     };
 
-    const formatCurrency = (value) => `KES ${Math.round(value).toLocaleString()}`;
-
     const handleCheckboxChange = (e) => {
         setIsPolicyModalVisible(true);
         setIsCheckboxChecked(e.target.checked);
@@ -108,11 +90,30 @@ const MotorQuotation = () => {
     };
 
     const handleDownload = () => {
-    };
+        const docData = {};
 
-    const NumberFormat = {
-        formatter: (value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ","),
-        parser: (value) => value.replace(/(,*)/g, ""),
+        fetch(templateFile)
+            .then((res) => res.arrayBuffer())
+            .then((buffer) => {
+                const zip = new PizZip(buffer);
+                const doc = new Docxtemplater(zip);
+
+                doc.setData(docData);
+
+                try {
+                    doc.render();
+                } catch (error) {
+                    console.error("Error rendering document:", error);
+                    return;
+                }
+
+                const generatedDoc = doc.getZip().generate({ type: "blob" });
+                FileSaver.saveAs(generatedDoc, "Quotation.docx");
+                message.success('Quote downloaded successfully!');
+            })
+            .catch((error) => {
+                console.error("Error loading template file:", error);
+            });
     };
 
     return (
@@ -131,11 +132,11 @@ const MotorQuotation = () => {
                         <img src="https://th.bing.com/th/id/OIP.slQhzvN6Tzo0RxGP9AiQSgAAAA?rs=1&pid=ImgDetMain" alt="Company Logo" style={{ maxWidth: "100px", maxHeight: "120px" }} />
                     </Col>
                     <Col span={12}>
-                        <Title level={5}>EQUITY GENERAL INSURANCE (KENYA) LIMITED</Title>
-                        <Text className="text-[#929497]">P.O Box 350-00202 Nairobi, Kenya</Text><br />
-                        <Text className="text-[#929497]">Tel: +254-763026000 | Fax: +254-20-2737276</Text><br />
-                        <Text className="text-[#929497]">Email: insurance@equitybank.co.ke</Text><br />
-                        <Text className="text-[#929497]">Website: https://www.equitybank.co.ke</Text><br />
+                        <Title level={5} style={{fontSize: "16px"}}>EQUITY GENERAL INSURANCE (KENYA) LIMITED</Title>
+                        <Text style={{fontSize: "12px", align: "right"}}>P.O Box 350-00202 Nairobi, Kenya</Text><br />
+                        <Text style={{fontSize: "12px"}}>Tel: +254-763026000 | Fax: +254-20-2737276</Text><br />
+                        <Text style={{fontSize: "12px"}}>Email: insurance@equitybank.co.ke</Text><br />
+                        <Text style={{fontSize: "12px"}}>Website: https://www.equitybank.co.ke</Text><br />
                     </Col>
                 </Row>
                 <Row justify="left">
@@ -223,7 +224,7 @@ const MotorQuotation = () => {
                         <div style={{ marginTop: "10px", marginLeft: "10px" }}>
                             <p><strong>Premium:</strong> {data.premiumComputation.premium}</p>
                             <Table dataSource={data.premiumComputation.extensions} columns={extensionsColumns} pagination={false} />
-                            <p><strong>Policyholders:</strong> {data.premiumComputation.policyholders}</p> <Text style={{ color: "#A32A29" }}></Text><text></text>
+                            <p><strong>Policyholders:</strong> {data.premiumComputation.policyholders}</p>
                             <p><strong>Training Levy:</strong> {data.premiumComputation.trainingLevy}</p>
                             <Divider style={{ borderWidth: '1px', borderColor: "#A32A29", borderStyle: 'solid' }} />
                             <p><strong>First Premium:</strong> {data.premiumComputation.firstPremium}</p>
@@ -231,10 +232,11 @@ const MotorQuotation = () => {
                         </div>
                     </Col>
                 </Row>
-                <Row>
-                    Mode of Payment:  All premiums are to be directed to Equity Bancassurance.
+                <Row style={{fontSize: "10px"}}>
+                    <Text style={{fontSize: "10px"}}><strong>Mode of Payment:</strong>  All premiums are to be directed to Equity Bancassurance.</Text>
                     Account name: Equity Insurance Agency Limited   |   Bank: Equity Bank Limited   |   Account No: 0180291028202   |   Branch: Community Corporate
                 </Row>
+                <Row justify="end" style={{marginTop: "40px", fontSize: "10px"}}>{new Date().toLocaleDateString()}</Row>
             </Card>
             <div style={{ marginTop: "30px" }}>
                 <Row gutter={[16, 16]}>
