@@ -1,10 +1,9 @@
 import React, { useState, createContext, useContext, useRef} from 'react';
-import {CompassOutlined,BranchesOutlined ,EuroCircleOutlined,UserOutlined,ArrowLeftOutlined,SoundOutlined,CheckOutlined,EditOutlined,MedicineBoxOutlined,HeartOutlined,MenuUnfoldOutlined,ScissorOutlined,CheckCircleOutlined,DollarOutlined,PoweroffOutlined,FilePdfOutlined,MenuOutlined,ClockCircleOutlined,DashboardOutlined,FormOutlined,ProfileOutlined,PushpinOutlined,SwapOutlined,AuditOutlined,ShareAltOutlined } from '@ant-design/icons';
+import {InboxOutlined,CompassOutlined,BranchesOutlined ,EuroCircleOutlined,UserOutlined,ArrowLeftOutlined,SoundOutlined,CheckOutlined,EditOutlined,MedicineBoxOutlined,HeartOutlined,MenuUnfoldOutlined,ScissorOutlined,CheckCircleOutlined,DollarOutlined,PoweroffOutlined,FilePdfOutlined,MenuOutlined,ClockCircleOutlined,DashboardOutlined,FormOutlined,ProfileOutlined,PushpinOutlined,SwapOutlined,AuditOutlined,ShareAltOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
-import {Tabs,Option, Row, Switch,Col,Card,Table,Space,Form, Input,Divider,Tooltip,Button, DatePicker, Select,Steps, Modal, Radio, Checkbox,Typography } from 'antd';
+import {Upload,message,Tabs,Option, Row, Switch,Col,Card,Table,Space,Form, Input,Divider,Tooltip,Button, DatePicker, Select,Steps, Modal, Radio, Checkbox,Typography } from 'antd';
 const { TabPane } = Tabs;
 const { TextArea } = Input;
-
 
 const products = [
 { id: 1, name: 'Notification', icon: <SoundOutlined/>},
@@ -29,13 +28,13 @@ const products = [
 
 const NewClaim = () => {
 const { Option } = Select;
-
 const [selectedProvider, setSelectedProvider] = useState(null);
 const [cashCall, setCashCall] = useState(false);
+const [accident, setAccident] = useState(false);
+const [inNetwork, setInNetwork] = useState(false);
 const [cooperationClause, setCooperationClause] = useState(false);
 const [facultative, setFacultative] = useState(false);
 const [cashCallReceived, setCashCallReceived] = useState(false);
-
 const [notificationInput, setNotificationInput] = useState('');
 const [selectedItem, setSelectedItem] = useState(null);
 const [formData, setFormData] = useState({
@@ -53,17 +52,47 @@ dateOfOccurrence:'',
 krapin:'',
 idnumber:'',
 description:'',
-nameOfProvider:''
+nameOfProvider:'',
+icdCode:'',
+natureOfIllness:'',
+relevantClinicalFindings:'',
+provisionalDiagnosis:'',
+pastHistory:'',
+dateofFistConsultation:'',
+proposedLineOfTreatment:'',
+dateOfInjury:'',
+icdPcsCode:'',
+durationOfPresentAilment:'',
+consultation:'',
+treatment:'',
+surgery:'',
+other:'',
+total:'',
+feeInstructions:''
 });
 
+const mapURL = `https://maps.googleapis.com/maps/api/staticmap?center=New+York&zoom=13&size=600x300&maptype=roadmap&key=YOUR_API_KEY`;
+
+const handleUpload = (info) => {
+    if (info.file.status === 'done') {
+      message.success(`${info.file.name} file uploaded successfully`);
+    } else if (info.file.status === 'error') {
+      message.error(`${info.file.name} file upload failed.`);
+    }
+  };
 
 const providerOptions = [
 { label: 'DR BONIFACE OSUKA', value: 'DR BONIFACE OSUKA' },
 { label: 'DR CAROLINE', value: 'DR CAROLINE' },
 ];
-
 const handleCashCallChange = (checked) => {
 setCashCall(checked);
+};
+const handleAccidentChange = (checked) => {
+setAccident(checked);
+};
+const handleInNetworkChange = (checked) => {
+setInNetwork(checked);
 };
 const handleCooperationClauseChange = (checked) => {
 setCooperationClause(checked);
@@ -123,6 +152,7 @@ layout="vertical"
 onValuesChange={(_, allValues) => handleFormChange(allValues)} initialValues={formData}>
 <Row gutter={16}>
 <Col span={12}>
+
 <Form.Item
 label="Policy"
 name="policy"
@@ -341,9 +371,7 @@ onChange={(e) => handleInputChange(e)}/>
 </Form.Item>
 </Col>
 </Row>
-
 </Form>
-
 </TabPane>
 
 <TabPane tab={ <span><MedicineBoxOutlined style={{ marginRight: '10px' }}/>Medical</span>} key="2">
@@ -351,6 +379,10 @@ onChange={(e) => handleInputChange(e)}/>
 style={{ textAlign: 'left', fontSize: '16px', marginBottom: '20px',marginTop: '5px' }}>
 Medical section
 </h1>
+
+<Form
+layout="vertical"
+onValuesChange={(_, allValues) => handleFormChange(allValues)} initialValues={formData}>
 <Row gutter={16}>
 <Col span={12}>
 
@@ -370,38 +402,266 @@ onChange={(value) => handleSelectChange(value, 'nameOfProvider')}>
 </Select>
 </Form.Item>
 
+<Form.Item
+label="ICD CODE"
+name="icdCode"
+rules={[{ required: true, message: 'Select ICD Code!' }]}>
+<Select
+placeholder="Select Claim Type"
+value={formData.icdCode}
+onChange={(value) => handleSelectChange(value, 'icdCode')}>
+<Option value="type1">A02.9 Salmonella Infection</Option>
+<Option value="type2">A00.0 Cholera</Option>
+</Select>
+</Form.Item>
 
+<Form.Item
+label="Nature of illness / disease with presenting complaints"
+name="natureOfIllness">
+<TextArea
+placeholder="Autosize height based on content lines"
+autoSize={{ minRows: 2, maxRows: 6 }}
+value={formData.natureOfIllness}
+onChange={(e) => handleInputChange(e)}/>
+</Form.Item>
+
+<Form.Item
+label="Relevant clinical findings"
+name="relevantClinicalFindings">
+<TextArea
+placeholder="Autosize height based on content lines"
+autoSize={{ minRows: 2, maxRows: 6 }}
+value={formData.relevantClinicalFindings}
+onChange={(e) => handleInputChange(e)}/>
+</Form.Item>
+
+<Form.Item
+label="Provisional Diagnosis"
+name="provisionalDiagnosis">
+<TextArea
+placeholder="Autosize height based on content lines"
+autoSize={{ minRows: 2, maxRows: 6 }}
+value={formData.provisionalDiagnosis}
+onChange={(e) => handleInputChange(e)}/>
+</Form.Item>
+
+<Form.Item
+label="Past history of present ailment, if any"
+name="pastHistory">
+<TextArea
+placeholder="Autosize height based on content lines"
+autoSize={{ minRows: 2, maxRows: 6 }}
+value={formData.pastHistory}
+onChange={(e) => handleInputChange(e)}/>
+</Form.Item>
+</Col>
+
+
+<Col span={12}>
+<Form.Item
+label="Date of first consultation"
+name="dateofFistConsultation"
+rules={[{ required: true, message: 'Please select Date of first consultation!' }]}>
+<DatePicker
+style={{ width: '100%' }}
+placeholder="Select Date of first consultation"
+value={formData.dateofFistConsultation}
+onChange={(date) => handleSelectChange(date, 'dateofFistConsultation')}/>
+</Form.Item>
+
+<Form.Item
+label="Proposed line of treatment"
+name="proposedLineOfTreatment"
+rules={[{ required: true, message: 'Select ICD Code!' }]}>
+<Select
+placeholder="Select Claim Type"
+value={formData.proposedLineOfTreatment}
+onChange={(value) => handleSelectChange(value, 'proposedLineOfTreatment')}>
+<Option value="type1">Medical</Option>
+<Option value="type2">Surgical</Option>
+</Select>
+</Form.Item>
+
+<Form.Item
+label="Date of injury"
+name="dateOfInjury"
+rules={[{ required: true, message: 'Date of injury!' }]}>
+<DatePicker
+style={{ width: '100%' }}
+placeholder="Select Date of injury"
+value={formData.dateOfInjury}
+onChange={(date) => handleSelectChange(date, 'dateOfInjury')}/>
+</Form.Item>
+
+<Form.Item
+label="ICD 10 PCS Code"
+name="icdPcsCode"
+rules={[{ required: true, message: 'Enter ICD 10 PCS Code!' }]}>
+<Input
+placeholder='Enter ICD 10 PCS Code'
+name="icdPcsCode"
+value={formData.icdPcsCode}
+onChange={handleInputChange}/>
+</Form.Item>
+
+<Form.Item
+label="Duration of present ailment in days"
+name="durationOfPresentAilment"
+rules={[{ required: true, message: 'Duration of present ailment in days!' }]}>
+<Input
+placeholder='Enter Duration of present ailment in days'
+name="durationOfPresentAilment"
+value={formData.durationOfPresentAilment}
+onChange={handleInputChange}/>
+</Form.Item>
+
+<Form.Item
+label="Doctor Contact Number"
+name="doctorContactNumber"
+rules={[{ required: true, message: 'Doctor Contact Number!' }]}>
+<Input
+placeholder='Enter Doctor Contact Number'
+name="doctorContactNumber"
+value={formData.doctorContactNumber}
+onChange={handleInputChange}/>
+</Form.Item>
+
+<Row gutter={[24, 24]}
+style={{ marginTop: '30px' }}>
+
+<div style={{ textAlign: 'center', margin: '0 20px' }}>
+<span>Accident</span>
+<br/>
+<Switch
+checked={accident}
+onChange={handleAccidentChange}/>
+</div>
+
+<div style={{ textAlign: 'center', margin: '0 20px' }}>
+<span>In Network</span>
+<br />
+<Switch
+checked={inNetwork}
+onChange={handleInNetworkChange}/>
+</div>
+</Row>
 
 </Col>
 </Row>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+</Form>
 </TabPane>
 
 <TabPane tab={ <span><EuroCircleOutlined style={{ marginRight: '10px' }}/>Preliminary Fees</span> }key="3">
-Content for Preliminary Fees
+<h1
+style={{ textAlign: 'left', fontSize: '16px', marginBottom: '20px',marginTop: '5px' }}>
+Fees section
+</h1>
+
+<Form
+  layout="vertical"
+  onValuesChange={(_, allValues) => handleFormChange(allValues)}
+  initialValues={formData}>
+
+  <Row gutter={16}>
+    <Col span={12}>
+      <Form.Item
+        label="Consultation"
+        name="consultation"
+        rules={[{ required: true, message: 'Please enter consultation details!' }]}>
+        <Input
+          placeholder='Enter consultation details'
+          name="consultation"
+          value={formData.consultation}
+          onChange={handleInputChange}/>
+      </Form.Item>
+
+      <Form.Item
+        label="Treatment"
+        name="treatment"
+        rules={[{ required: true, message: 'Please enter treatment details!' }]}>
+        <Input
+          placeholder='Enter treatment details'
+          name="treatment"
+          value={formData.treatment}
+          onChange={handleInputChange}/>
+      </Form.Item>
+
+      <Form.Item
+        label="Surgery"
+        name="surgery"
+        rules={[{ required: true, message: 'Please enter surgery details!' }]}>
+        <Input
+          placeholder='Enter surgery details'
+          name="surgery"
+          value={formData.surgery}
+          onChange={handleInputChange}/>
+      </Form.Item>
+      </Col>
+
+      <Col span={12}>
+      <Form.Item
+        label="Other"
+        name="other"
+        rules={[{ required: true, message: 'Please enter other details!' }]}>
+        <Input
+          placeholder='Enter other details'
+          name="other"
+          value={formData.other}
+          onChange={handleInputChange}/>
+      </Form.Item>
+
+      <Form.Item
+        label="Total"
+        name="total"
+        rules={[{ required: true, message: 'Please enter total amount!' }]}>
+        <Input
+          placeholder='Enter total amount'
+          name="total"
+          value={formData.total}
+          onChange={handleInputChange}/>
+      </Form.Item>
+
+        <Form.Item
+        label="Fee Instructions"
+        name="feeInstructions">
+        <TextArea
+        placeholder="Please Insert Fee Related Instructions If any"
+        autoSize={{ minRows: 2, maxRows: 6 }}
+        value={formData.feeInstructions}
+        onChange={(e) => handleInputChange(e)}/>
+        </Form.Item>
+    </Col>
+  </Row>
+</Form>
 </TabPane>
 
 <TabPane tab={ <span><ProfileOutlined style={{ marginRight: '10px' }}/> Scanned Request</span> }key="4">
-Content for Scanned Request
+<h1
+style={{ textAlign: 'left', fontSize: '16px', marginBottom: '20px',marginTop: '5px' }}>
+Request files section
+</h1>
+
+<Upload
+  name="file"
+  action="/upload" // Replace with your upload URL
+  onChange={handleUpload}
+  multiple={true}
+  showUploadList={true}>
+  <Button
+    style={{ width: '400px', height: '200px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}
+    icon={<InboxOutlined style={{ fontSize: '48px',marginTop: '20px', marginBottom: '8px' }} />}>
+    <span style={{ fontSize: '16px' }}>Click and drag file to upload to this area.</span>
+  </Button>
+</Upload>
+
+
 </TabPane>
 
 <TabPane tab={ <span><CompassOutlined style={{ marginRight: '10px' }}/>Map</span>}key="5">
-Content for Map
+    <div>
+    <h3>Map View:</h3>
+    <img src={mapURL} alt="Map View" style={{ maxWidth: '100%' }}/>
+    </div>
 </TabPane>
 
 </Tabs>
@@ -426,6 +686,7 @@ Content for Map
 18: <div>Content for Audit</div>,
 19: <div>Content for SubClaims</div>,
 };
+
 
 return (
 <>
@@ -458,6 +719,8 @@ style={{cursor: 'pointer'}}>
 </div>
 
 )}
+
+
 
 
 

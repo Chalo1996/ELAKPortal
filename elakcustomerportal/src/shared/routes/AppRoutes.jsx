@@ -43,6 +43,7 @@ import HandleMotorSelection from '../../pages/MotorVehicleInsurance/HandleMotorS
 import PoliciesRoutes from '../../components/Routes/PoliciesRoutes';
 import GroupCreditRoutes from '../../components/Routes/GroupCreditRoutes';
 import Claims from '../../components/Claims/Claims';
+import AllClaims from '../../components/Claims/AllClaims';
 import Payments from '../../components/Payments/Payments';
 
 const AppRoutes = () => {
@@ -195,6 +196,7 @@ const AppRoutes = () => {
                   <Routes>
                     <Route path="policies/*" element={<PoliciesRoutes />} />
                     <Route path="claims" element={<Claims />} />
+                    <Route path="allclaims" element={<AllClaims />} />
                     <Route path="payments" element={<Payments />} />
                     <Route path="*" element={<NotFound />} />
                   </Routes>

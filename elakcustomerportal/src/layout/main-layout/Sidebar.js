@@ -121,7 +121,7 @@ label: <Link to="/Policies">Policies</Link>,
 {
 key: 'claims',
 icon: <MedicineBoxOutlined />,
-label: <Link to="/claims">Claims</Link>,
+label: <Link to="/allclaims">Claims</Link>,
 },
 {
 key: 'payments',

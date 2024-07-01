@@ -76,3 +76,21 @@ code {
   margin-top: 20px;
 }
 
+/* AllClaims.css */
+.card-image {
+  transition: transform 0.3s;
+}
+
+.card:hover .card-image {
+  transform: scale(1.1);
+}
+
+.card {
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
