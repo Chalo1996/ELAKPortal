@@ -11,7 +11,6 @@ import CustomerTypePage from "../../pages/FuneralExpensePages/CustomerType";
 import LandingPage from "../../pages/landingPage";
 import FuneralExpenseQuotation from "../../pages/FuneralExpensePages/Quotation";
 import CriticalIllnessQuotation from "../../components/Group Critical Illness/CriticalIllnessQuotation";
-
 import HandleCustomerSelection from "../../pages/FuneralExpensePages/HandleCustomerSelection";
 import GroupTermLifeQuote from "../../components/Group Term Life/TermLifeQuote";
 import Welcome from "../../components/Group Term Life/Welcome";
@@ -131,7 +130,6 @@ const AppRoutes = () => {
                   path='Education/Educ-Quotation'
                   element={<EducQuotation />}
                 />
-                <Route path='Education/Register' element={<Register />} />
                 <Route
                   path='Goal-based/goal-quotation'
                   element={<GoalQuotation />}
